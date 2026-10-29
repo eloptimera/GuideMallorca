@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Datumvaljare } from "@/components/Datumvaljare";
 import { skickaBokning, type Bokning } from "@/lib/bokning";
 
 const TOMT: Bokning = {
@@ -65,10 +66,13 @@ export function Bokningsformular() {
           </span>
           <input type="tel" autoComplete="tel" value={svar.telefon} onChange={satt("telefon")} />
         </label>
-        <label>
-          <span>Önskat datum</span>
-          <input placeholder="t.ex. mitten av maj" value={svar.datum} onChange={satt("datum")} />
-        </label>
+        <div className="bokning__falt">
+          <label htmlFor="bokning-datum">Önskat datum</label>
+          <Datumvaljare
+            id="bokning-datum"
+            onChange={(datum) => setSvar((s) => ({ ...s, datum }))}
+          />
+        </div>
         <label>
           <span>Antal personer</span>
           <input inputMode="numeric" value={svar.antal} onChange={satt("antal")} />
