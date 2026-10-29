@@ -430,14 +430,18 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
     // Korten: tonar in när pluppen kommer fram och ut när den går vidare.
-    const n = tl.fonster.length;
     tl.fonster.forEach((f, i) => {
       const el = kort[i];
       if (!el) return;
-      const sista = i === n - 1;
+      // Övertoning: ett kort tonar ut medan nästa tonar in, så att det alltid syns ett kort
+      // på vägen mellan två stopp. Mitt emellan överlappar de en aning.
+      const fore = tl.fonster[i - 1];
+      const efter = tl.fonster[i + 1];
+      const inFran = fore ? fore.till + (f.fran - fore.till) * 0.2 : 0;
+      const ut = efter ? f.till + (efter.fran - f.till) * 0.8 : Infinity;
       const o =
-        smoothstep(f.fran - 0.03, f.fran + 0.004, p) *
-        (sista ? 1 : 1 - smoothstep(f.till - 0.004, f.till + 0.025, p));
+        (fore ? smoothstep(inFran, f.fran, p) : smoothstep(tl.intro * 0.3, f.fran, p)) *
+        (efter ? 1 - smoothstep(f.till, ut, p) : 1);
       el.style.opacity = o.toFixed(3);
       el.style.visibility = o > 0.002 ? "visible" : "hidden";
       el.style.pointerEvents = o > 0.6 ? "auto" : "none";
@@ -597,8 +601,8 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     const y = window.scrollY;
     const ys = stoppY();
     const glapp = ys.length > 1 ? (ys[ys.length - 1]! - ys[0]!) / (ys.length - 1) : 0;
-    const fangst = Math.max(60, glapp * 0.32); // så nära stoppet framåt som magneten drar
-    const overskott = Math.max(30, glapp * 0.15); // så långt förbi ett stopp som korrigeras
+    const fangst = Math.max(60, glapp * 0.4); // så nära stoppet framåt som magneten drar
+    const overskott = Math.max(30, glapp * 0.25); // så långt förbi ett stopp som korrigeras
     let mal: number | null = null;
     for (const sy of ys) {
       const d = sy - y; // > 0: stoppet ligger längre ner

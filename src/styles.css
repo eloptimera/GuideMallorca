@@ -168,7 +168,7 @@
 .slinga {
   position: relative;
   /* Hur länge man scrollar genom rutten. Mer höjd = lugnare tempo. */
-  height: 560vh;
+  height: 400vh;
 }
 
 .slinga__scen {
