@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -16,7 +17,7 @@ import dmSansUrl from "@fontsource-variable/dm-sans/files/dm-sans-latin-wght-nor
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Analytics } from "@vercel/analytics/react";
 import { FORETAG, VERIFIERING } from "@/lib/foretag";
-import { grundSchema, jsonLd } from "@/lib/seo";
+import { SPRAKKOD, sprakFor } from "@/lib/sprak";
 
 function NotFoundComponent() {
   return (
@@ -83,7 +84,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: FORETAG.namn },
       { name: "theme-color", content: "#efe5d3" },
       { property: "og:type", content: "website" },
-      { property: "og:locale", content: "sv_SE" },
       { name: "twitter:card", content: "summary_large_image" },
       // Bevisar för Google och Bing att sajten är vår (miljövariabler i Vercel).
       ...(VERIFIERING.google
@@ -108,7 +108,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", sizes: "16x16 32x32 48x48" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
-    scripts: [jsonLd(grundSchema())],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -117,8 +116,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const sokvag = useRouterState({ select: (s) => s.location.pathname });
   return (
-    <html lang="sv">
+    <html lang={SPRAKKOD[sprakFor(sokvag)].html}>
       <head>
         <HeadContent />
       </head>

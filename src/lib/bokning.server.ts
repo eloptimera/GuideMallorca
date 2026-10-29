@@ -10,7 +10,10 @@ const BokningSchema = z.object({
   antal: z.string().trim().max(40),
   meddelande: z.string().trim().max(3000),
   falla: z.string().max(500),
+  sprak: z.enum(["sv", "en", "es"]).catch("sv"),
 });
+
+const SPRAKNAMN = { sv: "svenska", en: "engelska", es: "spanska" } as const;
 
 export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
   const data = BokningSchema.parse(indata);
@@ -30,6 +33,7 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
     data.telefon && `Telefon: ${data.telefon}`,
     data.datum && `Önskat datum: ${data.datum}`,
     data.antal && `Antal personer: ${data.antal}`,
+    `Språk på sajten: ${SPRAKNAMN[data.sprak]}`,
     data.meddelande && `\nMeddelande:\n${data.meddelande}`,
   ].filter(Boolean);
 

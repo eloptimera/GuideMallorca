@@ -2,6 +2,7 @@
 // Varje route anropar sidhuvud() i sin head() – då blir titel, beskrivning, canonical,
 // delningsbild och strukturerad data likadana överallt.
 import { absolut, FORETAG, SAJT_URL } from "@/lib/foretag";
+import { SPRAK, SPRAKKOD, TEXTER, sprakSokvag, type Sprak } from "@/lib/sprak";
 
 /** Standardbilden när en länk delas. Sidor med egen bild skickar `bild` till sidhuvud(). */
 // ?v= tvingar meddelandeappar och sociala medier att hämta bilden på nytt. Höj vid nästa byte.
@@ -17,55 +18,54 @@ export function jsonLd(schema: Schema) {
   };
 }
 
-export function sidhuvud({
-  titel,
-  beskrivning,
-  sokvag,
-  schema = [],
-  bild,
-}: {
-  /** Titel utan sajtnamn – det läggs till automatiskt. */
-  titel: string;
-  beskrivning: string;
-  sokvag: string;
-  schema?: readonly Schema[];
-  /** Egen delningsbild (1200 × 630) med alt-text. Utelämnad = standardbilden. */
-  bild?: { src: string; alt: string };
-}) {
-  const fullTitel = titel === FORETAG.namn ? titel : `${titel} | ${FORETAG.namn}`;
-  const url = absolut(sokvag);
+/** Metadata för startsidan på ett språk, med hreflang-länkar till de andra språken. */
+export function sidhuvud(sprak: Sprak) {
+  const t = TEXTER[sprak].meta;
+  const fullTitel = `${t.titel} | ${FORETAG.namn}`;
+  const url = absolut(sprakSokvag(sprak));
+  const bild = absolut(DELNINGSBILD.src);
   return {
     meta: [
       { title: fullTitel },
-      { name: "description", content: beskrivning },
+      { name: "description", content: t.beskrivning },
       { property: "og:title", content: fullTitel },
-      { property: "og:description", content: beskrivning },
+      { property: "og:description", content: t.beskrivning },
       { property: "og:url", content: url },
-      { property: "og:image", content: absolut(bild?.src ?? DELNINGSBILD.src) },
+      { property: "og:locale", content: SPRAKKOD[sprak].locale },
+      ...SPRAK.filter((s) => s !== sprak).map((s) => ({
+        property: "og:locale:alternate",
+        content: SPRAKKOD[s].locale,
+      })),
+      { property: "og:image", content: bild },
+      { name: "twitter:image", content: bild },
+      { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: String(DELNINGSBILD.bredd) },
       { property: "og:image:height", content: String(DELNINGSBILD.hojd) },
-      {
-        property: "og:image:alt",
-        content:
-          bild?.alt ??
-          "Guidad rundvandring i Palma med Caroline Palmstierna – karta över rutten genom gamla stan",
-      },
+      { property: "og:image:alt", content: t.bildAlt },
     ],
-    links: [{ rel: "canonical", href: url }],
-    scripts: schema.map(jsonLd),
+    links: [
+      { rel: "canonical", href: url },
+      ...SPRAK.map((s) => ({
+        rel: "alternate",
+        hrefLang: SPRAKKOD[s].html,
+        href: absolut(sprakSokvag(s)),
+      })),
+      { rel: "alternate", hrefLang: "x-default", href: absolut("/") },
+    ],
+    scripts: [jsonLd(grundSchema(sprak))],
   };
 }
 
 /** Webbplatsen – ligger på alla sidor via roten. */
-export function grundSchema(): Schema {
+export function grundSchema(sprak: Sprak = "sv"): Schema {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${SAJT_URL}/#webbplats`,
     name: FORETAG.namn,
-    description: FORETAG.beskrivning,
-    url: absolut("/"),
-    inLanguage: "sv-SE",
+    description: TEXTER[sprak].meta.beskrivning,
+    url: absolut(sprakSokvag(sprak)),
+    inLanguage: SPRAKKOD[sprak].html,
     about: { "@type": "City", name: FORETAG.ort },
     author: {
       "@type": "Person",

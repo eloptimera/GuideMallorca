@@ -3,6 +3,8 @@
 /** `andrad` (ÅÅÅÅ-MM-DD) anges bara där vi vet när innehållet senast ändrades. */
 export const SIDOR: readonly { sokvag: string; namn: string; andrad?: string }[] = [
   { sokvag: "/", namn: "Startsida" },
+  { sokvag: "/en", namn: "Startsida (engelska)" },
+  { sokvag: "/es", namn: "Startsida (spanska)" },
 ];
 
 export function textSvar(text: string, typ: string): Response {

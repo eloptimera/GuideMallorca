@@ -163,6 +163,63 @@
   }
 }
 
+/* ---------- Språkval (src/components/Sprakvaljare.tsx) ---------- */
+
+.sprakval {
+  position: fixed;
+  z-index: 40;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(251, 246, 236, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgba(29, 26, 22, 0.08),
+    0 10px 24px -14px rgba(29, 26, 22, 0.45);
+}
+
+.sprakval__flagga {
+  display: block;
+  width: 30px;
+  height: 30px;
+  padding: 3px;
+  border-radius: 50%;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sprakval__flagga svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  opacity: 0.55;
+  filter: saturate(0.75);
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease;
+}
+
+.sprakval__flagga:hover svg,
+.sprakval__flagga[aria-current] svg {
+  opacity: 1;
+  filter: none;
+}
+
+.sprakval__flagga[aria-current] {
+  background: var(--bla);
+}
+
+.sprakval__flagga:hover {
+  transform: translateY(-1px);
+}
+
 /* ---------- Stadsslingan (src/components/Stadsslinga.tsx) ---------- */
 
 .slinga {
@@ -299,7 +356,7 @@
 }
 
 .slinga[data-smal][data-flyttad] .slinga__hero {
-  top: 14px;
+  top: 62px;
   left: 14px;
   width: calc(100% - 28px);
   padding: 0.8rem 1rem 0.9rem;

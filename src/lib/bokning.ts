@@ -20,6 +20,8 @@ export type Bokning = {
   meddelande: string;
   /** Dolt fält som bara robotar fyller i. */
   falla: string;
+  /** Språket besökaren använde på sajten. */
+  sprak: "sv" | "en" | "es";
 };
 
 export const skickaBokning = createServerFn({ method: "POST" })

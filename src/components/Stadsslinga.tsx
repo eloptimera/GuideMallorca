@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 import { startaSlinga } from "@/lib/slinga/karta";
 import { STOPP } from "@/lib/slinga/stopp";
+import { TEXTER, type Sprak } from "@/lib/sprak";
 
 /**
  * Startsidans scrollsektion: kartan, pluppen som går rutten och kortet vid varje stopp.
  * Motorn ligger i src/lib/slinga/, stoppen i src/lib/slinga/stopp.ts.
  */
-export function Stadsslinga() {
+export function Stadsslinga({ sprak }: { sprak: Sprak }) {
+  const t = TEXTER[sprak].slinga;
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -15,16 +17,16 @@ export function Stadsslinga() {
   }, []);
 
   return (
-    <section ref={ref} className="slinga" aria-label="Stadsvandringens rutt genom Palma">
+    <section ref={ref} className="slinga" aria-label={t.etikett}>
       <div className="slinga__scen">
         <div className="slinga__karta" aria-hidden="true" />
         <canvas className="slinga__spar" aria-hidden="true" />
         <div className="slinga__ton" aria-hidden="true" />
 
         <header className="slinga__hero">
-          <p className="slinga__overrad">Ca två timmar till fots</p>
+          <p className="slinga__overrad">{t.overrad}</p>
           <h1 className="slinga__rubrik">
-            Guidad rundvandring <span className="slinga__radbryt">i Palma</span>
+            {t.rubrik[0]} <span className="slinga__radbryt">{t.rubrik[1]}</span>
           </h1>
           <p className="slinga__underrad">
             <img
@@ -35,14 +37,14 @@ export function Stadsslinga() {
               height={240}
               decoding="async"
             />
-            med Caroline Palmstierna
+            {t.med}
           </p>
         </header>
 
         <ol className="slinga__stopplista">
           {STOPP.map((s, i) => (
             <li
-              key={s.namn}
+              key={s.lat}
               className={s.slut ? "slinga__kort slinga__kort--slut" : "slinga__kort"}
               style={{ opacity: 0, visibility: "hidden" }}
             >
@@ -50,7 +52,7 @@ export function Stadsslinga() {
                 <img
                   className="slinga__bild"
                   src={s.bild.src}
-                  alt={s.bild.alt}
+                  alt={s.bild.alt[sprak]}
                   width={800}
                   height={600}
                   decoding="async"
@@ -59,13 +61,13 @@ export function Stadsslinga() {
               )}
               <div className="slinga__korttext">
                 <span className="slinga__nummer">
-                  {s.slut ? "Ca 2 timmar" : `Stopp ${i + 1} av ${STOPP.length - 1}`}
+                  {s.slut ? t.slutEtikett : t.stopp(i + 1, STOPP.length - 1)}
                 </span>
-                <h2>{s.namn}</h2>
-                <p>{s.text}</p>
+                <h2>{s.namn[sprak]}</h2>
+                <p>{s.text[sprak]}</p>
                 {s.slut && (
                   <a className="btn-base btn-bla slinga__knapp" href="#boka">
-                    Boka en vandring
+                    {t.boka}
                   </a>
                 )}
               </div>
@@ -74,7 +76,7 @@ export function Stadsslinga() {
         </ol>
 
         <div className="slinga__ledtrad" aria-hidden="true">
-          <span>Scrolla för att gå rutten</span>
+          <span>{t.ledtrad}</span>
           <i />
         </div>
       </div>

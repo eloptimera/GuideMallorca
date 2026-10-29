@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { Datumvaljare } from "@/components/Datumvaljare";
 import { skickaBokning, type Bokning } from "@/lib/bokning";
+import { TEXTER, type Sprak } from "@/lib/sprak";
 
-const TOMT: Bokning = {
+const TOMT: Omit<Bokning, "sprak"> = {
   namn: "",
   epost: "",
   telefon: "",
@@ -13,18 +14,19 @@ const TOMT: Bokning = {
 };
 
 /** Bokningsförfrågan för en stadsvandring. Skickas som mejl till Caroline (se lib/bokning.ts). */
-export function Bokningsformular() {
-  const [svar, setSvar] = useState<Bokning>(TOMT);
+export function Bokningsformular({ sprak }: { sprak: Sprak }) {
+  const t = TEXTER[sprak].formular;
+  const [svar, setSvar] = useState(TOMT);
   const [lage, setLage] = useState<"redo" | "skickar" | "klart" | "fel">("redo");
 
-  const satt = (nyckel: keyof Bokning) => (e: { target: { value: string } }) =>
+  const satt = (nyckel: keyof typeof TOMT) => (e: { target: { value: string } }) =>
     setSvar((s) => ({ ...s, [nyckel]: e.target.value }));
 
   async function skicka(e: FormEvent) {
     e.preventDefault();
     setLage("skickar");
     try {
-      await skickaBokning({ data: svar });
+      await skickaBokning({ data: { ...svar, sprak } });
       setLage("klart");
       setSvar(TOMT);
     } catch {
@@ -35,8 +37,8 @@ export function Bokningsformular() {
   if (lage === "klart") {
     return (
       <div className="bokning__klart" role="status">
-        <h3>Tack, förfrågan är skickad.</h3>
-        <p>Caroline återkommer till dig via e-post så snart hon kan.</p>
+        <h3>{t.tackRubrik}</h3>
+        <p>{t.tackText}</p>
       </div>
     );
   }
@@ -45,11 +47,11 @@ export function Bokningsformular() {
     <form className="bokning" onSubmit={skicka} noValidate={false}>
       <div className="bokning__rad">
         <label>
-          <span>Namn</span>
+          <span>{t.namn}</span>
           <input required autoComplete="name" value={svar.namn} onChange={satt("namn")} />
         </label>
         <label>
-          <span>E-post</span>
+          <span>{t.epost}</span>
           <input
             required
             type="email"
@@ -62,29 +64,30 @@ export function Bokningsformular() {
       <div className="bokning__rad bokning__rad--tre">
         <label>
           <span>
-            Telefon <em>(valfritt)</em>
+            {t.telefon} <em>{t.valfritt}</em>
           </span>
           <input type="tel" autoComplete="tel" value={svar.telefon} onChange={satt("telefon")} />
         </label>
         <div className="bokning__falt">
-          <label htmlFor="bokning-datum">Önskat datum</label>
+          <label htmlFor="bokning-datum">{t.datum}</label>
           <Datumvaljare
             id="bokning-datum"
+            sprak={sprak}
             onChange={(datum) => setSvar((s) => ({ ...s, datum }))}
           />
         </div>
         <label>
-          <span>Antal personer</span>
+          <span>{t.antal}</span>
           <input inputMode="numeric" value={svar.antal} onChange={satt("antal")} />
         </label>
       </div>
       <label>
         <span>
-          Meddelande <em>(valfritt)</em>
+          {t.meddelande} <em>{t.valfritt}</em>
         </span>
         <textarea
           rows={4}
-          placeholder="Är ni ett sällskap, en förening eller ett företag? Något särskilt ni vill höra om?"
+          placeholder={t.meddelandeHint}
           value={svar.meddelande}
           onChange={satt("meddelande")}
         />
@@ -100,11 +103,11 @@ export function Bokningsformular() {
       />
       <div className="bokning__fot">
         <button type="submit" className="btn-base btn-bla" disabled={lage === "skickar"}>
-          {lage === "skickar" ? "Skickar…" : "Skicka förfrågan"}
+          {lage === "skickar" ? t.skickar : t.skicka}
         </button>
         {lage === "fel" && (
           <p className="bokning__fel" role="alert">
-            Förfrågan kunde inte skickas just nu. Försök igen om en stund.
+            {t.fel}
           </p>
         )}
       </div>
