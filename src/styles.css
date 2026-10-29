@@ -599,83 +599,10 @@
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 18px;
-}
-
-/* ---------- Svävande bild (src/components/SvavandeBild.tsx) ---------- */
-
-.svava {
-  --lut-x: 0deg;
-  --lut-y: 0deg;
-  position: relative;
-  perspective: 1100px;
-  padding-bottom: 28px;
-}
-
-.svava__gupp {
-  animation: svava 7s ease-in-out infinite;
-  transform-style: preserve-3d;
-}
-
-.svava__kort {
-  position: relative;
-  border-radius: 18px;
-  transform: rotateX(var(--lut-x)) rotateY(var(--lut-y)) translateZ(0);
-  transform-style: preserve-3d;
   box-shadow:
     0 1px 2px rgba(29, 26, 22, 0.08),
     0 14px 28px -16px rgba(29, 26, 22, 0.35),
     0 40px 70px -40px rgba(29, 26, 22, 0.55);
-  will-change: transform;
-}
-
-/* Ljusreflex som följer lutningen. */
-.svava__glans {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at var(--glans-x, 50%) var(--glans-y, 30%),
-    rgba(255, 250, 240, 0.28),
-    rgba(255, 250, 240, 0) 55%
-  );
-  mix-blend-mode: soft-light;
-}
-
-/* Skuggan på "marken": krymper när bilden lyfter. */
-.svava__skugga {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: 0;
-  height: 26px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(29, 26, 22, 0.32), rgba(29, 26, 22, 0));
-  filter: blur(6px);
-  animation: svava-skugga 7s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes svava {
-  0%,
-  100% {
-    transform: translateY(0) rotateZ(-0.4deg);
-  }
-  50% {
-    transform: translateY(-12px) rotateZ(0.4deg);
-  }
-}
-
-@keyframes svava-skugga {
-  0%,
-  100% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scaleX(0.86);
-    opacity: 0.7;
-  }
 }
 
 .om__bild figcaption {
@@ -1172,9 +1099,5 @@
   .slinga__ledtrad i::after {
     animation: none;
     top: 30%;
-  }
-  .svava__gupp,
-  .svava__skugga {
-    animation: none;
   }
 }

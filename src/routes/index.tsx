@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Bokningsformular } from "@/components/Bokningsformular";
 import { Stadsslinga } from "@/components/Stadsslinga";
-import { SvavandeBild } from "@/components/SvavandeBild";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
 import { sidhuvud } from "@/lib/seo";
@@ -50,16 +49,14 @@ function Start() {
       <section className="innehall om" id="om-caroline" aria-labelledby="om-rubrik">
         <div className="innehall__inre om__inre">
           <figure className="om__bild">
-            <SvavandeBild>
-              <img
-                src="/caroline.webp"
-                alt="Caroline Palmstierna, leende med en blombukett"
-                width={800}
-                height={1000}
-                loading="lazy"
-                decoding="async"
-              />
-            </SvavandeBild>
+            <img
+              src="/caroline.webp"
+              alt="Caroline Palmstierna, leende med en blombukett"
+              width={800}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+            />
           </figure>
           <div>
             <p className="overrad">Din guide</p>
