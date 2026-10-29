@@ -1,7 +1,8 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import "@fontsource-variable/bodoni-moda/wght.css";
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
 @import "@fontsource-variable/dm-sans/wght.css";
 @import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -10,7 +11,7 @@
 /*
  * Designsystem – Guide Mallorca
  * Varm sandstensgrund (samma som kartan), mörk bläckfärgad text och en blå accent som är
- * pluppens färg. Rubriker i Bodoni Moda, brödtext i DM Sans.
+ * pluppens färg. Rubriker i Fraunces (mjuk, varm serif), brödtext i DM Sans.
  */
 
 @theme inline {
@@ -19,7 +20,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 6px);
   --radius-2xl: calc(var(--radius) + 12px);
-  --font-display: "Bodoni Moda Variable", "Bodoni 72", Didot, Georgia, serif;
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-sans: "DM Sans Variable", system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -97,9 +98,10 @@
   h4,
   .font-display {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 400;
+    font-optical-sizing: auto;
     line-height: 1.05;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
@@ -209,20 +211,114 @@
     linear-gradient(to top, rgba(239, 229, 211, 0.85), rgba(239, 229, 211, 0) 30%);
 }
 
+.slinga__ton {
+  transition: background 0.7s ease;
+}
+
+/* När rubriken står till vänster: ljus ton bakom den så att texten går att läsa. */
+.slinga[data-flyttad]:not([data-smal]) .slinga__ton {
+  background:
+    linear-gradient(
+      to right,
+      rgba(239, 229, 211, 0.95),
+      rgba(239, 229, 211, 0.75) 26%,
+      rgba(239, 229, 211, 0) 42%
+    ),
+    linear-gradient(to top, rgba(239, 229, 211, 0.6), rgba(239, 229, 211, 0) 18%);
+}
+
 .slinga .maplibregl-ctrl-attrib {
   font-size: 10px;
   background: rgba(239, 229, 211, 0.75);
 }
 
+/* Rubriken: stor och centrerad i början, flyttar till vänster när man börjar scrolla
+   (data-flyttad sätts av slingan). */
 .slinga__hero {
   position: absolute;
-  left: 0;
-  right: 0;
+  z-index: 2;
   top: clamp(64px, 12vh, 132px);
-  padding: 0 16px;
+  left: 50%;
+  width: min(1100px, calc(100% - 32px));
+  transform: translateX(-50%);
   text-align: center;
-  opacity: var(--hero-o, 1);
   pointer-events: none;
+  transition:
+    top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    left 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    width 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.slinga__rubrik {
+  margin: 0;
+  font-size: clamp(2.6rem, 7vw, 6.4rem);
+  font-weight: 380;
+  line-height: 0.98;
+  transition: font-size 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.slinga__radbryt {
+  white-space: nowrap;
+}
+
+.slinga__underrad {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1.2rem 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  color: var(--muted-foreground);
+  transition: font-size 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.slinga__avatar {
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px #fbf6ec;
+}
+
+.slinga[data-flyttad] .slinga__hero {
+  top: clamp(40px, 9vh, 96px);
+  left: clamp(24px, 4.5vw, 64px);
+  width: min(360px, 30vw);
+  transform: none;
+  text-align: left;
+}
+
+.slinga[data-flyttad] .slinga__rubrik {
+  font-size: clamp(2rem, 3.4vw, 3.3rem);
+}
+
+.slinga[data-flyttad] .slinga__underrad {
+  font-size: 1.1rem;
+}
+
+.slinga[data-smal][data-flyttad] .slinga__hero {
+  top: 14px;
+  left: 14px;
+  width: calc(100% - 28px);
+  padding: 0.8rem 1rem 0.9rem;
+  border-radius: 12px;
+  background: rgba(251, 246, 236, 0.92);
+  box-shadow: 0 10px 30px -18px rgba(29, 26, 22, 0.45);
+}
+
+.slinga[data-smal][data-flyttad] .slinga__overrad {
+  display: none;
+}
+
+.slinga[data-smal][data-flyttad] .slinga__rubrik {
+  font-size: 1.45rem;
+}
+
+.slinga[data-smal][data-flyttad] .slinga__underrad {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
 }
 
 .overrad,
@@ -380,7 +476,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--muted-foreground);
-  opacity: var(--hero-o, 1);
+  opacity: var(--cue-o, 1);
   pointer-events: none;
 }
 
@@ -439,14 +535,42 @@
 
 .om__inre {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(2rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
+.om__bild {
+  margin: 0;
+}
+
+.om__bild img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -34px rgba(29, 26, 22, 0.5);
+}
+
+.om__bild figcaption {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 760px) {
+  .om__inre {
+    grid-template-columns: 1fr;
+  }
+  .om__bild {
+    max-width: 420px;
+  }
 }
 
 .om__text {
   margin-top: 2.2rem;
-  columns: 2 280px;
-  column-gap: 3rem;
   font-size: 1.05rem;
   line-height: 1.7;
 }

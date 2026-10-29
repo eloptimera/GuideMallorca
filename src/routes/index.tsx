@@ -38,20 +38,32 @@ function Start() {
 
       <section className="innehall om" id="om-caroline" aria-labelledby="om-rubrik">
         <div className="innehall__inre om__inre">
-          <p className="overrad">Din guide</p>
-          <h2 id="om-rubrik">Caroline Palmstierna</h2>
-          <p className="ingress">Journalist och Spanienexpert, bosatt på Mallorca.</p>
-          <div className="om__text">
-            <p>
-              Caroline är svensk journalist med djup förankring i det spanska och mallorcanska
-              samhället. I Palmas kulturliv leder hon boksamtal, håller föreläsningar och samarbetar
-              med nätverk som SWEA Mallorca.
-            </p>
-            <p>
-              Hon delar med sig av spansk historia, lokalpolitik, kultur och det genuina
-              mallorcanska hantverket – och är den som kan förklara varför staden ser ut som den
-              gör.
-            </p>
+          <figure className="om__bild">
+            <img
+              src="/caroline.webp"
+              alt="Caroline Palmstierna, leende med en blombukett"
+              width={800}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div>
+            <p className="overrad">Din guide</p>
+            <h2 id="om-rubrik">Caroline Palmstierna</h2>
+            <p className="ingress">Journalist och Spanienexpert, bosatt på Mallorca.</p>
+            <div className="om__text">
+              <p>
+                Caroline är svensk journalist med djup förankring i det spanska och mallorcanska
+                samhället. I Palmas kulturliv leder hon boksamtal, håller föreläsningar och
+                samarbetar med nätverk som SWEA Mallorca.
+              </p>
+              <p>
+                Hon delar med sig av spansk historia, lokalpolitik, kultur och det genuina
+                mallorcanska hantverket – och är den som kan förklara varför staden ser ut som den
+                gör.
+              </p>
+            </div>
           </div>
         </div>
       </section>

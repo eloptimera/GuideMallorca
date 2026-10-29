@@ -22,13 +22,21 @@ export function Stadsslinga() {
         <div className="slinga__ton" aria-hidden="true" />
 
         <header className="slinga__hero">
-          <p className="slinga__overrad">Stadsvandringar i Palma</p>
+          <p className="slinga__overrad">Ca två timmar till fots</p>
           <h1 className="slinga__rubrik">
-            Palma, bortom
-            <br />
-            turiststråken
+            Guidad rundvandring <span className="slinga__radbryt">i Palma</span>
           </h1>
-          <p className="slinga__underrad">med Caroline Palmstierna</p>
+          <p className="slinga__underrad">
+            <img
+              className="slinga__avatar"
+              src="/caroline-avatar.webp"
+              alt=""
+              width={240}
+              height={240}
+              decoding="async"
+            />
+            med Caroline Palmstierna
+          </p>
         </header>
 
         <ol className="slinga__stopplista">

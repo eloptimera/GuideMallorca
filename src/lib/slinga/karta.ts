@@ -309,12 +309,15 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     mal = skrollbar > 0 ? clamp(-rect.top / skrollbar, 0, 1) : 0;
   }
 
+  /** Högerkanten på den vänsterställda rubriken (breda skärmar), i pixlar. */
+  const heroKant = () => Math.min(360, vw * 0.3) + Math.min(64, Math.max(24, vw * 0.045)) + 24;
+
   function kamera() {
     if (!karta) return;
     karta.fitBounds(omradeGrader(), {
       padding: smal
         ? 0
-        : { top: Math.min(140, vh * 0.15), bottom: 40, left: 60, right: Math.min(380, vw * 0.25) },
+        : { top: Math.min(120, vh * 0.13), bottom: 50, left: heroKant() + 40, right: 70 },
       duration: 0,
     });
     grundZoom = karta.getZoom();
@@ -411,7 +414,9 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     const s = tl.f(p) * total;
     const plupp = total > 0 ? punktVid(vag, kum, s) : null;
 
-    sektion.style.setProperty("--hero-o", (1 - smoothstep(0, tl.intro, p)).toFixed(3));
+    // Rubriken flyttar till vänster så fort man har börjat scrolla.
+    sektion.toggleAttribute("data-flyttad", mal > 0.004 || p > 0.004);
+    sektion.style.setProperty("--cue-o", (1 - smoothstep(0, tl.intro * 0.6, p)).toFixed(3));
 
     // Kameran: stilla och hela rutten på breda skärmar, följer pluppen på smala.
     if (karta && plupp && smal) {
@@ -444,7 +449,7 @@ export function startaSlinga(sektion: HTMLElement): () => void {
       const w = el.offsetWidth;
       const h = el.offsetHeight;
       const ovan = q.y - h - 30 > 16;
-      const x = clamp(q.x - w / 2, 16, vw - w - 16);
+      const x = clamp(q.x - w / 2, Math.min(heroKant(), vw - w - 16), vw - w - 16);
       const y = ovan ? q.y - h - 30 : Math.min(q.y + 30, vh - h - 16);
       el.style.transform = `translate(${x.toFixed(1)}px, ${(y + (1 - o) * 12).toFixed(1)}px)`;
       el.dataset["ovan"] = ovan ? "ja" : "nej";
@@ -539,6 +544,135 @@ export function startaSlinga(sektion: HTMLElement): () => void {
   });
   observer.observe(sektion);
 
+  // ---------- Ett scroll = nästa stopp ----------
+  //
+  // Inne i sektionen tar ett scrollhjulsdrag, ett svep eller en piltangent en till nästa
+  // (eller föregående) stopp. Efter sista stoppet scrollar sidan vidare som vanligt.
+
+  /** Scrollpositionen (sidans y) där steget ligger: -1 = början, 0..n-1 = stoppen. */
+  function stegY(steg: number): number {
+    const top = sektion.getBoundingClientRect().top + window.scrollY;
+    const skrollbar = sektion.offsetHeight - window.innerHeight;
+    if (steg < 0) return top;
+    const f = tl.fonster[steg];
+    if (!f) return top + skrollbar;
+    return top + skrollbar * ((f.fran + f.till) / 2);
+  }
+
+  /** Det steg som scrollpositionen ligger närmast. */
+  function aktuelltSteg(): number {
+    let bast = -1;
+    let bastD = Math.abs(window.scrollY - stegY(-1));
+    for (let i = 0; i < tl.fonster.length; i++) {
+      const d = Math.abs(window.scrollY - stegY(i));
+      if (d < bastD) {
+        bastD = d;
+        bast = i;
+      }
+    }
+    return bast;
+  }
+
+  /** Är sektionen den som fyller skärmen just nu? */
+  function inneISektionen(): boolean {
+    const rect = sektion.getBoundingClientRect();
+    return rect.top <= 2 && rect.bottom >= window.innerHeight - 2;
+  }
+
+  let animerar = false;
+  let animRam = 0;
+  function scrollaTill(y: number) {
+    cancelAnimationFrame(animRam);
+    const start = window.scrollY;
+    const avst = y - start;
+    if (Math.abs(avst) < 1) return;
+    if (minskadRorelse.matches) {
+      window.scrollTo(0, y);
+      return;
+    }
+    const tid = clamp(650 + Math.abs(avst) * 0.25, 800, 1500);
+    const t0 = performance.now();
+    animerar = true;
+    const steg = (t: number) => {
+      const u = clamp((t - t0) / tid, 0, 1);
+      const e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+      window.scrollTo(0, start + avst * e);
+      if (u < 1) animRam = requestAnimationFrame(steg);
+      else animerar = false;
+    };
+    animRam = requestAnimationFrame(steg);
+  }
+
+  /** Går ett steg. Returnerar false om sidan ska scrolla vanligt (före start/efter slut). */
+  function ga(riktning: 1 | -1): boolean {
+    const nu = aktuelltSteg();
+    const mal = nu + riktning;
+    if (mal < -1 || mal > tl.fonster.length - 1) return false;
+    scrollaTill(stegY(mal));
+    return true;
+  }
+
+  // Ett hjulsdrag är alla wheel-händelser utan längre paus än 220 ms (styrplattans tröghet
+  // räknas alltså som samma drag). Varje drag ger högst ett steg.
+  let senasteHjul = 0;
+  let dragHanterat = false;
+  const onWheel = (e: WheelEvent) => {
+    if (e.ctrlKey || !inneISektionen()) return;
+    const tidNu = performance.now();
+    const nyttDrag = tidNu - senasteHjul > 220;
+    senasteHjul = tidNu;
+    if (nyttDrag) dragHanterat = false;
+    if (animerar || dragHanterat) {
+      e.preventDefault();
+      return;
+    }
+    if (Math.abs(e.deltaY) < 3) return;
+    if (ga(e.deltaY > 0 ? 1 : -1)) {
+      e.preventDefault();
+      dragHanterat = true;
+    }
+  };
+
+  let touchY: number | null = null;
+  let touchBeslut: "steg" | "fritt" | null = null;
+  const onTouchStart = (e: TouchEvent) => {
+    touchY = e.touches[0]?.clientY ?? null;
+    touchBeslut = null;
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    if (touchY === null || !inneISektionen()) return;
+    const dy = touchY - (e.touches[0]?.clientY ?? touchY);
+    if (touchBeslut === null && Math.abs(dy) > 6) {
+      const nu = aktuelltSteg();
+      const mal = nu + (dy > 0 ? 1 : -1);
+      touchBeslut = mal < -1 || mal > tl.fonster.length - 1 ? "fritt" : "steg";
+    }
+    if (touchBeslut === "steg" || animerar) e.preventDefault();
+  };
+  const onTouchEnd = (e: TouchEvent) => {
+    if (touchY === null) return;
+    const dy = touchY - (e.changedTouches[0]?.clientY ?? touchY);
+    if (touchBeslut === "steg" && !animerar && Math.abs(dy) > 24) ga(dy > 0 ? 1 : -1);
+    touchY = null;
+    touchBeslut = null;
+  };
+
+  const onKey = (e: KeyboardEvent) => {
+    if (!inneISektionen() || e.altKey || e.metaKey || e.ctrlKey) return;
+    const mal = e.target as HTMLElement | null;
+    if (mal && /^(INPUT|TEXTAREA|SELECT)$/.test(mal.tagName)) return;
+    const ner = ["ArrowDown", "PageDown", " "].includes(e.key) && !e.shiftKey;
+    const upp = ["ArrowUp", "PageUp"].includes(e.key) || (e.key === " " && e.shiftKey);
+    if (!ner && !upp) return;
+    if (animerar || ga(ner ? 1 : -1)) e.preventDefault();
+  };
+
+  window.addEventListener("wheel", onWheel, { passive: false });
+  window.addEventListener("touchstart", onTouchStart, { passive: true });
+  window.addEventListener("touchmove", onTouchMove, { passive: false });
+  window.addEventListener("touchend", onTouchEnd, { passive: true });
+  window.addEventListener("keydown", onKey);
+
   const onScroll = () => {
     lasScroll();
     kor();
@@ -582,8 +716,14 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     stoppad = true;
     cancelAnimationFrame(ram);
     observer.disconnect();
+    cancelAnimationFrame(animRam);
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", storlek);
+    window.removeEventListener("wheel", onWheel);
+    window.removeEventListener("touchstart", onTouchStart);
+    window.removeEventListener("touchmove", onTouchMove);
+    window.removeEventListener("touchend", onTouchEnd);
+    window.removeEventListener("keydown", onKey);
     karta?.remove();
   };
 }

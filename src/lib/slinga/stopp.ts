@@ -68,9 +68,10 @@ export const STOPP: readonly Stopp[] = [
   },
   {
     namn: "Färdig",
-    text: "Efter cirka två timmar rundar vi av i Es Jonquet, fulla av nya intryck och berättelser om Palmas dolda skatter.",
-    lat: 39.5682,
-    lng: 2.6376,
+    text: "Efter cirka två timmar rundar vi av vid Es Baluard, fulla av nya intryck och berättelser om Palmas dolda skatter.",
+    // Plaça de la Porta de Santa Catalina, vid Es Baluard.
+    lat: 39.5701,
+    lng: 2.6397,
     slut: true,
   },
 ];
