@@ -631,9 +631,9 @@ export function startaSlinga(sektion: HTMLElement): () => void {
   // ---------- Mobil: kort stopp vid varje plats ----------
   //
   // På pekskärmar kan ett svep annars flyga förbi hela rutten. När scrollen passerar ett
-  // stopp hålls sidan kvar där en kort stund (HALL_MS) och farten nollas. Nästa svep tar en
+  // stopp hålls sidan kvar där ett ögonblick (HALL_MS, 0,1 s) och farten nollas. Nästa svep tar en
   // vidare som vanligt.
-  const HALL_MS = 850;
+  const HALL_MS = 100;
   const pekskarm = window.matchMedia("(pointer: coarse)");
   let haller = false;
   let hallTimer = 0;
