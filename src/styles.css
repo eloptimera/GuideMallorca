@@ -265,7 +265,13 @@
 .slinga__ton {
   background:
     linear-gradient(to bottom, rgba(239, 229, 211, 0.92), rgba(239, 229, 211, 0) 34%),
-    linear-gradient(to top, rgba(239, 229, 211, 0.85), rgba(239, 229, 211, 0) 30%);
+    linear-gradient(
+      to top,
+      #f7f0e3,
+      rgba(247, 240, 227, 0.82) 5%,
+      rgba(247, 240, 227, 0.35) 13%,
+      rgba(247, 240, 227, 0) 24%
+    );
 }
 
 .slinga__ton {
@@ -281,12 +287,24 @@
       rgba(239, 229, 211, 0.75) 26%,
       rgba(239, 229, 211, 0) 42%
     ),
-    linear-gradient(to top, rgba(239, 229, 211, 0.6), rgba(239, 229, 211, 0) 18%);
+    linear-gradient(
+      to top,
+      #f7f0e3,
+      rgba(247, 240, 227, 0.82) 5%,
+      rgba(247, 240, 227, 0.35) 13%,
+      rgba(247, 240, 227, 0) 24%
+    );
 }
 
 .slinga .maplibregl-ctrl-attrib {
   font-size: 10px;
   background: rgba(239, 229, 211, 0.75);
+}
+
+/* Kartans upphovsrättsrad ska synas ovanför den ljusa tonen. */
+.slinga .maplibregl-control-container {
+  position: relative;
+  z-index: 3;
 }
 
 /* Rubriken: stor och centrerad i början, flyttar till vänster när man börjar scrolla
@@ -477,7 +495,8 @@
   top: auto;
   left: 12px;
   right: 12px;
-  bottom: max(14px, env(safe-area-inset-bottom));
+  /* Ovanför kartans upphovsrättsrad och webbläsarens verktygsfält. */
+  bottom: max(40px, calc(env(safe-area-inset-bottom) + 28px));
   width: auto;
   display: grid;
   grid-template-columns: 112px 1fr;
@@ -604,8 +623,10 @@
 }
 
 /* Från kartan: längre, som när en bild bleknar ut. */
-.slinga + .innehall {
-  --overgang: clamp(110px, 16vh, 170px);
+/* Kartan tonar själv ut i Om Caroline-färgen längst ner (se .slinga__ton), så sektionen
+   efter kartan behöver ingen egen toning som annars hamnar över kortet i kartans nederkant. */
+.slinga + .innehall::before {
+  display: none;
 }
 
 .innehall__inre {
