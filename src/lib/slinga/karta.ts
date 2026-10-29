@@ -21,7 +21,7 @@ const FOLJ_METER = 560;
 /** Under den här bredden följer kartan pluppen och kortet ligger nederst. */
 const SMAL = 760;
 /** Tröghet i sekunder. */
-const TROGHET = 0.14;
+const TROGHET = 0.1;
 
 const BLA = "#1f62ff";
 
@@ -184,9 +184,10 @@ function kurva(punkter: readonly (readonly [number, number])[]) {
  * sträckan mellan stoppen får scroll i proportion till hur lång den är.
  */
 function tidslinje(andelar: readonly number[]) {
-  const intro = 0.035;
-  const stopp = 0.06;
-  const svans = 0.02;
+  const intro = 0.03;
+  // Kort platå vid varje stopp: pluppen står still ett ögonblick, men scrollen gör alltid något.
+  const stopp = 0.022;
+  const svans = 0.015;
   const n = andelar.length;
   const rorelse = 1 - intro - svans - stopp * n;
   const kortast = rorelse * 0.06;
@@ -544,138 +545,112 @@ export function startaSlinga(sektion: HTMLElement): () => void {
   });
   observer.observe(sektion);
 
-  // ---------- Ett scroll = nästa stopp ----------
+  // ---------- Magnet vid stoppen ----------
   //
-  // Inne i sektionen tar ett scrollhjulsdrag, ett svep eller en piltangent en till nästa
-  // (eller föregående) stopp. Efter sista stoppet scrollar sidan vidare som vanligt.
+  // Scrollen är helt fri. När man slutar scrolla och är nära stoppet man är på väg mot, glider
+  // sidan in och lägger sig där. Magneten drar aldrig tillbaka mot stoppet man just lämnade
+  // (bara ett litet överskott korrigeras), så nästa scroll tar en alltid vidare.
 
-  /** Scrollpositionen (sidans y) där steget ligger: -1 = början, 0..n-1 = stoppen. */
-  function stegY(steg: number): number {
+  /** Sidans y-position för varje stopp. */
+  function stoppY(): number[] {
     const top = sektion.getBoundingClientRect().top + window.scrollY;
     const skrollbar = sektion.offsetHeight - window.innerHeight;
-    if (steg < 0) return top;
-    const f = tl.fonster[steg];
-    if (!f) return top + skrollbar;
-    return top + skrollbar * ((f.fran + f.till) / 2);
+    return tl.fonster.map((f) => top + skrollbar * ((f.fran + f.till) / 2));
   }
 
-  /** Det steg som scrollpositionen ligger närmast. */
-  function aktuelltSteg(): number {
-    let bast = -1;
-    let bastD = Math.abs(window.scrollY - stegY(-1));
-    for (let i = 0; i < tl.fonster.length; i++) {
-      const d = Math.abs(window.scrollY - stegY(i));
-      if (d < bastD) {
-        bastD = d;
-        bast = i;
-      }
-    }
-    return bast;
-  }
-
-  /** Är sektionen den som fyller skärmen just nu? */
-  function inneISektionen(): boolean {
-    const rect = sektion.getBoundingClientRect();
-    return rect.top <= 2 && rect.bottom >= window.innerHeight - 2;
-  }
-
-  let animerar = false;
+  let riktning = 0;
+  let forraY = window.scrollY;
+  let viloTimer = 0;
   let animRam = 0;
-  function scrollaTill(y: number) {
+  let egenScroll = false;
+  let fingret = false;
+
+  function avbrytGlid() {
     cancelAnimationFrame(animRam);
+    egenScroll = false;
+  }
+
+  function glidTill(y: number) {
+    avbrytGlid();
     const start = window.scrollY;
     const avst = y - start;
-    if (Math.abs(avst) < 1) return;
+    if (Math.abs(avst) < 2) return;
     if (minskadRorelse.matches) {
       window.scrollTo(0, y);
       return;
     }
-    const tid = clamp(650 + Math.abs(avst) * 0.25, 800, 1500);
+    const tid = clamp(260 + Math.abs(avst) * 0.6, 280, 520);
     const t0 = performance.now();
-    animerar = true;
+    egenScroll = true;
     const steg = (t: number) => {
       const u = clamp((t - t0) / tid, 0, 1);
-      const e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+      const e = 1 - Math.pow(1 - u, 3);
       window.scrollTo(0, start + avst * e);
-      if (u < 1) animRam = requestAnimationFrame(steg);
-      else animerar = false;
+      if (u < 1 && egenScroll) animRam = requestAnimationFrame(steg);
+      else egenScroll = false;
     };
     animRam = requestAnimationFrame(steg);
   }
 
-  /** Går ett steg. Returnerar false om sidan ska scrolla vanligt (före start/efter slut). */
-  function ga(riktning: 1 | -1): boolean {
-    const nu = aktuelltSteg();
-    const mal = nu + riktning;
-    if (mal < -1 || mal > tl.fonster.length - 1) return false;
-    scrollaTill(stegY(mal));
-    return true;
+  function magnet() {
+    if (fingret || egenScroll || !kum.length) return;
+    const y = window.scrollY;
+    const ys = stoppY();
+    const glapp = ys.length > 1 ? (ys[ys.length - 1]! - ys[0]!) / (ys.length - 1) : 0;
+    const fangst = Math.max(60, glapp * 0.32); // så nära stoppet framåt som magneten drar
+    const overskott = Math.max(30, glapp * 0.15); // så långt förbi ett stopp som korrigeras
+    let mal: number | null = null;
+    for (const sy of ys) {
+      const d = sy - y; // > 0: stoppet ligger längre ner
+      const framat = riktning >= 0 ? d : -d;
+      if (framat >= 0 && framat <= fangst) {
+        mal = sy;
+        break;
+      }
+      if (framat < 0 && -framat <= overskott) mal = sy;
+    }
+    if (riktning < 0) {
+      // Uppåt: närmsta stopp ovanför inom fångstavståndet.
+      mal = null;
+      for (let i = ys.length - 1; i >= 0; i--) {
+        const d = y - ys[i]!;
+        if (d >= 0 && d <= fangst) {
+          mal = ys[i]!;
+          break;
+        }
+        if (d < 0 && -d <= overskott) mal = ys[i]!;
+      }
+    }
+    if (mal !== null) glidTill(mal);
   }
 
-  // Ett hjulsdrag är alla wheel-händelser utan längre paus än 220 ms (styrplattans tröghet
-  // räknas alltså som samma drag). Varje drag ger högst ett steg.
-  let senasteHjul = 0;
-  let dragHanterat = false;
-  const onWheel = (e: WheelEvent) => {
-    if (e.ctrlKey || !inneISektionen()) return;
-    const tidNu = performance.now();
-    const nyttDrag = tidNu - senasteHjul > 220;
-    senasteHjul = tidNu;
-    if (nyttDrag) dragHanterat = false;
-    if (animerar || dragHanterat) {
-      e.preventDefault();
-      return;
-    }
-    if (Math.abs(e.deltaY) < 3) return;
-    if (ga(e.deltaY > 0 ? 1 : -1)) {
-      e.preventDefault();
-      dragHanterat = true;
-    }
+  const avbryt = () => avbrytGlid();
+  const onTouchStart = () => {
+    fingret = true;
+    avbrytGlid();
   };
-
-  let touchY: number | null = null;
-  let touchBeslut: "steg" | "fritt" | null = null;
-  const onTouchStart = (e: TouchEvent) => {
-    touchY = e.touches[0]?.clientY ?? null;
-    touchBeslut = null;
+  const onTouchEnd = () => {
+    fingret = false;
   };
-  const onTouchMove = (e: TouchEvent) => {
-    if (touchY === null || !inneISektionen()) return;
-    const dy = touchY - (e.touches[0]?.clientY ?? touchY);
-    if (touchBeslut === null && Math.abs(dy) > 6) {
-      const nu = aktuelltSteg();
-      const mal = nu + (dy > 0 ? 1 : -1);
-      touchBeslut = mal < -1 || mal > tl.fonster.length - 1 ? "fritt" : "steg";
-    }
-    if (touchBeslut === "steg" || animerar) e.preventDefault();
-  };
-  const onTouchEnd = (e: TouchEvent) => {
-    if (touchY === null) return;
-    const dy = touchY - (e.changedTouches[0]?.clientY ?? touchY);
-    if (touchBeslut === "steg" && !animerar && Math.abs(dy) > 24) ga(dy > 0 ? 1 : -1);
-    touchY = null;
-    touchBeslut = null;
-  };
-
-  const onKey = (e: KeyboardEvent) => {
-    if (!inneISektionen() || e.altKey || e.metaKey || e.ctrlKey) return;
-    const mal = e.target as HTMLElement | null;
-    if (mal && /^(INPUT|TEXTAREA|SELECT)$/.test(mal.tagName)) return;
-    const ner = ["ArrowDown", "PageDown", " "].includes(e.key) && !e.shiftKey;
-    const upp = ["ArrowUp", "PageUp"].includes(e.key) || (e.key === " " && e.shiftKey);
-    if (!ner && !upp) return;
-    if (animerar || ga(ner ? 1 : -1)) e.preventDefault();
-  };
-
-  window.addEventListener("wheel", onWheel, { passive: false });
+  window.addEventListener("wheel", avbryt, { passive: true });
   window.addEventListener("touchstart", onTouchStart, { passive: true });
-  window.addEventListener("touchmove", onTouchMove, { passive: false });
   window.addEventListener("touchend", onTouchEnd, { passive: true });
-  window.addEventListener("keydown", onKey);
+  window.addEventListener("keydown", avbryt);
 
   const onScroll = () => {
     lasScroll();
     kor();
+    const y = window.scrollY;
+    if (!egenScroll && Math.abs(y - forraY) > 0.5) riktning = y > forraY ? 1 : -1;
+    forraY = y;
+    // Magneten verkar bara inne i rutten, när scrollen har stannat.
+    clearTimeout(viloTimer);
+    if (!egenScroll) {
+      const rect = sektion.getBoundingClientRect();
+      if (rect.top <= 1 && rect.bottom >= window.innerHeight - 1) {
+        viloTimer = window.setTimeout(magnet, 140);
+      }
+    }
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", storlek);
@@ -716,14 +691,14 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     stoppad = true;
     cancelAnimationFrame(ram);
     observer.disconnect();
-    cancelAnimationFrame(animRam);
+    avbrytGlid();
+    clearTimeout(viloTimer);
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", storlek);
-    window.removeEventListener("wheel", onWheel);
+    window.removeEventListener("wheel", avbryt);
     window.removeEventListener("touchstart", onTouchStart);
-    window.removeEventListener("touchmove", onTouchMove);
     window.removeEventListener("touchend", onTouchEnd);
-    window.removeEventListener("keydown", onKey);
+    window.removeEventListener("keydown", avbryt);
     karta?.remove();
   };
 }
