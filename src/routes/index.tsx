@@ -147,6 +147,17 @@ function Start() {
         <p className="sidfot__kalla">
           Kartdata © OpenStreetMap-bidragsgivare · OpenMapTiles · OpenFreeMap
         </p>
+        <a
+          className="sidfot__tab"
+          href="https://www.treatlymarketing.se"
+          target="_blank"
+          rel="noopener"
+          aria-label="Made by Tab Marketing"
+        >
+          <span>Made by</span>
+          <img src="/tab-marketing.png" alt="Tab" width={108} height={72} loading="lazy" />
+          <span>Marketing</span>
+        </a>
       </footer>
     </>
   );
