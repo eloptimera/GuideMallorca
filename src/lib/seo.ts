@@ -4,7 +4,8 @@
 import { absolut, FORETAG, SAJT_URL } from "@/lib/foretag";
 
 /** Standardbilden när en länk delas. Sidor med egen bild skickar `bild` till sidhuvud(). */
-export const DELNINGSBILD = { src: "/og.jpg", bredd: 1200, hojd: 630 } as const;
+// ?v= tvingar meddelandeappar och sociala medier att hämta bilden på nytt. Höj vid nästa byte.
+export const DELNINGSBILD = { src: "/og.jpg?v=2", bredd: 1200, hojd: 630 } as const;
 
 type Schema = Record<string, unknown>;
 
@@ -45,7 +46,9 @@ export function sidhuvud({
       { property: "og:image:height", content: String(DELNINGSBILD.hojd) },
       {
         property: "og:image:alt",
-        content: bild?.alt ?? "Palma de Mallorca från ovan",
+        content:
+          bild?.alt ??
+          "Guidad rundvandring i Palma med Caroline Palmstierna – karta över rutten genom gamla stan",
       },
     ],
     links: [{ rel: "canonical", href: url }],

@@ -628,6 +628,42 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     if (mal !== null) glidTill(mal);
   }
 
+  // ---------- Mobil: kort stopp vid varje plats ----------
+  //
+  // På pekskärmar kan ett svep annars flyga förbi hela rutten. När scrollen passerar ett
+  // stopp hålls sidan kvar där en kort stund (HALL_MS) och farten nollas. Nästa svep tar en
+  // vidare som vanligt.
+  const HALL_MS = 850;
+  const pekskarm = window.matchMedia("(pointer: coarse)");
+  let haller = false;
+  let hallTimer = 0;
+  const rot = document.documentElement;
+
+  function hallKvar(y: number) {
+    haller = true;
+    avbrytGlid();
+    clearTimeout(viloTimer);
+    // overflow: hidden stoppar den inbyggda svepfarten i både Safari och Chrome.
+    rot.style.overflow = "hidden";
+    window.scrollTo(0, y);
+    forraY = y;
+    clearTimeout(hallTimer);
+    hallTimer = window.setTimeout(() => {
+      rot.style.overflow = "";
+      haller = false;
+    }, HALL_MS);
+  }
+
+  /** Har scrollen just passerat (eller nått) ett stopp i färdriktningen? */
+  function passeratStopp(fran: number, till: number): number | null {
+    if (Math.abs(till - fran) < 0.5) return null;
+    for (const sy of stoppY()) {
+      if (till > fran && fran < sy - 0.5 && till >= sy - 0.5) return sy;
+      if (till < fran && fran > sy + 0.5 && till <= sy + 0.5) return sy;
+    }
+    return null;
+  }
+
   const avbryt = () => avbrytGlid();
   const onTouchStart = () => {
     fingret = true;
@@ -645,6 +681,14 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     lasScroll();
     kor();
     const y = window.scrollY;
+    if (haller) return;
+    if (pekskarm.matches && !egenScroll && kum.length) {
+      const sy = passeratStopp(forraY, y);
+      if (sy !== null) {
+        hallKvar(sy);
+        return;
+      }
+    }
     if (!egenScroll && Math.abs(y - forraY) > 0.5) riktning = y > forraY ? 1 : -1;
     forraY = y;
     // Magneten verkar bara inne i rutten, när scrollen har stannat.
@@ -697,6 +741,8 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     observer.disconnect();
     avbrytGlid();
     clearTimeout(viloTimer);
+    clearTimeout(hallTimer);
+    rot.style.overflow = "";
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", storlek);
     window.removeEventListener("wheel", avbryt);
