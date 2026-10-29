@@ -1,0 +1,120 @@
+// Landningssidan /hemsida-pris – vad en hemsida kostar hos TAB.
+// Varje belopp kommer från priser.ts och räknas ut här, så att sidan aldrig visar ett pris som
+// inte står i prislistan. Skild från /hemsida-foretag (tjänsten).
+//
+// TODO(TAB): vid överlämning betalar kunden hosting själv. En kommersiell sajt på Vercel kräver
+// Pro-planen (Hobby är bara för icke-kommersiellt bruk) – bestäm vad ni rekommenderar kunden.
+import {
+  AGANDE_TEXT,
+  ANDRINGAR_TEXT,
+  BETALNING_TEXT,
+  BINDNING_TEXT,
+  DOMAN_TEXT,
+  kr,
+  MOMS_TEXT,
+  PRIS,
+  type Fraga,
+} from "@/lib/priser";
+
+export const HEMSIDA_PRIS = {
+  sokvag: "/hemsida-pris",
+  titel: "Hemsida pris",
+  etikett: "Pris · Hemsida",
+  seoTitel: "Vad kostar en hemsida för företag? Våra priser",
+  seoBeskrivning: `Vad kostar en hemsida till företag? Hos TAB: landningssida ${kr(PRIS.landningssida)}, företagshemsida ${kr(PRIS.foretagshemsida)}. Drift från ${kr(PRIS.essential)}/mån eller ta över själva.`,
+  kortText:
+    "Vad en företagshemsida kostar hos oss, vad som ingår, löpande kostnader och vad ni betalar totalt första året.",
+  publicerad: "2026-10-19",
+  uppdaterad: "2026-10-28",
+} as const;
+
+/** Årskostnad hos oss: bygget + tolv månader drift. Moms ingår inte. */
+export const ARSKOSTNAD = [
+  {
+    namn: "Landningssida, ni tar över",
+    start: PRIS.landningssida,
+    perManad: 0,
+    beskrivning: "Ni får koden och kontona. Hosting och domän betalar ni direkt till leverantören.",
+  },
+  {
+    namn: "Företagshemsida, ni tar över",
+    start: PRIS.foretagshemsida,
+    perManad: 0,
+    beskrivning: "Upp till 5 sidor. Hosting och domän betalar ni själva; ändringar via klippkort.",
+  },
+  {
+    namn: "Företagshemsida + Essential",
+    start: PRIS.foretagshemsida,
+    perManad: PRIS.essential,
+    beskrivning: "Vi sköter hosting, säkerhet och backup. Domänen betalar ni själva.",
+  },
+  {
+    namn: "Företagshemsida + Total",
+    start: PRIS.foretagshemsida,
+    perManad: PRIS.total,
+    beskrivning: "Hosting, domän och upp till en timme ändringar varje månad.",
+  },
+].map((r) => ({ ...r, forstaAret: r.start + 12 * r.perManad, darefter: 12 * r.perManad }));
+
+export const HEMSIDA_PRIS_FRAGOR: readonly Fraga[] = [
+  {
+    fraga: "Vad kostar en hemsida till företag?",
+    svar: `Hos oss kostar en landningssida ${kr(PRIS.landningssida)} och en företagshemsida med upp till 5 sidor ${kr(PRIS.foretagshemsida)}. Mer avancerade sajter – bokning, flera språk, inloggning eller fler än 10 sidor – får offert från ${kr(PRIS.webbSkraddarsytt)}. ${MOMS_TEXT}`,
+  },
+  {
+    fraga: "Vad kostar det att bygga en professionell hemsida?",
+    svar: `En företagshemsida kostar ${kr(PRIS.foretagshemsida)}: design, texter utifrån ert underlag, kontakt- eller offertformulär, SEO-grund, Search Console och en ändringsrunda innan lansering. Extra sidor kostar ${kr(PRIS.extraSida)} styck.`,
+  },
+  {
+    fraga: "Vad kostar en hemsida per månad?",
+    svar: `Det väljer ni. Tar ni över sajten betalar ni ingenting till oss per månad – bara hosting och domän till leverantören. Vill ni att vi sköter driften kostar Essential ${kr(PRIS.essential)} per månad och Total, med domän och ändringar, ${kr(PRIS.total)} per månad.`,
+  },
+  {
+    fraga: "Är det ett engångspris eller en prenumeration?",
+    svar: `Bygget är ett engångspris. Efter lansering väljer ni: ta över allt utan månadskostnad till oss, eller drift från ${kr(PRIS.essential)} per månad. ${BINDNING_TEXT}`,
+  },
+  {
+    fraga: "Ingår domän och hosting i priset?",
+    svar: `Hosting ingår i både Essential och Total, och domänen ingår i Total. ${DOMAN_TEXT} Tar ni över sajten betalar ni båda direkt till leverantören. Domänen ligger alltid i ert namn.`,
+  },
+  {
+    fraga: "Ingår SEO i hemsidans pris?",
+    svar: `En SEO-grund ingår: sidstruktur, rubriker, sidtitlar, beskrivningar och mobilanpassning. Löpande sökmotoroptimering köps i Synlighet – en grundoptimering behövs inte om vi har byggt sajten, och löpande SEO kostar från ${kr(PRIS.synlighetBas)} per månad.`,
+  },
+  {
+    fraga: "Ingår bilder?",
+    svar: `Nej. Har ni egna bilder använder vi dem. Behöver ni nya tar vi fram dem i Studio – till exempel 10 bilder för ${kr(PRIS.bilder10)}.`,
+  },
+  {
+    fraga: "Kan vi uppdatera hemsidan efter lansering?",
+    svar: `Ja. ${ANDRINGAR_TEXT} Vill ni ändra texterna själva lägger vi till ett redigeringsverktyg för ${kr(PRIS.cms)}.`,
+  },
+  {
+    fraga: "Vem äger hemsidan när den är klar?",
+    svar: `Ni. ${AGANDE_TEXT} Ligger sajten i vår drift får ni flytta den när ni vill – ni får koden och en timmes flytthjälp utan kostnad.`,
+  },
+  {
+    fraga: "Finns det bindningstid?",
+    svar: `Nej. Bygget är ett engångsköp, och för drift gäller: ${BINDNING_TEXT}`,
+  },
+  {
+    fraga: "Hur betalar vi?",
+    svar: `${BETALNING_TEXT} Offerten gäller i 30 dagar.`,
+  },
+  {
+    fraga: "Vad kostar det att modernisera en hemsida vi redan har?",
+    svar: `Modernisering är alltid offert, från ${kr(PRIS.modernisering)}, beroende på sajtens skick och plattform. Ibland är en ny företagshemsida för ${kr(PRIS.foretagshemsida)} det bättre köpet – det säger vi i så fall.`,
+  },
+  {
+    fraga: "Bygger ni webbshoppar?",
+    svar: "Nej, inte i dag. Vi bygger företagshemsidor och landningssidor.",
+  },
+  {
+    fraga: "Kan vi få en hemsida till fast pris?",
+    svar: "Ja. Landningssida och företagshemsida har fasta priser, och mer avancerade sajter får en offert med fast pris. Vi tar aldrig betalt per timme för bygget.",
+  },
+  {
+    fraga: "Hur beställer vi en hemsida?",
+    svar: "Boka en gratis genomgång på 20–25 minuter. Ni får ett skriftligt förslag med fast pris, och när ni godkänt det – ett mejl räcker – sätter vi igång.",
+  },
+];
