@@ -1,44 +1,41 @@
 /*
- * Stadsslingan på startsidan: en blå plupp som springer runt i Palmas gamla stad när man
- * scrollar och lämnar en linje efter sig.
+ * Stadsvandringen på startsidan: en blå plupp som går Carolines rutt genom Palma när man
+ * scrollar och drar en linje efter sig. Vid varje stopp stannar den och kortet med bild och
+ * text visas.
  *
  * - Kartan är riktig (OpenStreetMap via OpenFreeMap) med egen, varm stil och laddas i
  *   besökarens webbläsare.
- * - Slingan räknas fram ur kartans egna gator (se graf.ts), så linjen följer gator som finns.
- *   Den är dekor – en promenad genom gränderna, inte en exakt guidningsrutt.
- * - Pluppen stannar vid kapitlen i KAPITEL, och kapitlets text tonar fram.
+ * - Rutten räknas fram ur kartans egna gator (se graf.ts): den kortaste gångvägen mellan
+ *   stoppen i STOPP, så linjen följer gator som finns.
  */
 import type { Map as Karta, StyleSpecification } from "maplibre-gl";
-import { byggGraf, gaSlinga, kumulativ, punktVid, rundaHorn, type Gata, type P } from "./graf";
+import { byggGraf, kumulativ, punktVid, ruttGenom, rundaHorn, type Gata, type P } from "./graf";
+import { STOPP } from "./stopp";
 
 // ---------- Inställningar ----------
 
-/** Mitten av slingan: gamla stan i Palma. */
-const MITT = { lng: 2.6503, lat: 39.5703 };
-/** Hur långt från mitten (meter) slingan håller sig. */
-const RADIE = 520;
-/** Slingans längd i meter. */
-const LANGD = 3600;
+/** Marginal runt stoppen (meter) som ska synas och laddas. */
+const MARGINAL = 170;
 /** Ungefär hur många meter som ska synas när kartan följer pluppen (smala skärmar). */
-const FOLJ_METER = 620;
+const FOLJ_METER = 560;
+/** Under den här bredden följer kartan pluppen och kortet ligger nederst. */
+const SMAL = 760;
 /** Tröghet i sekunder. */
 const TROGHET = 0.14;
 
 const BLA = "#1f62ff";
 
-/** Gatuklasser i OpenMapTiles som är för stora för en promenad i gränderna. */
-const STORA_GATOR = new Set([
-  "motorway",
-  "trunk",
-  "primary",
-  "rail",
-  "transit",
-  "ferry",
-  "aerialway",
-  "busway",
-  "raceway",
-]);
-const SMA_GATOR = new Set(["minor", "path", "service", "track"]);
+/** Kostnad per gatuklass i OpenMapTiles. Saknas klassen går rutten inte där. */
+const GATUVIKT: Record<string, number> = {
+  path: 0.95,
+  minor: 1,
+  service: 1,
+  track: 1.05,
+  tertiary: 1.1,
+  secondary: 1.15,
+  primary: 1.2,
+  trunk: 1.35,
+};
 
 // ---------- Kartstil ----------
 
@@ -111,6 +108,12 @@ export const KARTSTIL: StyleSpecification = {
 
 // ---------- Koordinater ----------
 
+const latMin = Math.min(...STOPP.map((s) => s.lat));
+const latMax = Math.max(...STOPP.map((s) => s.lat));
+const lngMin = Math.min(...STOPP.map((s) => s.lng));
+const lngMax = Math.max(...STOPP.map((s) => s.lng));
+const MITT = { lng: (lngMin + lngMax) / 2, lat: (latMin + latMax) / 2 };
+
 const COS = Math.cos((MITT.lat * Math.PI) / 180);
 const M_PER_GRAD_LAT = 110_574;
 const M_PER_GRAD_LNG = 111_320 * COS;
@@ -124,11 +127,19 @@ const tillGrader = (p: P): [number, number] => [
   MITT.lat - p.y / M_PER_GRAD_LAT,
 ];
 
-/** Kartområdet som ska vara laddat: slingans cirkel plus lite marginal. */
-function omrade(): [[number, number], [number, number]] {
-  const r = RADIE * 1.12;
-  return [tillGrader({ x: -r, y: r }), tillGrader({ x: r, y: -r })];
+/** Området runt alla stopp, i meter. */
+const OMR = (() => {
+  const a = tillMeter(lngMin, latMax);
+  const b = tillMeter(lngMax, latMin);
+  return { x0: a.x - MARGINAL, y0: a.y - MARGINAL, x1: b.x + MARGINAL, y1: b.y + MARGINAL };
+})();
+
+function omradeGrader(): [[number, number], [number, number]] {
+  return [tillGrader({ x: OMR.x0, y: OMR.y1 }), tillGrader({ x: OMR.x1, y: OMR.y0 })];
 }
+
+/** Meter per pixel vid en viss zoom (512 px-rutor i MapLibre). */
+const meterPerPixel = (zoom: number) => (40_075_016.686 * COS) / (512 * 2 ** zoom);
 
 // ---------- Hjälp ----------
 
@@ -144,7 +155,7 @@ function kurva(punkter: readonly (readonly [number, number])[]) {
   const xs = punkter.map((p) => p[0]);
   const ys = punkter.map((p) => p[1]);
   const d: number[] = [];
-  for (let i = 0; i < n - 1; i++) d.push((ys[i + 1]! - ys[i]!) / (xs[i + 1]! - xs[i]!));
+  for (let i = 0; i < n - 1; i++) d.push((ys[i + 1]! - ys[i]!) / (xs[i + 1]! - xs[i]! || 1));
   const m = xs.map((_, i) => {
     if (i === 0) return d[0]!;
     if (i === n - 1) return d[n - 2]!;
@@ -155,7 +166,7 @@ function kurva(punkter: readonly (readonly [number, number])[]) {
     if (x >= xs[n - 1]!) return ys[n - 1]!;
     let i = 0;
     while (x > xs[i + 1]!) i++;
-    const h = xs[i + 1]! - xs[i]!;
+    const h = xs[i + 1]! - xs[i]! || 1;
     const t = (x - xs[i]!) / h;
     const t2 = t * t;
     const t3 = t2 * t;
@@ -168,101 +179,123 @@ function kurva(punkter: readonly (readonly [number, number])[]) {
   };
 }
 
-/** Scroll -> hur stor del av slingan som är gången, med stopp vid varje kapitel. */
-function tidslinje(antalKapitel: number) {
-  const borjan = 0.05;
-  const slut = 0.93;
-  const stopp = 0.05;
-  const kapitel = Array.from({ length: antalKapitel }, (_, i) => {
-    const mitt = borjan + ((i + 1) * (slut - borjan)) / (antalKapitel + 1);
-    return { fran: mitt - stopp / 2, till: mitt + stopp / 2, andel: (i + 1) / (antalKapitel + 1) };
-  });
-  const f = kurva([
-    [0, 0],
-    [borjan, 0],
-    ...kapitel.flatMap((k) => [[k.fran, k.andel] as const, [k.till, k.andel] as const]),
-    [slut, 1],
-    [1, 1],
-  ]);
-  return { f, kapitel, slut };
+/**
+ * Scroll (0..1) -> andel av rutten. Varje stopp får ett lika långt stopp i scrollen, och
+ * sträckan mellan stoppen får scroll i proportion till hur lång den är.
+ */
+function tidslinje(andelar: readonly number[]) {
+  const intro = 0.035;
+  const stopp = 0.06;
+  const svans = 0.02;
+  const n = andelar.length;
+  const rorelse = 1 - intro - svans - stopp * n;
+  const kortast = rorelse * 0.06;
+  const strackor = andelar.slice(1).map((a, i) => a - andelar[i]!);
+  const summa = strackor.reduce((s, x) => s + Math.max(x, 0.0001), 0);
+  // Varje sträcka får minst en liten del, resten fördelas efter längd.
+  const andel = strackor.map(
+    (x) => kortast + (rorelse - kortast * strackor.length) * (Math.max(x, 0.0001) / summa),
+  );
+
+  const nyckel: [number, number][] = [[0, andelar[0] ?? 0]];
+  const fonster: { fran: number; till: number }[] = [];
+  let t = intro;
+  for (let i = 0; i < n; i++) {
+    const a = andelar[i]!;
+    nyckel.push([t, a]);
+    fonster.push({ fran: t, till: t + stopp });
+    t += stopp;
+    nyckel.push([t, a]);
+    if (i < n - 1) t += andel[i]!;
+  }
+  nyckel.push([1, andelar[n - 1] ?? 1]);
+  return { f: kurva(nyckel), fonster, intro };
 }
 
-/** Gatorna i de laddade kartrutorna, i meter. */
+/** Gatorna i de laddade kartrutorna, i meter, med vikt efter gatuklass. */
 function hamtaGator(karta: Karta): Gata[] {
   const gator: Gata[] = [];
   for (const f of karta.querySourceFeatures("omt", { sourceLayer: "transportation" })) {
-    const klass = String(f.properties?.["class"] ?? "");
-    if (STORA_GATOR.has(klass)) continue;
+    const vikt = GATUVIKT[String(f.properties?.["class"] ?? "")];
+    if (vikt === undefined) continue;
     if (f.properties?.["brunnel"] === "tunnel") continue;
-    const liten = SMA_GATOR.has(klass);
     const g = f.geometry;
     const linjer: number[][][] =
-      g.type === "LineString" ? [g.coordinates] : g.type === "MultiLineString" ? g.coordinates : [];
+      g.type === "LineString"
+        ? [g.coordinates]
+        : g.type === "MultiLineString"
+          ? g.coordinates
+          : g.type === "Polygon"
+            ? g.coordinates // gångytor (torg): gå längs kanten
+            : g.type === "MultiPolygon"
+              ? g.coordinates.flat()
+              : [];
     for (const linje of linjer) {
-      gator.push({ punkter: linje.map((c) => tillMeter(c[0] ?? 0, c[1] ?? 0)), liten });
+      gator.push({ punkter: linje.map((c) => tillMeter(c[0] ?? 0, c[1] ?? 0)), vikt });
     }
   }
   return gator;
 }
 
-/** Testgator (bara i utvecklingsläge, ?testgator): ett snett rutnät runt mitten. */
+/** Testgator (bara i utvecklingsläge, ?testgator): ett snett rutnät över området. */
 function testGator(): Gata[] {
   const gator: Gata[] = [];
-  const v = 0.35;
+  const v = 0.3;
   const rot = (x: number, y: number): P => ({
     x: x * Math.cos(v) - y * Math.sin(v),
     y: x * Math.sin(v) + y * Math.cos(v),
   });
-  for (let i = -9; i <= 9; i++) {
-    const k = i * 62 + (i % 3) * 9;
-    gator.push({
-      punkter: [rot(-620, k), rot(-200, k + 14), rot(620, k - 10)],
-      liten: i % 4 !== 0,
-    });
-    gator.push({ punkter: [rot(k, -620), rot(k - 12, 0), rot(k + 8, 620)], liten: i % 4 !== 0 });
+  for (let i = -18; i <= 18; i++) {
+    const k = i * 58 + (i % 3) * 8;
+    gator.push({ punkter: [rot(-1200, k), rot(-300, k + 12), rot(1200, k - 9)], vikt: 1 });
+    gator.push({ punkter: [rot(k, -1200), rot(k - 10, 0), rot(k + 7, 1200)], vikt: 1 });
   }
   return gator;
 }
 
+/** Väntar tills kartan har laddat allt som syns (eller max 8 s). */
+const vantaPaKartan = (karta: Karta) =>
+  new Promise<void>((resolve) => {
+    const klar = () => {
+      clearTimeout(t);
+      resolve();
+    };
+    const t = setTimeout(() => {
+      karta.off("idle", klar);
+      resolve();
+    }, 8000);
+    karta.once("idle", klar);
+    karta.triggerRepaint();
+  });
+
 // ---------- Start ----------
 
-type Element = {
-  stage: HTMLElement;
-  karta: HTMLElement;
-  canvas: HTMLCanvasElement;
-  kapitel: HTMLElement[];
-};
-
 /**
- * Startar slingan i `sektion` (den höga scrollsektionen). Returnerar en funktion som stoppar
- * den och städar upp.
+ * Startar vandringen i `sektion` (den höga scrollsektionen). Returnerar en funktion som
+ * stoppar den och städar upp.
  */
 export function startaSlinga(sektion: HTMLElement): () => void {
-  const el: Element | null = (() => {
-    const stage = sektion.querySelector<HTMLElement>(".slinga__scen");
-    const karta = sektion.querySelector<HTMLElement>(".slinga__karta");
-    const canvas = sektion.querySelector<HTMLCanvasElement>(".slinga__spar");
-    if (!stage || !karta || !canvas) return null;
-    const kapitel = Array.from(sektion.querySelectorAll<HTMLElement>(".slinga__kapitel"));
-    return { stage, karta, canvas, kapitel };
-  })();
-  const ctx = el?.canvas.getContext("2d");
-  if (!el || !ctx) return () => {};
+  const scen = sektion.querySelector<HTMLElement>(".slinga__scen");
+  const kartEl = sektion.querySelector<HTMLElement>(".slinga__karta");
+  const canvas = sektion.querySelector<HTMLCanvasElement>(".slinga__spar");
+  const kort = Array.from(sektion.querySelectorAll<HTMLElement>(".slinga__kort"));
+  const ctx = canvas?.getContext("2d");
+  if (!scen || !kartEl || !canvas || !ctx) return () => {};
 
   const minskadRorelse = window.matchMedia("(prefers-reduced-motion: reduce)");
   const test = import.meta.env.DEV && new URLSearchParams(location.search).has("testgator");
-  const tl = tidslinje(el.kapitel.length);
 
   let karta: Karta | null = null;
-  let vag: [number, number][] = []; // lng/lat
-  let vagMeter: P[] = [];
+  let vag: P[] = []; // meter
   let kum: number[] = [];
+  let stoppPos: P[] = []; // där pluppen stannar vid varje stopp (meter)
+  let tl = tidslinje(STOPP.map((_, i) => i / (STOPP.length - 1)));
   let vw = 1;
   let vh = 1;
   let dpr = 1;
+  let smal = false;
   let grundZoom = 15;
   let foljZoom = 15;
-  let folj = 0; // 0 = stilla karta, 1 = följer pluppen helt
   let mal = 0;
   let nu = 0;
   let senast = 0;
@@ -276,83 +309,149 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     mal = skrollbar > 0 ? clamp(-rect.top / skrollbar, 0, 1) : 0;
   }
 
+  function kamera() {
+    if (!karta) return;
+    karta.fitBounds(omradeGrader(), {
+      padding: smal
+        ? 0
+        : { top: Math.min(140, vh * 0.15), bottom: 40, left: 60, right: Math.min(380, vw * 0.25) },
+      duration: 0,
+    });
+    grundZoom = karta.getZoom();
+    foljZoom = Math.log2((40_075_016.686 * COS) / (512 * (FOLJ_METER / Math.min(vw, vh))));
+  }
+
   function storlek() {
-    const rect = el!.stage.getBoundingClientRect();
+    const rect = scen!.getBoundingClientRect();
     vw = Math.max(1, Math.round(rect.width));
     vh = Math.max(1, Math.round(rect.height));
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    el!.canvas.width = Math.round(vw * dpr);
-    el!.canvas.height = Math.round(vh * dpr);
+    smal = vw < SMAL;
+    sektion.toggleAttribute("data-smal", smal);
+    canvas!.width = Math.round(vw * dpr);
+    canvas!.height = Math.round(vh * dpr);
     if (karta) {
       karta.resize();
-      karta.fitBounds(omrade(), { padding: 0, duration: 0 });
-      grundZoom = karta.getZoom();
-      // Zoom där FOLJ_METER ryms över skärmens kortaste sida (512 px-rutor i MapLibre).
-      const mpp = FOLJ_METER / Math.min(vw, vh);
-      foljZoom = Math.log2((40_075_016.686 * COS) / (512 * mpp));
-      folj = foljZoom > grundZoom + 0.3 ? 1 : 0.18;
-      if (folj < 1) foljZoom = grundZoom;
+      kamera();
     }
+    rita(performance.now());
   }
 
-  function byggSlinga() {
-    if (!karta && !test) return;
-    const gator = test ? testGator() : hamtaGator(karta!);
+  function byggRutt(gator: Gata[]) {
     const graf = byggGraf(gator);
-    const punkter = rundaHorn(gaSlinga(graf, { mitt: { x: 0, y: 0 }, radie: RADIE, langd: LANGD }));
-    if (punkter.length < 2) return;
-    vagMeter = punkter;
-    vag = punkter.map(tillGrader);
-    kum = kumulativ(punkter);
+    const stopp = STOPP.map((s) => tillMeter(s.lng, s.lat));
+    const r = ruttGenom(graf, stopp);
+    if (r.punkter.length < 2) return;
+    // Rundade hörn för en mjukare rörelse.
+    vag = rundaHorn(r.punkter);
+    kum = kumulativ(vag);
+    const total = kum[kum.length - 1] || 1;
+    // Var längs den rundade linjen varje stopp hamnar: närmaste punkt, sökt framåt i ordning.
+    let fran = 0;
+    const andelar = r.stoppIndex.map((idx) => {
+      const mal = r.punkter[idx]!;
+      let bast = fran;
+      let bastD = Infinity;
+      for (let j = fran; j < vag.length; j++) {
+        const d = Math.hypot(vag[j]!.x - mal.x, vag[j]!.y - mal.y);
+        if (d < bastD) {
+          bastD = d;
+          bast = j;
+        }
+        if (d > bastD + 400) break; // har passerat stoppet
+      }
+      fran = bast;
+      return (kum[bast] ?? 0) / total;
+    });
+    stoppPos = andelar.map((a) => punktVid(vag, kum, a * total).p);
+    tl = tidslinje(andelar);
     sektion.dataset["klar"] = "";
   }
 
-  function projicera(lngLat: [number, number]): P {
-    if (karta) {
-      const p = karta.project(lngLat);
-      return { x: p.x, y: p.y };
+  /** Laddar kartrutor över hela området (flera vyer på små skärmar) och samlar gatorna. */
+  async function samlaGator(k: Karta): Promise<Gata[]> {
+    k.fitBounds(omradeGrader(), { padding: 0, duration: 0 });
+    await vantaPaKartan(k);
+    // Fullt detaljerade gator finns i nivå 14. Täcker en vy hela området där räcker den.
+    if (k.getZoom() >= 14.05) return hamtaGator(k);
+    const zoom = 14.2;
+    const bredd = vw * meterPerPixel(zoom) * 0.9;
+    const hojd = vh * meterPerPixel(zoom) * 0.9;
+    const nx = Math.max(1, Math.ceil((OMR.x1 - OMR.x0) / bredd));
+    const ny = Math.max(1, Math.ceil((OMR.y1 - OMR.y0) / hojd));
+    const gator: Gata[] = [];
+    for (let ix = 0; ix < nx; ix++) {
+      for (let iy = 0; iy < ny; iy++) {
+        if (stoppad) return gator;
+        const c = {
+          x: OMR.x0 + ((ix + 0.5) * (OMR.x1 - OMR.x0)) / nx,
+          y: OMR.y0 + ((iy + 0.5) * (OMR.y1 - OMR.y0)) / ny,
+        };
+        k.jumpTo({ center: tillGrader(c), zoom });
+        await vantaPaKartan(k);
+        gator.push(...hamtaGator(k));
+      }
     }
-    // Utan karta (testläge utan nät): enkel projektion runt mitten.
-    const m = tillMeter(lngLat[0], lngLat[1]);
-    const skala = Math.min(vw, vh) / (RADIE * 2.3);
-    return { x: vw / 2 + m.x * skala, y: vh / 2 + m.y * skala };
+    return gator;
+  }
+
+  function projicera(p: P): P {
+    if (karta) {
+      const q = karta.project(tillGrader(p));
+      return { x: q.x, y: q.y };
+    }
+    // Utan karta (testläge): enkel projektion av området.
+    const s = Math.min(vw / (OMR.x1 - OMR.x0), vh / (OMR.y1 - OMR.y0)) * 0.9;
+    return { x: vw / 2 + p.x * s, y: vh / 2 + p.y * s };
   }
 
   function rita(tid: number) {
     const p = nu;
     const total = kum[kum.length - 1] ?? 0;
     const s = tl.f(p) * total;
+    const plupp = total > 0 ? punktVid(vag, kum, s) : null;
 
-    // Kapitel och rubrik.
-    sektion.style.setProperty("--hero-o", (1 - smoothstep(0, 0.045, p)).toFixed(3));
-    sektion.style.setProperty("--slut-o", smoothstep(tl.slut - 0.02, tl.slut + 0.04, p).toFixed(3));
-    tl.kapitel.forEach((k, i) => {
-      const o = smoothstep(k.fran - 0.035, k.fran, p) * (1 - smoothstep(k.till, k.till + 0.035, p));
-      const e = el!.kapitel[i];
-      if (!e) return;
-      e.style.opacity = o.toFixed(3);
-      e.style.transform = `translateY(${((1 - o) * 14).toFixed(1)}px)`;
-      e.style.visibility = o > 0.001 ? "visible" : "hidden";
-    });
+    sektion.style.setProperty("--hero-o", (1 - smoothstep(0, tl.intro, p)).toFixed(3));
 
-    ctx!.setTransform(1, 0, 0, 1, 0, 0);
-    ctx!.clearRect(0, 0, el!.canvas.width, el!.canvas.height);
-    if (vag.length < 2) return;
-
-    const { p: pm, i } = punktVid(vagMeter, kum, s);
-    const plupp = tillGrader(pm);
-
-    // Kameran följer pluppen (helt på smala skärmar, lite på breda).
-    if (karta) {
-      const mitt: [number, number] = [
-        MITT.lng + (plupp[0] - MITT.lng) * folj,
-        MITT.lat + (plupp[1] - MITT.lat) * folj,
-      ];
-      const introZoom =
-        folj >= 1 ? grundZoom + (foljZoom - grundZoom) * smoothstep(0.01, 0.07, p) : grundZoom;
-      karta.jumpTo({ center: mitt, zoom: introZoom });
+    // Kameran: stilla och hela rutten på breda skärmar, följer pluppen på smala.
+    if (karta && plupp && smal) {
+      const z = grundZoom + (foljZoom - grundZoom) * smoothstep(0.005, tl.intro + 0.02, p);
+      const c = tillGrader({ x: plupp.p.x, y: plupp.p.y + vh * 0.12 * meterPerPixel(z) });
+      karta.jumpTo({ center: c, zoom: z });
     }
 
+    ctx!.setTransform(1, 0, 0, 1, 0, 0);
+    ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+
+    // Korten: tonar in när pluppen kommer fram och ut när den går vidare.
+    const n = tl.fonster.length;
+    tl.fonster.forEach((f, i) => {
+      const el = kort[i];
+      if (!el) return;
+      const sista = i === n - 1;
+      const o =
+        smoothstep(f.fran - 0.03, f.fran + 0.004, p) *
+        (sista ? 1 : 1 - smoothstep(f.till - 0.004, f.till + 0.025, p));
+      el.style.opacity = o.toFixed(3);
+      el.style.visibility = o > 0.002 ? "visible" : "hidden";
+      el.style.pointerEvents = o > 0.6 ? "auto" : "none";
+      if (smal || !stoppPos[i]) {
+        el.style.transform = `translateY(${((1 - o) * 16).toFixed(1)}px)`;
+        return;
+      }
+      // Bred skärm: kortet sitter vid platsen på kartan, ovanför (eller under) stoppet.
+      const q = projicera(stoppPos[i]!);
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      const ovan = q.y - h - 30 > 16;
+      const x = clamp(q.x - w / 2, 16, vw - w - 16);
+      const y = ovan ? q.y - h - 30 : Math.min(q.y + 30, vh - h - 16);
+      el.style.transform = `translate(${x.toFixed(1)}px, ${(y + (1 - o) * 12).toFixed(1)}px)`;
+      el.dataset["ovan"] = ovan ? "ja" : "nej";
+      el.style.setProperty("--pil", `${clamp(q.x - x, 24, w - 24).toFixed(1)}px`);
+    });
+
+    if (!plupp) return;
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx!.lineCap = "round";
     ctx!.lineJoin = "round";
@@ -360,14 +459,14 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     // Linjen bakom pluppen.
     if (s > 0.5) {
       ctx!.beginPath();
-      for (let k = 0; k <= i; k++) {
+      for (let k = 0; k <= plupp.i; k++) {
         const q = projicera(vag[k]!);
         if (k === 0) ctx!.moveTo(q.x, q.y);
         else ctx!.lineTo(q.x, q.y);
       }
-      const q = projicera(plupp);
+      const q = projicera(plupp.p);
       ctx!.lineTo(q.x, q.y);
-      ctx!.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx!.strokeStyle = "rgba(255,255,255,0.92)";
       ctx!.lineWidth = 8;
       ctx!.stroke();
       ctx!.strokeStyle = BLA;
@@ -375,18 +474,30 @@ export function startaSlinga(sektion: HTMLElement): () => void {
       ctx!.stroke();
     }
 
-    // Startpunkt.
-    const start = projicera(vag[0]!);
-    ctx!.beginPath();
-    ctx!.arc(start.x, start.y, 5, 0, Math.PI * 2);
-    ctx!.fillStyle = "#fff";
-    ctx!.fill();
-    ctx!.lineWidth = 2.5;
-    ctx!.strokeStyle = BLA;
-    ctx!.stroke();
+    // Stoppen: numrerade markörer, ifyllda när pluppen har varit där.
+    const avklarad = tl.fonster.map((f) => p >= f.fran - 0.004);
+    stoppPos.forEach((sp, i) => {
+      const q = projicera(sp);
+      const klar = avklarad[i];
+      ctx!.beginPath();
+      ctx!.arc(q.x, q.y, 11, 0, Math.PI * 2);
+      ctx!.fillStyle = klar ? BLA : "#fffaf1";
+      ctx!.shadowColor = "rgba(29,26,22,0.25)";
+      ctx!.shadowBlur = 6;
+      ctx!.fill();
+      ctx!.shadowBlur = 0;
+      ctx!.lineWidth = 2;
+      ctx!.strokeStyle = klar ? "#fff" : BLA;
+      ctx!.stroke();
+      ctx!.fillStyle = klar ? "#fff" : BLA;
+      ctx!.font = "600 11px 'DM Sans Variable', system-ui, sans-serif";
+      ctx!.textAlign = "center";
+      ctx!.textBaseline = "middle";
+      ctx!.fillText(i === stoppPos.length - 1 ? "✓" : String(i + 1), q.x, q.y + 0.5);
+    });
 
     // Pluppen, med en pulserande ring som en positionsmarkör.
-    const q = projicera(plupp);
+    const q = projicera(plupp.p);
     const puls = minskadRorelse.matches ? 0.5 : (tid / 1600) % 1;
     ctx!.beginPath();
     ctx!.arc(q.x, q.y, 10 + puls * 22, 0, Math.PI * 2);
@@ -441,39 +552,31 @@ export function startaSlinga(sektion: HTMLElement): () => void {
   kor();
 
   if (test) {
-    byggSlinga();
+    byggRutt(testGator());
   } else {
     void import("maplibre-gl")
-      .then(({ Map }) => {
+      .then(async ({ Map }) => {
         if (stoppad) return;
         karta = new Map({
-          container: el.karta,
+          container: kartEl,
           style: KARTSTIL,
-          bounds: omrade(),
+          bounds: omradeGrader(),
           interactive: false,
           attributionControl: { compact: true },
           fadeDuration: 0,
           pixelRatio: dpr,
         });
-        karta.once("idle", () => {
-          if (stoppad || !karta) return;
-          storlek();
-          byggSlinga();
-          sektion.dataset["karta"] = "";
-        });
+        const gator = await samlaGator(karta);
+        if (stoppad || !karta) return;
+        byggRutt(gator);
+        kamera();
+        sektion.dataset["karta"] = "";
+        rita(performance.now());
       })
       .catch(() => {
-        // Kartan kunde inte laddas – rubrik och kapitel fungerar ändå.
+        // Kartan kunde inte laddas – rubrik och kort fungerar ändå.
       });
   }
-
-  // För felsökning: window.__slinga.set(0.5) visar en given punkt i flygningen.
-  (window as unknown as { __slinga?: object }).__slinga = {
-    set(v: number) {
-      mal = nu = clamp(v, 0, 1);
-      rita(performance.now());
-    },
-  };
 
   return () => {
     stoppad = true;

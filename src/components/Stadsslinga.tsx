@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { KAPITEL } from "@/lib/slinga/kapitel";
 import { startaSlinga } from "@/lib/slinga/karta";
+import { STOPP } from "@/lib/slinga/stopp";
 
 /**
- * Startsidans scrollsektion: kartan över gamla stan, pluppen och linjen, och kapitlen som tonar
- * fram vid varje stopp. Motorn ligger i src/lib/slinga/.
+ * Startsidans scrollsektion: kartan, pluppen som går rutten och kortet vid varje stopp.
+ * Motorn ligger i src/lib/slinga/, stoppen i src/lib/slinga/stopp.ts.
  */
 export function Stadsslinga() {
   const ref = useRef<HTMLElement>(null);
@@ -15,7 +15,7 @@ export function Stadsslinga() {
   }, []);
 
   return (
-    <section ref={ref} className="slinga" aria-label="En promenad genom Palmas gamla stad">
+    <section ref={ref} className="slinga" aria-label="Stadsvandringens rutt genom Palma">
       <div className="slinga__scen">
         <div className="slinga__karta" aria-hidden="true" />
         <canvas className="slinga__spar" aria-hidden="true" />
@@ -31,22 +31,42 @@ export function Stadsslinga() {
           <p className="slinga__underrad">med Caroline Palmstierna</p>
         </header>
 
-        <ol className="slinga__kapitellista">
-          {KAPITEL.map((k, i) => (
+        <ol className="slinga__stopplista">
+          {STOPP.map((s, i) => (
             <li
-              key={k.rubrik}
-              className="slinga__kapitel"
+              key={s.namn}
+              className={s.slut ? "slinga__kort slinga__kort--slut" : "slinga__kort"}
               style={{ opacity: 0, visibility: "hidden" }}
             >
-              <span className="slinga__nummer">{String(i + 1).padStart(2, "0")}</span>
-              <h2>{k.rubrik}</h2>
-              <p>{k.text}</p>
+              {s.bild && (
+                <img
+                  className="slinga__bild"
+                  src={s.bild.src}
+                  alt={s.bild.alt}
+                  width={800}
+                  height={600}
+                  decoding="async"
+                  fetchPriority={i === 0 ? "high" : "low"}
+                />
+              )}
+              <div className="slinga__korttext">
+                <span className="slinga__nummer">
+                  {s.slut ? "Ca 2 timmar" : `Stopp ${i + 1} av ${STOPP.length - 1}`}
+                </span>
+                <h2>{s.namn}</h2>
+                <p>{s.text}</p>
+                {s.slut && (
+                  <a className="btn-base btn-bla slinga__knapp" href="#boka">
+                    Boka en vandring
+                  </a>
+                )}
+              </div>
             </li>
           ))}
         </ol>
 
         <div className="slinga__ledtrad" aria-hidden="true">
-          <span>Scrolla för att gå</span>
+          <span>Scrolla för att gå rutten</span>
           <i />
         </div>
       </div>
