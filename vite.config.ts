@@ -7,10 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Sajtens publika adress, används i canonical-länkar, sitemap, delningsbilder och strukturerad
-// data. Byggen på Vercel pekar alltid på den riktiga domänen – även förhandsversioner och
-// vercel.app-adressen – så att Google bara indexerar en adress. SAJT_URL överstyr vid behov.
-// Vercel skickar treatlymarketing.se vidare till www – canonical måste peka på samma adress.
-const DOMAN = "https://www.treatlymarketing.se";
+// data. På Vercel används projektets produktionsadress även i förhandsversioner, så att Google
+// bara indexerar en adress. Byt DOMAN när en egen domän kopplas. SAJT_URL överstyr vid behov.
+const DOMAN = process.env["VERCEL_PROJECT_PRODUCTION_URL"]
+  ? `https://${process.env["VERCEL_PROJECT_PRODUCTION_URL"]}`
+  : "https://guidemallorca-dun.vercel.app";
 const sajtUrl =
   process.env["SAJT_URL"] ?? (process.env["VERCEL"] ? DOMAN : "http://localhost:3000");
 
@@ -28,11 +29,6 @@ export default defineConfig({
       __VERIFIERING__: JSON.stringify({
         google: process.env["GOOGLE_SITE_VERIFICATION"] ?? "",
         bing: process.env["BING_SITE_VERIFICATION"] ?? "",
-      }),
-      // Spårverktyg som kräver samtycke. Tomt = avstängt och ingen cookiebanner. Se README.
-      __SPARVERKTYG__: JSON.stringify({
-        metaPixel: process.env["META_PIXEL_ID"] ?? "",
-        clarity: process.env["CLARITY_ID"] ?? "",
       }),
     },
   },

@@ -11,13 +11,10 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import bodoniUrl from "@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-wght-normal.woff2?url";
+import frauncesUrl from "@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url";
 import dmSansUrl from "@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Header } from "@/components/Header";
 import { Analytics } from "@vercel/analytics/react";
-import { Samtycke } from "@/components/Samtycke";
-import { Footer } from "@/components/Footer";
 import { FORETAG, VERIFIERING } from "@/lib/foretag";
 import { grundSchema, jsonLd } from "@/lib/seo";
 
@@ -25,7 +22,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-8xl text-brand">404</h1>
+        <h1 className="font-display text-8xl">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Sidan finns inte</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Sidan du letar efter finns inte eller har flyttats.
@@ -84,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: FORETAG.namn },
       { name: "description", content: FORETAG.beskrivning },
       { property: "og:site_name", content: FORETAG.namn },
-      { name: "theme-color", content: "#ebeae6" },
+      { name: "theme-color", content: "#efe5d3" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "sv_SE" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -96,21 +93,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       // Typsnitten förladdas så att texten inte byter typsnitt och knuffar layouten.
-      { rel: "preload", href: bodoniUrl, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
+      {
+        rel: "preload",
+        href: frauncesUrl,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
       { rel: "preload", href: dmSansUrl, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: appCss,
       },
-      // Ikoner: .ico med "Tab" i 16 (ritad pixel för pixel), 32 och 48 px – webbläsaren väljer
-      // storlek efter skärmen. Ingen SVG-favicon: den skulle vinna och bli suddig i 16 px.
-      // 96 px för Google (kräver en multipel av 48 px), apple-touch-icon för hemskärmen och
-      // manifestet för Android.
-      // ?v= tvingar webbläsare och Google att hämta ikonen på nytt. Höj den vid nästa byte.
-      { rel: "icon", href: "/favicon.ico?v=tab2", sizes: "16x16 32x32 48x48" },
-      { rel: "icon", href: "/favicon-96x96.png?v=tab2", type: "image/png", sizes: "96x96" },
+      { rel: "icon", href: "/favicon.ico", sizes: "16x16 32x32 48x48" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-      { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [jsonLd(grundSchema())],
   }),
@@ -139,18 +135,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main id="innehall" className="flex-1 overflow-x-clip">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      <main id="innehall">
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </main>
       {/* Cookiefri besöksstatistik. Slås på under Analytics i Vercel. */}
       <Analytics />
-      {/* Cookiebanner – visas bara när Meta-pixeln eller Clarity är påslagna. */}
-      <Samtycke />
     </QueryClientProvider>
   );
 }

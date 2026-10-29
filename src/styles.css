@@ -1,16 +1,17 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import "@fontsource-variable/bodoni-moda/wght.css";
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
 @import "@fontsource-variable/dm-sans/wght.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
 
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Designsystem – Treatly – Marketing AB
- * Redaktionell stil: varm grå pappersyta med korn, svart text, enorm högkontrast-serif (Bodoni Moda)
- * som ordbild och små versala bildtexter. Kobolt (--brand) är enda färgyta/länkfärg; blobben i
- * hero är dekor. Brödtext: DM Sans. Svart på papper = 17:1, vit på kobolt = 8:1.
+ * Designsystem – Guide Mallorca
+ * Varm sandstensgrund (samma som kartan), mörk bläckfärgad text och en blå accent som är
+ * pluppens färg. Rubriker i Fraunces (mjuk, varm serif), brödtext i DM Sans.
  */
 
 @theme inline {
@@ -19,7 +20,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 6px);
   --radius-2xl: calc(var(--radius) + 12px);
-  --font-display: "Bodoni Moda Variable", "Bodoni 72", Didot, Georgia, serif;
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-sans: "DM Sans Variable", system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -40,50 +41,38 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-tint: var(--tint);
-  --color-line: var(--line);
-  --color-brand: var(--brand);
-  --color-brand-deep: var(--brand-deep);
-  --color-brand-light: var(--brand-light);
   --color-ink: var(--ink);
-  --color-sun: var(--sun);
-  --color-guld: #b8913f;
-  /* Mörkt guld för text: 5:1 mot papperet (WCAG AA). */
-  --color-guld-mork: #7a5c22;
-  --color-elfenben: #efe6d2;
-  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-bla: var(--bla);
 }
 
 :root {
   color-scheme: light;
-  --radius: 1.5rem;
-  --brand: #2438c9;
-  --brand-deep: #14207f;
-  --brand-light: #6f86ff;
-  --ink: #101114;
-  --sun: #ffd45c;
-  --cream: #f5f4f1;
-  --background: #ebeae6;
-  --foreground: #101114;
-  --card: #f6f5f2;
-  --card-foreground: #101114;
-  --popover: #f6f5f2;
-  --popover-foreground: #101114;
-  --primary: var(--brand);
+  --radius: 1rem;
+  --ink: #1d1a16;
+  --sand: #efe5d3;
+  --sand-mork: #e4d6bd;
+  --bla: #1f62ff;
+  --bla-mork: #1748c2;
+  --background: var(--sand);
+  --foreground: var(--ink);
+  --card: #f7f0e3;
+  --card-foreground: var(--ink);
+  --popover: #f7f0e3;
+  --popover-foreground: var(--ink);
+  --primary: var(--bla);
   --primary-foreground: #ffffff;
-  --secondary: #e2e1dc;
-  --secondary-foreground: #101114;
-  --muted: #e2e1dc;
-  --muted-foreground: #55565c;
-  --accent: var(--sun);
-  --accent-foreground: #101114;
+  --secondary: var(--sand-mork);
+  --secondary-foreground: var(--ink);
+  --muted: var(--sand-mork);
+  --muted-foreground: #5d554a;
+  --accent: var(--bla);
+  --accent-foreground: #ffffff;
   --destructive: #b42318;
   --destructive-foreground: #ffffff;
-  --border: #cfcec8;
-  --input: #cfcec8;
-  --ring: var(--brand);
-  --tint: #e2e1dc;
-  --line: #c6c5be;
+  --border: #d6c6a8;
+  --input: #cdbb9a;
+  --ring: var(--bla);
 }
 
 @layer base {
@@ -92,30 +81,15 @@
   }
 
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 6.5rem;
+    background: var(--background);
   }
 
   body {
+    margin: 0;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-  }
-
-  /* Papperskorn över hela sidan – statisk SVG-brus, påverkar inte klick. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    pointer-events: none;
-    opacity: 0.5;
-    /* Svart brus: vanlig genomskinlighet ger samma bild som multiply men kostar mycket
-       mindre att rita. Eget lager så att det inte ritas om när sidan rör sig. */
-    will-change: transform;
-    transform: translateZ(0);
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 
   h1,
@@ -124,11 +98,11 @@
   h4,
   .font-display {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 400;
+    font-optical-sizing: auto;
     line-height: 1.05;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     text-wrap: balance;
-    overflow-wrap: break-word;
   }
 
   p {
@@ -136,65 +110,9 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--brand-light);
+    outline: 2px solid var(--bla);
     outline-offset: 3px;
   }
-}
-
-@utility container-page {
-  width: 100%;
-  margin-inline: auto;
-  max-width: 78rem;
-  padding-inline: 1.5rem;
-}
-
-@utility eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink);
-  &::before {
-    content: "";
-    width: 2rem;
-    height: 1px;
-    background-color: currentColor;
-  }
-}
-
-/* Mörk yta med kornig blob (slutsektion) */
-@utility panel-ink {
-  background-color: var(--ink);
-  color: #ffffff;
-}
-
-/* Liten versal bildtext med bred bokstavsavstånd */
-@utility caps {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-/* Ljusblå yta som tonas mjukt in och ut mot vitt – inga hårda kanter mellan sektioner. */
-@utility bg-fade-tint {
-  background-image: linear-gradient(
-    to bottom,
-    var(--background) 0%,
-    var(--tint) 18%,
-    var(--tint) 82%,
-    var(--background) 100%
-  );
-}
-
-@utility glass {
-  background-color: rgb(255 255 255 / 0.16);
-  border: 1px solid rgb(255 255 255 / 0.28);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 @utility btn-base {
@@ -206,1006 +124,627 @@
   border-radius: 9999px;
   padding: 0.8rem 1.6rem;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
   touch-action: manipulation;
   transition:
     background-color 200ms ease,
     color 200ms ease,
-    border-color 200ms ease,
-    transform 200ms ease;
-  &:hover {
-    transform: translateY(-2px);
-  }
-  &:active {
-    transform: translateY(0) scale(0.98);
-  }
+    border-color 200ms ease;
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
   }
 }
 
-/* Vit knapp – för mörka ytor (inramade rutor, fyren) */
-@utility btn-white {
-  background-color: #ffffff;
-  color: var(--ink);
-  &:hover {
-    background-color: var(--sun);
-    color: var(--ink);
-  }
-}
-
-/* Mörk pill – huvudknapp på ljusa ytor */
 @utility btn-dark {
   background-color: var(--ink);
-  color: #ffffff;
+  color: var(--sand);
   &:hover {
-    background-color: #3d3324;
+    background-color: #3a342c;
   }
 }
 
-@utility btn-outline-white {
-  border: 2px solid rgb(255 255 255 / 0.85);
-  color: #ffffff;
+@utility btn-bla {
+  background-color: var(--bla);
+  color: #fff;
   &:hover {
-    background-color: #ffffff;
-    color: var(--ink);
+    background-color: var(--bla-mork);
   }
 }
 
 @utility btn-outline {
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
   color: var(--ink);
   &:hover {
     background-color: var(--ink);
-    color: #ffffff;
+    color: var(--sand);
   }
 }
 
-@utility field {
-  width: 100%;
-  min-height: 3rem;
-  background-color: #ffffff;
-  border: 2px solid var(--line);
-  border-radius: 1rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  color: var(--ink);
-  transition:
-    border-color 200ms ease,
-    box-shadow 200ms ease;
-  &:focus {
-    outline: none;
-    border-color: var(--brand);
-    box-shadow: 0 0 0 4px rgb(36 56 201 / 0.22);
-  }
-  &[aria-invalid="true"] {
-    border-color: var(--destructive);
-  }
-}
+/* ---------- Stadsslingan (src/components/Stadsslinga.tsx) ---------- */
 
-@utility reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@utility reveal-in {
-  opacity: 1;
-  transform: none;
-}
-
-/* Mjuk skugga i flera lager för kort. Den blå varianten tonas i kortets egen färg. */
-@utility kortskugga {
-  box-shadow:
-    0 1px 2px rgb(16 17 20 / 0.06),
-    0 10px 20px -8px rgb(16 17 20 / 0.16),
-    0 28px 48px -22px rgb(16 17 20 / 0.28);
-  &:hover {
-    box-shadow:
-      0 1px 2px rgb(16 17 20 / 0.06),
-      0 16px 28px -10px rgb(16 17 20 / 0.2),
-      0 40px 64px -26px rgb(16 17 20 / 0.34);
-  }
-}
-
-@utility kortskugga-brand {
-  box-shadow:
-    0 1px 2px rgb(36 56 201 / 0.12),
-    0 10px 20px -8px rgb(36 56 201 / 0.3),
-    0 28px 48px -22px rgb(36 56 201 / 0.45);
-  &:hover {
-    box-shadow:
-      0 1px 2px rgb(36 56 201 / 0.12),
-      0 16px 28px -10px rgb(36 56 201 / 0.36),
-      0 40px 64px -26px rgb(36 56 201 / 0.55);
-  }
-}
-
-/* Handritad tuschring som ritas fram (se Tusch.tsx) */
-.tusch-linje {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1100ms cubic-bezier(0.65, 0, 0.35, 1) 250ms;
-}
-.tusch-in {
-  stroke-dashoffset: 0;
-}
-
-/* Första skärmen på startsidan (Masterverket.tsx): en inramad målning. Dator: den liggande
-   målningen i exakt sitt format – på låga skärmar krymper tavlan i stället för att klippas.
-   Mobil: den stående målningen; dukens tomma överdel töjs på höjden så att texten alltid får
-   plats, buketten under visas i rätt format. Ramens mått är uppmätta i bilderna (px). */
-.tavla-hero {
-  container-type: inline-size;
-  padding: 0 0.75rem 0.75rem;
-}
-.tavla {
-  --elfenben: #efe6d2;
-  --b: min(100cqw, 100rem, (100svh - 5.25rem) * 1672 / 941);
-  --e: calc(var(--b) / 1672);
+.slinga {
   position: relative;
-  isolation: isolate;
-  width: var(--b);
-  margin-inline: auto;
-  aspect-ratio: 1672 / 941;
-  border-style: solid;
-  border-color: transparent;
-  border-width: calc(var(--e) * 74) calc(var(--e) * 82) calc(var(--e) * 82) calc(var(--e) * 84);
-  border-image: url("/masterverk/ram-bred.webp") 74 82 82 84 / 1 stretch;
-  background-color: #14100b;
-  color: var(--elfenben);
-  box-shadow:
-    0 3px 4px rgb(30 20 5 / 0.3),
-    0 30px 54px -18px rgb(40 28 8 / 0.5);
+  /* Hur länge man scrollar genom rutten. Mer höjd = lugnare tempo. */
+  height: 560vh;
 }
-.tavla-duk {
+
+.slinga__scen {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100lvh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.slinga__karta,
+.slinga__spar,
+.slinga__ton {
   position: absolute;
   inset: 0;
-  z-index: -2;
   width: 100%;
   height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: right center;
 }
-.tavla-ovan {
-  position: absolute;
-  inset: 0;
+
+.slinga__karta {
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
-.tavla-ljus {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
+
+.slinga[data-karta] .slinga__karta {
+  opacity: 1;
+}
+
+.slinga__spar,
+.slinga__ton {
   pointer-events: none;
 }
-/* Texten håller sig inom dukens tomma vänstra 43 % – buketten börjar vid 46 %. */
-.tavla-text {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 43%;
-  height: 100%;
-  padding-left: 6%;
-}
-.tavla-rubrik {
-  margin: 0;
-}
-.tavla-ord {
-  display: block;
-  font-family: var(--font-sans);
-  font-size: clamp(0.62rem, 0.75vw, 0.82rem);
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: rgb(239 230 210 / 0.82);
-}
-/* "Målad" rubrik: elfenben med dukens sprickor, klippt till bokstäverna. */
-.tavla-lofte {
-  display: block;
-  margin-top: 1.1rem;
-  font-size: clamp(2.6rem, 5.6vw, 6.4rem);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
-  color: transparent;
+
+/* Mjuk ljus ram så att texten alltid går att läsa mot kartan. */
+.slinga__ton {
   background:
-    url("/masterverk/krakelyr.webp") 0 0 / 360px repeat,
-    linear-gradient(var(--elfenben), var(--elfenben));
-  -webkit-background-clip: text;
-  background-clip: text;
-  filter: drop-shadow(0 2px 18px rgb(10 8 4 / 0.55));
+    linear-gradient(to bottom, rgba(239, 229, 211, 0.92), rgba(239, 229, 211, 0) 34%),
+    linear-gradient(to top, rgba(239, 229, 211, 0.85), rgba(239, 229, 211, 0) 30%);
 }
-@keyframes tavla-mala-fram {
-  from {
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
-  }
-  to {
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
-  }
+
+.slinga__ton {
+  transition: background 0.7s ease;
 }
-.tavla-mala {
-  -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
-  mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
-  -webkit-mask-size: 260% 100%;
-  mask-size: 260% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
-  animation: tavla-mala-fram 1.6s cubic-bezier(0.45, 0, 0.2, 1) 0.3s both;
+
+/* När rubriken står till vänster: ljus ton bakom den så att texten går att läsa. */
+.slinga[data-flyttad]:not([data-smal]) .slinga__ton {
+  background:
+    linear-gradient(
+      to right,
+      rgba(239, 229, 211, 0.95),
+      rgba(239, 229, 211, 0.75) 26%,
+      rgba(239, 229, 211, 0) 42%
+    ),
+    linear-gradient(to top, rgba(239, 229, 211, 0.6), rgba(239, 229, 211, 0) 18%);
 }
-.tavla-linje {
-  width: 3.5rem;
-  height: 1px;
-  margin: clamp(1.2rem, 2vw, 2rem) 0 clamp(0.8rem, 1.2vw, 1.25rem);
-  background-color: #c9a24a;
+
+.slinga .maplibregl-ctrl-attrib {
+  font-size: 10px;
+  background: rgba(239, 229, 211, 0.75);
 }
-.tavla-katalog {
+
+/* Rubriken: stor och centrerad i början, flyttar till vänster när man börjar scrolla
+   (data-flyttad sätts av slingan). */
+.slinga__hero {
+  position: absolute;
+  z-index: 2;
+  top: clamp(64px, 12vh, 132px);
+  left: 50%;
+  width: min(1100px, calc(100% - 32px));
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  transition:
+    top 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    left 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    width 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.slinga__rubrik {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.5vw, 1.45rem);
-  font-style: italic;
-  line-height: 1.4;
+  font-size: clamp(2.6rem, 7vw, 6.4rem);
+  font-weight: 380;
+  line-height: 0.98;
+  transition: font-size 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.tavla-katalog > span {
+
+.slinga__radbryt {
   white-space: nowrap;
 }
-.tavla-katalog b {
-  font-style: normal;
-  font-weight: 400;
-  opacity: 0.55;
-}
-.tavla-katalog-lank {
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 0.18em;
-  transition: text-decoration-color 200ms ease;
-}
-.tavla-katalog-lank:hover {
-  text-decoration-color: var(--sun);
-}
-.tavla-villkor {
-  max-width: 28rem;
-  margin: 0.6rem 0 0;
-  font-size: clamp(0.85rem, 1vw, 0.95rem);
-  line-height: 1.55;
-  color: rgb(239 230 210 / 0.8);
-}
-.tavla-knappar {
-  display: flex;
-  flex-wrap: wrap;
+
+.slinga__underrad {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem 1.5rem;
-  margin-top: clamp(1.25rem, 2vw, 2rem);
+  gap: 0.7rem;
+  margin: 1.2rem 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  color: var(--muted-foreground);
+  transition: font-size 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.tavla-knapp:not(:hover) {
-  background-color: var(--elfenben);
-  color: #1b150d;
+
+.slinga__avatar {
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px #fbf6ec;
 }
-.tavla-lank {
-  border-bottom: 2px solid currentColor;
-  padding-bottom: 2px;
+
+.slinga[data-flyttad] .slinga__hero {
+  top: clamp(40px, 9vh, 96px);
+  left: clamp(24px, 4.5vw, 64px);
+  width: min(360px, 30vw);
+  transform: none;
+  text-align: left;
+}
+
+.slinga[data-flyttad] .slinga__rubrik {
+  font-size: clamp(2rem, 3.4vw, 3.3rem);
+}
+
+.slinga[data-flyttad] .slinga__underrad {
+  font-size: 1.1rem;
+}
+
+.slinga[data-smal][data-flyttad] .slinga__hero {
+  top: 14px;
+  left: 14px;
+  width: calc(100% - 28px);
+  padding: 0.8rem 1rem 0.9rem;
+  border-radius: 12px;
+  background: rgba(251, 246, 236, 0.92);
+  box-shadow: 0 10px 30px -18px rgba(29, 26, 22, 0.45);
+}
+
+.slinga[data-smal][data-flyttad] .slinga__overrad {
+  display: none;
+}
+
+.slinga[data-smal][data-flyttad] .slinga__rubrik {
+  font-size: 1.45rem;
+}
+
+.slinga[data-smal][data-flyttad] .slinga__underrad {
+  margin-top: 0.4rem;
   font-size: 0.95rem;
-  font-weight: 700;
 }
-.tavla-lank:hover {
-  color: var(--sun);
-}
-/* Mässingsskylten mitt på ramens nederkant */
-.tavla-skylt {
-  position: absolute;
-  bottom: calc(var(--e) * -41);
-  left: 50%;
-  z-index: 5;
-  transform: translate(-50%, 50%);
-  padding: 0.35rem 1.1rem;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #e9cf86, #b8913f 55%, #8c6a2b);
-  box-shadow:
-    inset 0 1px 0 rgb(255 245 210 / 0.7),
-    inset 0 -1px 0 rgb(60 40 10 / 0.5),
-    0 2px 4px rgb(30 20 5 / 0.45);
-  font-size: 0.6rem;
-  font-weight: 700;
-  line-height: 1.2;
+
+.overrad,
+.slinga__overrad {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  white-space: nowrap;
-  color: #3b2a0e;
-  text-shadow: 0 1px 0 rgb(255 240 200 / 0.5);
+  color: var(--bla);
 }
-.tavla-paus {
-  position: absolute;
-  right: 0.9rem;
-  bottom: 0.9rem;
-  z-index: 6;
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 1px solid rgb(239 230 210 / 0.35);
-  border-radius: 9999px;
-  background-color: rgb(16 12 8 / 0.55);
-  color: var(--elfenben);
-  cursor: pointer;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+
+.slinga__rubrik {
+  margin: 0;
+  font-size: clamp(2.6rem, 7.4vw, 6.6rem);
+  line-height: 0.98;
 }
-.tavla-blad {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  overflow: hidden;
-  perspective: 700px;
-  pointer-events: none;
+
+.slinga__underrad {
+  margin: 1.1rem 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  color: var(--muted-foreground);
 }
-.tavla-kronblad {
+
+.slinga__stopplista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Kortet vid varje stopp. På breda skärmar placeras det vid platsen på kartan (JS sätter
+   transform), på smala ligger det nederst. */
+.slinga__kort {
   position: absolute;
   top: 0;
   left: 0;
-  max-width: none;
-  will-change: transform, opacity;
-  filter: drop-shadow(0 6px 6px rgb(30 20 5 / 0.3));
-}
-@media (max-width: 1023px) {
-  .tavla-hero {
-    padding: 0 0.5rem 0.5rem;
-  }
-  .tavla {
-    --b: 100cqw;
-    --e: calc(var(--b) / 941);
-    display: flex;
-    flex-direction: column;
-    aspect-ratio: auto;
-    border-width: calc(var(--e) * 84) calc(var(--e) * 85) calc(var(--e) * 90) calc(var(--e) * 82);
-    border-image: url("/masterverk/ram-hog.webp") 84 85 90 82 / 1 stretch;
-  }
-  /* Dukens inre bredd är 941 − 82 − 85 = 774 enheter; överdelens bild är 774 × 500. */
-  .tavla-ovan {
-    position: relative;
-    inset: auto;
-    order: 1;
-    min-height: calc(var(--e) * 500);
-    background: url("/masterverk/duk-hog-ovan.webp") 0 0 / 100% 100% no-repeat;
-  }
-  .tavla picture {
-    order: 2;
-  }
-  .tavla-duk {
-    position: static;
-    display: block;
-    height: auto;
-    aspect-ratio: 774 / 998;
-  }
-  .tavla-text {
-    width: auto;
-    height: auto;
-    justify-content: flex-start;
-    padding: 1.75rem 1.5rem 1.5rem;
-  }
-  .tavla-ord {
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
-  }
-  .tavla-lofte {
-    margin-top: 0.75rem;
-    font-size: clamp(2.4rem, 11.5vw, 3.6rem);
-    background-size: 260px, auto;
-  }
-  .tavla-katalog {
-    font-size: 1.02rem;
-  }
-  .tavla-villkor {
-    font-size: 0.86rem;
-  }
-  .tavla-knappar {
-    gap: 0.5rem 1.1rem;
-    margin-top: 1.1rem;
-  }
-  .tavla-skylt {
-    bottom: calc(var(--e) * -45);
-    padding: 0.25rem 0.7rem;
-    font-size: 0.5rem;
-  }
-  .tavla-paus {
-    right: 0.6rem;
-    bottom: 0.6rem;
-    width: 2.2rem;
-    height: 2.2rem;
-  }
-}
-@media (min-width: 640px) and (max-width: 1023px) {
-  .tavla-text {
-    padding: 3rem 3.5rem 2rem;
-  }
-  .tavla-ord {
-    font-size: 0.8rem;
-  }
-  .tavla-lofte {
-    font-size: clamp(3rem, 9vw, 5.4rem);
-    background-size: 340px, auto;
-  }
-  .tavla-katalog {
-    font-size: 1.3rem;
-  }
-  .tavla-villkor {
-    font-size: 1rem;
-  }
+  width: 320px;
+  border-radius: 14px;
+  background: #fbf6ec;
+  box-shadow:
+    0 1px 0 rgba(29, 26, 22, 0.06),
+    0 22px 48px -20px rgba(29, 26, 22, 0.45);
+  will-change: opacity, transform;
 }
 
-/* Fyrscenen i slutet av startsidan (Fyrscen.tsx). Under 1024 px används den stående bilden,
-   och kortet är så högt att lyktan hamnar under texten. */
-.fyr-kort {
-  min-height: 54rem;
-}
-.fyr-bild {
-  object-position: 50% 50%;
-}
-@media (min-width: 1024px) {
-  /* Fast bredd: annars förs minsta höjden över via bildformatet och gör kortet bredare än
-     sidfoten. */
-  .fyr-kort {
-    width: 100%;
-    min-height: 37.5rem;
-    aspect-ratio: 1916 / 821;
-  }
-  /* Beskär från vänster (himmel och vatten), så att fyren och stugorna får plats. */
-  .fyr-bild {
-    object-position: 70% 50%;
-  }
-}
-/* Den målade himlen är ljus bakom texten: en svag mörkning håller den läsbar. Ligger mellan
-   bilden (-z-20) och strålen (-z-10), så strålen lyser fortfarande fullt. */
-.fyr-kort picture::after {
+.slinga__kort::after {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: -15;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgb(12 10 26 / 0.6) 0%,
-    rgb(12 10 26 / 0.35) 40%,
-    transparent 58%
-  );
+  left: var(--pil, 50%);
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  background: #fbf6ec;
+  transform: rotate(45deg);
+  bottom: -7px;
 }
-@media (min-width: 1024px) {
-  .fyr-kort picture::after {
-    background: linear-gradient(
-      90deg,
-      rgb(12 10 26 / 0.62) 0%,
-      rgb(12 10 26 / 0.4) 35%,
-      transparent 58%
-    );
-  }
+
+.slinga__kort[data-ovan="nej"]::after {
+  bottom: auto;
+  top: -7px;
 }
-.fyr-skugga {
-  text-shadow: 0 1px 16px rgb(8 10 30 / 0.55);
+
+.slinga__bild {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  background: #e2d0b2;
 }
-/* Den genomskinliga knappen ligger över horisonten; en svag mörk yta håller den läsbar. */
-.fyr-panel .btn-outline-white:not(:hover) {
-  background-color: rgb(16 17 20 / 0.28);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+
+.slinga__korttext {
+  position: relative;
+  z-index: 1;
+  padding: 1rem 1.15rem 1.15rem;
 }
-/* Det tända lagret av rubriken syns bara inom strålen. Masken sätts från Fyrscen.tsx; tills
-   dess (och utan JS) syns bara den vanliga rubriken. Lagret sticker ut 3rem runt texten så att
-   glöden inte klipps av maskens kant. */
-.fyr-tand {
+
+.slinga__kort h2 {
+  margin: 0.3rem 0 0.4rem;
+  font-size: 1.65rem;
+}
+
+.slinga__kort p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #4a4339;
+}
+
+.slinga__knapp {
+  margin-top: 1rem;
+  min-height: 2.6rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.slinga[data-smal] .slinga__kort {
+  top: auto;
+  left: 12px;
+  right: 12px;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  width: auto;
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  overflow: hidden;
+}
+
+.slinga[data-smal] .slinga__kort--slut {
+  grid-template-columns: 1fr;
+}
+
+.slinga[data-smal] .slinga__kort::after {
+  display: none;
+}
+
+.slinga[data-smal] .slinga__bild {
+  height: 100%;
+  min-height: 132px;
+  border-radius: 0;
+}
+
+.slinga[data-smal] .slinga__korttext {
+  padding: 0.85rem 0.95rem 0.95rem;
+}
+
+.slinga[data-smal] .slinga__kort h2 {
+  font-size: 1.3rem;
+}
+
+.slinga[data-smal] .slinga__kort p {
+  font-size: 0.84rem;
+  line-height: 1.42;
+}
+
+.slinga__nummer,
+.pelare__nummer {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--bla);
+}
+
+.slinga__ledtrad {
   position: absolute;
-  inset: -3rem;
-  padding: 3rem;
+  left: 50%;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  opacity: var(--cue-o, 1);
   pointer-events: none;
-  color: #ffffff;
-  text-shadow:
-    0 0 18px rgb(255 230 160 / 0.95),
-    0 0 48px rgb(255 210 130 / 0.6);
-  -webkit-mask-image: var(--strale, linear-gradient(transparent, transparent));
-  mask-image: var(--strale, linear-gradient(transparent, transparent));
-}
-/* Scenen går rakt över i sidfoten: ett kort i stället för två mörka rutor med en skarv. */
-main:has(.fyr-panel) + footer > div {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
-/* Svävande bubblor i hero */
-@keyframes float-y {
-  from {
-    transform: translateY(0);
-  }
+.slinga__ledtrad i {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  background: rgba(29, 26, 22, 0.18);
+  overflow: hidden;
+}
+
+.slinga__ledtrad i::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 100%;
+  height: 40%;
+  background: var(--bla);
+  animation: ledtrad 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes ledtrad {
   to {
-    transform: translateY(-14px);
+    top: 100%;
   }
 }
 
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
+/* ---------- Innehållet efter slingan ---------- */
+
+.innehall {
+  padding: clamp(72px, 12vw, 160px) 16px;
+}
+
+.innehall__inre {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.innehall h2 {
+  margin: 0;
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+}
+
+.ingress {
+  margin: 1.2rem 0 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  max-width: 34ch;
+}
+
+.om {
+  background: var(--card);
+}
+
+.om__inre {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(2rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
+.om__bild {
+  margin: 0;
+}
+
+.om__bild img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -34px rgba(29, 26, 22, 0.5);
+}
+
+.om__bild figcaption {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 760px) {
+  .om__inre {
+    grid-template-columns: 1fr;
   }
-  50% {
-    opacity: 0.55;
-    transform: scale(0.8);
+  .om__bild {
+    max-width: 420px;
   }
 }
 
-@utility float {
-  animation: float-y 5s ease-in-out infinite alternate;
-  transform-box: fill-box;
-  transform-origin: center;
+.om__text {
+  margin-top: 2.2rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 
-@utility twinkle {
-  animation: twinkle 3.2s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: center;
+.om__text p {
+  margin: 0 0 1rem;
+  break-inside: avoid;
+}
+
+.pelare {
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.pelare li {
+  padding: 1.75rem 1.6rem 1.9rem;
+  border-top: 2px solid var(--ink);
+  background: rgba(247, 240, 227, 0.6);
+}
+
+.pelare h3 {
+  margin: 0.8rem 0 0.7rem;
+  font-size: 1.75rem;
+}
+
+.pelare p {
+  margin: 0;
+  line-height: 1.6;
+  color: #4a4339;
+}
+
+.praktiskt {
+  background: var(--ink);
+  color: var(--sand);
+}
+
+.praktiskt .overrad {
+  color: #8fb0ff;
+}
+
+.praktiskt__inre,
+.boka__inre {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.fakta {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.fakta div {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(239, 229, 211, 0.2);
+}
+
+.fakta div:first-child {
+  border-top: 1px solid rgba(239, 229, 211, 0.2);
+}
+
+.fakta dt {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(239, 229, 211, 0.6);
+}
+
+.fakta dd {
+  margin: 0.4rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+/* ---------- Bokning ---------- */
+
+.bokning {
+  display: grid;
+  gap: 1rem;
+}
+
+.bokning__rad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.bokning__rad--tre {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.bokning label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.bokning label em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.bokning input,
+.bokning textarea {
+  width: 100%;
+  border: 1px solid var(--input);
+  border-radius: 0.6rem;
+  background: #fbf7ef;
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.bokning input:focus,
+.bokning textarea:focus {
+  outline: 2px solid var(--bla);
+  outline-offset: 0;
+  border-color: transparent;
+}
+
+.bokning__falla {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.bokning__fot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.bokning__fel {
+  margin: 0;
+  color: var(--destructive);
+}
+
+.bokning__klart h3 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.sidfot {
+  padding: 2.5rem 16px 3rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  border-top: 1px solid var(--border);
+}
+
+.sidfot p {
+  margin: 0.3rem 0;
+}
+
+.sidfot__kalla {
+  font-size: 0.78rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-  .tusch-linje {
-    stroke-dashoffset: 0;
-  }
-  .tavla-mala {
+  .slinga__ledtrad i::after {
     animation: none;
-    -webkit-mask-image: none;
-    mask-image: none;
+    top: 30%;
   }
-  .tavla-blad,
-  .tavla-paus {
-    display: none;
-  }
-}
-
-/* Galleriet på startsidan (Galleri.tsx): salar med inramade verk och museiskyltar.
-   Ramen är samma förgyllda ram som målningen överst, i mindre format. */
-.sal {
-  padding-block: 5.5rem 1rem;
-}
-.sal-rubrik {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: 1.25rem;
-  align-items: baseline;
-  margin-bottom: 3rem;
-}
-.sal-rubrik > :not(.sal-nummer) {
-  grid-column: 2;
-}
-.sal-nummer {
-  grid-row: span 3;
-  font-family: var(--font-display);
-  font-size: 4.4rem;
-  font-style: italic;
-  line-height: 0.8;
-  color: #b8913f;
-}
-.galleri-ram {
-  position: relative;
-  border: 16px solid transparent;
-  border-image: url("/masterverk/ram-hog.webp") 84 85 90 82 / 1 stretch;
-  background-color: #14100b;
-  box-shadow:
-    0 2px 3px rgb(30 20 5 / 0.3),
-    0 22px 40px -16px rgb(40 28 8 / 0.45);
-}
-.galleri-ram-bred {
-  border-width: clamp(14px, 1.8vw, 24px);
-  border-image-source: url("/masterverk/ram-bred.webp");
-  border-image-slice: 74 82 82 84;
-}
-/* Filmens egen rundning och bildtext passar inte i en ram. */
-.galleri-ram-bred figure > div {
-  border-radius: 0;
-}
-.galleri-ram-bred figcaption {
-  display: none;
-}
-.galleri-verk {
-  position: relative;
-}
-/* Galleriljus: en svag ljuskägla över varje verk */
-.galleri-verk::before {
-  content: "";
-  position: absolute;
-  top: -3.5rem;
-  left: 50%;
-  z-index: -1;
-  width: 130%;
-  height: calc(100% + 4rem);
-  transform: translateX(-50%);
-  pointer-events: none;
-  background: radial-gradient(ellipse 50% 45% at 50% 30%, rgb(255 250 235 / 0.85), transparent 70%);
-}
-.galleri-skylt {
-  margin-top: 1.1rem;
-  padding-left: 0.9rem;
-  border-left: 2px solid #b8913f;
-}
-.galleri-pil {
-  border-bottom: 2px solid currentColor;
-  padding-bottom: 2px;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-.galleri-verk a:hover .galleri-titel {
-  text-decoration: underline;
-  text-decoration-color: var(--sun);
-  text-underline-offset: 0.15em;
-}
-.sal-tre {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4rem 3rem;
-  align-items: start;
-}
-.sal-tre > :nth-child(3n + 2) {
-  margin-top: 3rem;
-}
-.caesar {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: 4rem;
-  align-items: center;
-  margin-bottom: 6rem;
-}
-.caesar-verk .galleri-skylt {
-  display: none;
-}
-.caesar-citat {
-  margin: 1rem 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 5.4rem);
-  font-style: italic;
-  line-height: 1;
-}
-.caesar-poang {
-  max-width: 30rem;
-  margin-top: 2rem;
-  padding-left: 1rem;
-  border-left: 2px solid #b8913f;
-  font-size: 1.15rem;
-  line-height: 1.6;
-  color: rgb(16 17 20 / 0.8);
-}
-/* Sal IV: faktan som en väggtext i galleriet – samma papper, guldlinje, versalrad och serif
-   som museiskyltarna under tavlorna, och siffrorna i salnumrens kursiva guld. */
-.vaggtext {
-  padding: 0.5rem 0 0.5rem 1.75rem;
-  border-left: 2px solid #b8913f;
-}
-.vaggtext-rad {
-  display: grid;
-  grid-template-columns: 4.4rem minmax(0, 1fr);
-  align-items: baseline;
-  padding: 1.35rem 0;
-}
-.vaggtext-rad + .vaggtext-rad {
-  border-top: 1px solid var(--line);
-}
-.vaggtext-nr {
-  grid-row: span 2;
-  font-family: var(--font-display);
-  font-size: 2.4rem;
-  font-style: italic;
-  line-height: 0.9;
-  color: #b8913f;
-}
-.vaggtext-rad dt {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-.vaggtext-rad dd {
-  margin-top: 0.35rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
-  line-height: 1.1;
-  color: var(--ink);
-}
-@media (max-width: 1023px) {
-  .sal-tre {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem 1.5rem;
-  }
-  .sal-tre > :nth-child(3n + 2) {
-    margin-top: 0;
-  }
-  .sal-tre > :nth-child(even) {
-    margin-top: 2.5rem;
-  }
-  .caesar {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    max-width: 30rem;
-    margin-inline: auto;
-  }
-}
-@media (max-width: 639px) {
-  .sal {
-    padding-top: 4rem;
-  }
-  .sal-nummer {
-    font-size: 3rem;
-  }
-  .sal-rubrik {
-    column-gap: 0.9rem;
-  }
-  .sal-rubrik .sal-ingress {
-    grid-column: 1 / -1;
-  }
-  .sal-tre {
-    grid-template-columns: 1fr;
-    max-width: 24rem;
-    margin-inline: auto;
-  }
-  .sal-tre > :nth-child(even) {
-    margin-top: 0;
-  }
-  .galleri-ram {
-    border-width: 11px;
-  }
-}
-
-/* Mästarhero på tjänstesidorna (MastarHero.tsx): mästarens målning hänger inramad på
-   museiväggen med ett utställningskort bredvid. På stor skärm är scenen fast medan man
-   scrollar en extra sträcka, och JS skalar tavlan tills ramen gått ut ur bild (--inne 0 → 1).
-   Startläget nedan är samma som JS räknar fram vid 0, så sidan ser rätt ut innan JS kört. */
-.mastar-hero {
-  --scen: calc(100svh - 4.5rem);
-  --inne: 0;
-  position: relative;
-  isolation: isolate;
-  background:
-    radial-gradient(ellipse 60% 70% at 66% 42%, #f6f4ee 0%, transparent 70%), var(--background);
-}
-.mastar-scen {
-  position: relative;
-  overflow: hidden;
-  height: min(56rem, var(--scen));
-  min-height: 38rem;
-}
-.mastar-tavla {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  /* Ramen sitter på själva tavlan (som .tavla på startsidan), inte på ett tomt lager ovanpå:
-     Safari ritade inte border-image på ett tomt element i det skalade lagret. */
-  border-style: solid;
-  border-color: transparent;
-  border-width: 56px 62px 62px 63px;
-  border-image: url("/masterverk/ram-bred.webp") 74 82 82 84 / 1 stretch;
-  background-color: #14100b;
-  transform: translate3d(calc(20vw - 48px), 0, 0) scale(0.6);
-  box-shadow:
-    0 3px 5px rgb(30 20 5 / 0.3),
-    0 40px 70px -24px rgb(40 28 8 / 0.5);
-}
-.mastar-bakgrund {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: 40% 40%;
-  transform: scale(1.04);
-}
-.mastar-figur {
-  position: absolute;
-  right: 5%;
-  bottom: 0;
-  height: 70%;
-  width: auto;
-  max-width: none;
-  transform-origin: 70% 100%;
-}
-/* Inne i tavlan tonas scenens nederkant ut i papperet, så att sidan fortsätter mjukt. */
-.mastar-scen::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 18%;
-  pointer-events: none;
-  opacity: var(--inne);
-  background: linear-gradient(0deg, var(--background), rgb(235 234 230 / 0));
-}
-/* Utställningskortet: platt papper med en tunn förgylld linje – en skylt, inte ett webbkort. */
-.mastar-kort {
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: max(2.5rem, calc(50% - 41rem));
-  width: min(35rem, 41vw);
-  transform: translateY(-50%);
-  padding: 2.4rem 2.6rem 2rem;
-  background-color: #f3f0e7;
-  outline: 1px solid rgb(184 145 63 / 0.55);
-  outline-offset: -10px;
-  box-shadow: 0 18px 36px -22px rgb(30 20 5 / 0.45);
-}
-.mastar-plats {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-.mastar-plats > :last-child {
-  color: #9a7631;
-}
-.mastar-verk {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.2rem 1rem;
-  align-items: baseline;
-  margin-top: 1.8rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgb(16 17 20 / 0.14);
-  font-size: 0.8rem;
-  color: var(--muted-foreground);
-}
-.mastar-person {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  color: var(--ink);
-}
-.mastar-bildtext {
-  grid-column: 1 / -1;
-  font-style: italic;
-}
-/* Låga skärmar (laptops): kortet måste rymmas på höjden. */
-@media (min-width: 1024px) and (max-height: 820px) {
-  .mastar-kort {
-    padding: 1.6rem 2rem 1.4rem;
-  }
-  .mastar-kort h1 {
-    margin-top: 0.9rem;
-    font-size: clamp(2rem, 6.2svh, 3rem);
-  }
-  .mastar-kort h1 + p {
-    margin-top: 0.9rem;
-    font-size: 0.95rem;
-    line-height: 1.55;
-  }
-  .mastar-kort h1 ~ div {
-    margin-top: 1.2rem;
-  }
-  .mastar-verk {
-    margin-top: 1.2rem;
-    padding-top: 0.75rem;
-  }
-}
-/* Stor skärm med rörelse: en extra scrollsträcka medan scenen står fast och man kliver in. */
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-  .mastar-hero {
-    height: calc(min(56rem, var(--scen)) + 70svh);
-  }
-  .mastar-scen {
-    position: sticky;
-    top: 4.5rem;
-  }
-}
-/* Mobil: tavlan hänger överst i full bredd, kortet under. Ingen inzoomning. */
-@media (max-width: 1023px) {
-  .mastar-hero {
-    padding: 1.25rem 1rem 2rem;
-  }
-  .mastar-scen {
-    height: auto;
-    min-height: 0;
-    overflow: visible;
-  }
-  .mastar-tavla {
-    position: relative;
-    inset: auto;
-    aspect-ratio: 1672 / 941;
-    border-width: 22px 24px 24px 25px;
-    transform: none;
-  }
-  .mastar-figur {
-    height: 74%;
-  }
-  .mastar-kort {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: auto;
-    max-width: 40rem;
-    margin: 1.25rem auto 0;
-    transform: none;
-    padding: 1.75rem 1.4rem 1.5rem;
-  }
-}
-
-/* Byggstenarna i galleriets stil (Kort.tsx, Steg.tsx, VanligaFragor.tsx, Prisrutor.tsx):
-   museiskylt i papper med tunn förgylld linje, och mörk ruta i tavlornas guldram. */
-.skylt {
-  background-color: #f3f0e7;
-  outline: 1px solid rgb(184 145 63 / 0.55);
-  outline-offset: -8px;
-  box-shadow: 0 12px 28px -22px rgb(30 20 5 / 0.5);
-}
-/* Mindre rader och listor: papper med en förgylld kant till vänster i stället för en hel ram. */
-/* KortVy: rubrikens storlek följer kortets bredd (cqi), så långa ord som
-   "Karusellannonser" får plats i fem kolumner. */
-.kort-skylt {
-  container-type: inline-size;
-}
-.skylt-liten {
-  background-color: #f3f0e7;
-  border-left: 2px solid #b8913f;
-}
-/* Den markerade skylten (t.ex. rekommenderat val): tjockare guldlinje. */
-.skylt-markerad {
-  outline-width: 2px;
-  outline-color: #b8913f;
-}
-.inramad {
-  border: 18px solid transparent;
-  border-image: url("/masterverk/ram-hog.webp") 84 85 90 82 / 1 stretch;
-  background-color: #14100b;
-  box-shadow:
-    0 2px 3px rgb(30 20 5 / 0.3),
-    0 22px 40px -16px rgb(40 28 8 / 0.45);
-}
-/* Stegen i rad: en guldlinje genom ringarna, bara när de faktiskt står på en rad. */
-@media (min-width: 1280px) {
-  .steg-rad {
-    position: relative;
-  }
-  .steg-rad::before {
-    content: "";
-    position: absolute;
-    top: 1.375rem;
-    left: 1.375rem;
-    /* Slutar i sista ringens mitt: en kolumn (minus mellanrummen) in från höger. */
-    right: calc((100% - 4rem) / 3 - 1.375rem);
-    height: 1px;
-    background-color: rgb(184 145 63 / 0.6);
-  }
-  .steg-rad:has(> li:nth-child(4))::before {
-    right: calc((100% - 6rem) / 4 - 1.375rem);
-  }
-  .steg-rad:has(> li:nth-child(5))::before {
-    right: calc((100% - 8rem) / 5 - 1.375rem);
-  }
-  .steg-ring {
-    position: relative;
-  }
-}
-
-/* Galleriväggen i sidhuvudena: mjukt ljus uppifrån i stället för färgklumpen. */
-.vagg-ljus {
-  background: radial-gradient(ellipse 70% 60% at 70% 0%, rgb(255 250 235 / 0.75), transparent 70%);
 }

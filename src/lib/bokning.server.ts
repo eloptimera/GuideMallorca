@@ -3,16 +3,12 @@
 import { z } from "zod";
 
 const BokningSchema = z.object({
-  /** Företag, namn eller båda – besökaren skriver fritt. */
   namn: z.string().trim().min(1).max(200),
   epost: z.string().trim().email().max(200),
   telefon: z.string().trim().max(40),
-  webbplats: z.string().trim().max(200),
-  tjanster: z.array(z.string().max(60)).max(10),
-  // Längsta nivånamnet är "Extern marknadsavdelning" (24 tecken).
-  paket: z.string().max(40),
+  datum: z.string().trim().max(120),
+  antal: z.string().trim().max(40),
   meddelande: z.string().trim().max(3000),
-  /** Dolt fält som bara robotar fyller i. */
   falla: z.string().max(500),
 });
 
@@ -29,12 +25,11 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
   }
 
   const rader = [
-    `Företag/namn: ${data.namn}`,
+    `Namn: ${data.namn}`,
     `E-post: ${data.epost}`,
     data.telefon && `Telefon: ${data.telefon}`,
-    data.webbplats && `Webbplats: ${data.webbplats}`,
-    data.paket && `Intresserad av: ${data.paket}`,
-    data.tjanster.length > 0 && `Vill ha hjälp med: ${data.tjanster.join(", ")}`,
+    data.datum && `Önskat datum: ${data.datum}`,
+    data.antal && `Antal personer: ${data.antal}`,
     data.meddelande && `\nMeddelande:\n${data.meddelande}`,
   ].filter(Boolean);
 
@@ -42,10 +37,10 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
     method: "POST",
     headers: { Authorization: `Bearer ${nyckel}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env["KONTAKT_FRAN"] ?? "Webbplatsen <onboarding@resend.dev>",
+      from: process.env["KONTAKT_FRAN"] ?? "Guide Mallorca <onboarding@resend.dev>",
       to: till.split(",").map((a) => a.trim()),
       reply_to: data.epost,
-      subject: `Ny bokning av gratis genomgång – ${data.namn}`,
+      subject: `Bokningsförfrågan stadsvandring – ${data.namn}`,
       text: rader.join("\n"),
     }),
   });

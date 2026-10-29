@@ -4,19 +4,19 @@
 //   RESEND_API_KEY  – API-nyckel från Resend
 //   KONTAKT_TILL    – adressen som ska ta emot bokningarna (flera separeras med komma)
 // Valfritt:
-//   KONTAKT_FRAN    – avsändare, t.ex. "Webbplatsen <hej@er-doman.se>" när domänen är
+//   KONTAKT_FRAN    – avsändare, t.ex. "Guide Mallorca <hej@er-doman.se>" när domänen är
 //                     verifierad i Resend. Utan den används Resends testavsändare, som bara
-//                     kan skicka till adressen ert Resend-konto är registrerat på.
+//                     kan skicka till adressen Resend-kontot är registrerat på.
 import { createServerFn } from "@tanstack/react-start";
 
 export type Bokning = {
-  /** Företag, namn eller båda – besökaren skriver fritt. */
   namn: string;
   epost: string;
   telefon: string;
-  webbplats: string;
-  tjanster: string[];
-  paket: string;
+  /** Önskat datum eller period, fritt formulerat. */
+  datum: string;
+  /** Antal personer, som text så att "ca 6" fungerar. */
+  antal: string;
   meddelande: string;
   /** Dolt fält som bara robotar fyller i. */
   falla: string;
