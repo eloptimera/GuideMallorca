@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Bokningsformular } from "@/components/Bokningsformular";
 import { Stadsslinga } from "@/components/Stadsslinga";
+import { SvavandeBild } from "@/components/SvavandeBild";
+import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
 import { sidhuvud } from "@/lib/seo";
 
@@ -31,6 +33,15 @@ const PELARE = [
   },
 ] as const;
 
+// Svaren fyller Caroline i. Lägg inte till FAQ-schema för Google förrän svaren är riktiga.
+const FRAGOR: readonly Fraga[] = [
+  { fraga: "Vilket språk sker guidningen på?", svar: "Caroline får fylla i" },
+  { fraga: "Hur bokar och betalar man?", svar: "Caroline får fylla i" },
+  { fraga: "Vad händer vid dåligt väder?", svar: "Caroline får fylla i" },
+  { fraga: "Är turen tillgänglighetsanpassad?", svar: "Caroline får fylla i" },
+  { fraga: "Vad är avbokningsreglerna?", svar: "Caroline får fylla i" },
+];
+
 function Start() {
   return (
     <>
@@ -39,14 +50,16 @@ function Start() {
       <section className="innehall om" id="om-caroline" aria-labelledby="om-rubrik">
         <div className="innehall__inre om__inre">
           <figure className="om__bild">
-            <img
-              src="/caroline.webp"
-              alt="Caroline Palmstierna, leende med en blombukett"
-              width={800}
-              height={1000}
-              loading="lazy"
-              decoding="async"
-            />
+            <SvavandeBild>
+              <img
+                src="/caroline.webp"
+                alt="Caroline Palmstierna, leende med en blombukett"
+                width={800}
+                height={1000}
+                loading="lazy"
+                decoding="async"
+              />
+            </SvavandeBild>
           </figure>
           <div>
             <p className="overrad">Din guide</p>
@@ -114,6 +127,16 @@ function Start() {
         </div>
       </section>
 
+      <section className="innehall fragor" id="fragor" aria-labelledby="fragor-rubrik">
+        <div className="innehall__inre fragor__inre">
+          <div>
+            <p className="overrad">Vanliga frågor</p>
+            <h2 id="fragor-rubrik">Bra att veta</h2>
+          </div>
+          <VanligaFragor fragor={FRAGOR} />
+        </div>
+      </section>
+
       <section className="innehall boka" id="boka" aria-labelledby="boka-rubrik">
         <div className="innehall__inre boka__inre">
           <div>
@@ -139,25 +162,49 @@ function Start() {
       </section>
 
       <footer className="sidfot">
-        <p>{FORETAG.namn} · Stadsvandringar i Palma med Caroline Palmstierna</p>
-        <p>
-          <a href={`mailto:${FORETAG.epost}`}>{FORETAG.epost}</a> ·{" "}
-          <a href={`tel:${FORETAG.telefonLank}`}>{FORETAG.telefon}</a>
-        </p>
-        <p className="sidfot__kalla">
-          Kartdata © OpenStreetMap-bidragsgivare · OpenMapTiles · OpenFreeMap
-        </p>
-        <a
-          className="sidfot__tab"
-          href="https://www.treatlymarketing.se"
-          target="_blank"
-          rel="noopener"
-          aria-label="Made by Tab Marketing"
-        >
-          <span>Made by</span>
-          <img src="/tab-marketing.png" alt="Tab" width={108} height={72} loading="lazy" />
-          <span>Marketing</span>
-        </a>
+        <div className="sidfot__kort">
+          <div className="sidfot__topp">
+            <div className="sidfot__presentation">
+              <p className="sidfot__namn">Caroline Palmstierna</p>
+              <p className="sidfot__text">
+                Guidade stadsvandringar i Palma – historia, nutid och politik bortom turiststråken.
+              </p>
+              <a className="sidfot__knapp" href="#boka">
+                Boka en vandring <span aria-hidden="true">→</span>
+              </a>
+            </div>
+            <nav className="sidfot__kolumn" aria-label="Sidor">
+              <p className="sidfot__etikett">Sidor</p>
+              <a href="#">Rutten</a>
+              <a href="#om-caroline">Om Caroline</a>
+              <a href="#stadsvandringar">Stadsvandringarna</a>
+              <a href="#praktiskt">Praktiskt</a>
+              <a href="#fragor">Vanliga frågor</a>
+              <a href="#boka">Boka</a>
+            </nav>
+            <div className="sidfot__kolumn">
+              <p className="sidfot__etikett">Kontakt</p>
+              <a href={`mailto:${FORETAG.epost}`}>{FORETAG.epost}</a>
+              <a href={`tel:${FORETAG.telefonLank}`}>{FORETAG.telefon}</a>
+              <p className="sidfot__ort">{FORETAG.ort}</p>
+            </div>
+          </div>
+          <div className="sidfot__botten">
+            <p>
+              © {new Date().getFullYear()} {FORETAG.namn} · Kartdata © OpenStreetMap-bidragsgivare
+            </p>
+            <a
+              className="sidfot__tab"
+              href="https://www.treatlymarketing.se"
+              target="_blank"
+              rel="noopener"
+            >
+              <span>Hemsidan är byggd och administrerad av</span>
+              <img src="/tab-marketing.png" alt="Tab" width={108} height={72} loading="lazy" />
+              <span className="sidfot__tab-namn">Marketing</span>
+            </a>
+          </div>
+        </div>
       </footer>
     </>
   );
