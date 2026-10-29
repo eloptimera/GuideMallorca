@@ -122,6 +122,17 @@ function Start() {
             <p className="ingress">
               Berätta när ni vill gå och hur många ni är, så återkommer Caroline med förslag.
             </p>
+            <div className="kontakt">
+              <p className="kontakt__rubrik">Eller hör av dig direkt</p>
+              <a className="kontakt__rad" href={`mailto:${FORETAG.epost}`}>
+                <span className="kontakt__etikett">E-post</span>
+                {FORETAG.epost}
+              </a>
+              <a className="kontakt__rad" href={`tel:${FORETAG.telefonLank}`}>
+                <span className="kontakt__etikett">Telefon</span>
+                {FORETAG.telefon}
+              </a>
+            </div>
           </div>
           <Bokningsformular />
         </div>
@@ -129,6 +140,10 @@ function Start() {
 
       <footer className="sidfot">
         <p>{FORETAG.namn} · Stadsvandringar i Palma med Caroline Palmstierna</p>
+        <p>
+          <a href={`mailto:${FORETAG.epost}`}>{FORETAG.epost}</a> ·{" "}
+          <a href={`tel:${FORETAG.telefonLank}`}>{FORETAG.telefon}</a>
+        </p>
         <p className="sidfot__kalla">
           Kartdata © OpenStreetMap-bidragsgivare · OpenMapTiles · OpenFreeMap
         </p>

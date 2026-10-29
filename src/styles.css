@@ -507,8 +507,43 @@
 
 /* ---------- Innehållet efter slingan ---------- */
 
+/* Sektionerna efter kartan. --overgang är hur lång den mjuka toningen från föregående
+   sektion är; den ligger i föregående sektions nedre luft, så den täcker aldrig innehåll. */
+.innehall,
+.sidfot {
+  --overgang: clamp(56px, 7vw, 96px);
+  position: relative;
+}
+
 .innehall {
-  padding: clamp(72px, 12vw, 160px) 16px;
+  padding: clamp(56px, 7.5vw, 104px) 16px;
+}
+
+/* Toning: från genomskinligt till sektionens egen färg, ovanför sektionen. */
+.innehall::before,
+.sidfot::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: var(--overgang);
+  background: linear-gradient(to bottom, transparent, var(--sektion-bg));
+  pointer-events: none;
+}
+
+/* Från kartan: längre och mjukare toning, som när en bild bleknar ut. */
+.slinga + .innehall {
+  --overgang: clamp(120px, 18vh, 200px);
+}
+
+.slinga + .innehall::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(247, 240, 227, 0),
+    rgba(247, 240, 227, 0.55) 45%,
+    var(--sektion-bg)
+  );
 }
 
 .innehall__inre {
@@ -530,7 +565,14 @@
 }
 
 .om {
-  background: var(--card);
+  --sektion-bg: var(--card);
+  background: var(--sektion-bg);
+}
+
+.vandringar,
+.boka {
+  --sektion-bg: var(--sand);
+  background: var(--sektion-bg);
 }
 
 .om__inre {
@@ -570,7 +612,7 @@
 }
 
 .om__text {
-  margin-top: 2.2rem;
+  margin-top: 1.6rem;
   font-size: 1.05rem;
   line-height: 1.7;
 }
@@ -581,7 +623,7 @@
 }
 
 .pelare {
-  margin: 3rem 0 0;
+  margin: 2.25rem 0 0;
   padding: 0;
   list-style: none;
   display: grid;
@@ -607,8 +649,21 @@
 }
 
 .praktiskt {
-  background: var(--ink);
+  --sektion-bg: var(--ink);
+  /* Längre toning mellan ljust och mörkt: sektionen före får lika mycket luft nertill. */
+  --overgang: clamp(88px, 11vw, 150px);
+  background: var(--sektion-bg);
   color: var(--sand);
+}
+
+/* Mörkt till ljust: bokningen tonar in över den mörka sektionens nedre luft. */
+.praktiskt + .boka {
+  --overgang: clamp(88px, 11vw, 150px);
+}
+
+.vandringar,
+.praktiskt {
+  padding-bottom: clamp(88px, 11vw, 150px);
 }
 
 .praktiskt .overrad {
@@ -727,11 +782,65 @@
 }
 
 .sidfot {
-  padding: 2.5rem 16px 3rem;
+  --sektion-bg: var(--sand-mork);
+  --overgang: 64px;
+  padding: 2.25rem 16px 2.75rem;
   text-align: center;
   font-size: 0.9rem;
   color: var(--muted-foreground);
+  background: var(--sektion-bg);
+}
+
+.sidfot a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.sidfot a:hover {
+  color: var(--bla);
+}
+
+/* ---------- Kontakt ---------- */
+
+.kontakt {
+  margin-top: 2rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.kontakt__rubrik {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.kontakt__rad {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.7rem 0;
   border-top: 1px solid var(--border);
+  color: var(--ink);
+  font-size: 1.1rem;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.kontakt__rad:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.kontakt__rad:hover {
+  color: var(--bla);
+}
+
+.kontakt__etikett {
+  flex: 0 0 4.5rem;
+  font-size: 0.78rem;
+  color: var(--muted-foreground);
 }
 
 .sidfot p {

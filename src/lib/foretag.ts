@@ -9,12 +9,20 @@ export const FORETAG: {
   beskrivning: string;
   /** Platsen guiden handlar om. */
   ort: string;
+  /** Carolines kontaktuppgifter. */
+  epost: string;
+  telefon: string;
+  /** Telefonnumret för tel:-länkar, utan mellanslag. */
+  telefonLank: string;
 } = {
   namn: "Guide Mallorca",
   kortnamn: "Guide Mallorca",
   beskrivning:
     "Guidade stadsvandringar i Palma de Mallorca med journalisten och Spanienexperten Caroline Palmstierna – historia, nutid och politik bortom turiststråken.",
   ort: "Palma de Mallorca",
+  epost: "caroline@shootforthemoon.se",
+  telefon: "+46 70-726 87 78",
+  telefonLank: "+46707268778",
 };
 
 declare const __SAJT_URL__: string;

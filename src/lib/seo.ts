@@ -67,5 +67,12 @@ export function grundSchema(): Schema {
     url: absolut("/"),
     inLanguage: "sv-SE",
     about: { "@type": "City", name: FORETAG.ort },
+    author: {
+      "@type": "Person",
+      name: "Caroline Palmstierna",
+      jobTitle: "Journalist och guide",
+      email: FORETAG.epost,
+      telephone: FORETAG.telefonLank,
+    },
   };
 }
