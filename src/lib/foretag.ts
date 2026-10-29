@@ -12,7 +12,8 @@ export const FORETAG: {
 } = {
   namn: "Guide Mallorca",
   kortnamn: "Guide Mallorca",
-  beskrivning: "En guide till Palma de Mallorca – platserna, gatorna och katedralen La Seu.",
+  beskrivning:
+    "Guidade stadsvandringar i Palma de Mallorca med journalisten och Spanienexperten Caroline Palmstierna – historia, nutid och politik bortom turiststråken.",
   ort: "Palma de Mallorca",
 };
 

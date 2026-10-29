@@ -45,7 +45,7 @@ export function sidhuvud({
       { property: "og:image:height", content: String(DELNINGSBILD.hojd) },
       {
         property: "og:image:alt",
-        content: bild?.alt ?? "Flygbild över Palma de Mallorca med katedralen La Seu",
+        content: bild?.alt ?? "Palma de Mallorca från ovan",
       },
     ],
     links: [{ rel: "canonical", href: url }],

@@ -3,13 +3,14 @@
 @import "tw-animate-css";
 @import "@fontsource-variable/bodoni-moda/wght.css";
 @import "@fontsource-variable/dm-sans/wght.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
 
 @custom-variant dark (&:is(.dark *));
 
 /*
  * Designsystem – Guide Mallorca
- * Mörk, filmisk grund (svart) med elfenbensfärgad text. Rubriker i Bodoni Moda, brödtext i
- * DM Sans. Sandsten (--sten) är accentfärgen, hämtad från katedralens fasad.
+ * Varm sandstensgrund (samma som kartan), mörk bläckfärgad text och en blå accent som är
+ * pluppens färg. Rubriker i Bodoni Moda, brödtext i DM Sans.
  */
 
 @theme inline {
@@ -40,35 +41,37 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ink: var(--ink);
-  --color-elfenben: var(--elfenben);
-  --color-sten: var(--sten);
+  --color-sand: var(--sand);
+  --color-bla: var(--bla);
 }
 
 :root {
-  color-scheme: dark;
-  --radius: 1.25rem;
-  --ink: #000000;
-  --elfenben: #f6efe4;
-  --sten: #d8c3a0;
-  --background: #000000;
-  --foreground: #f6efe4;
-  --card: #0e0d0c;
-  --card-foreground: #f6efe4;
-  --popover: #0e0d0c;
-  --popover-foreground: #f6efe4;
-  --primary: var(--sten);
-  --primary-foreground: #000000;
-  --secondary: #1a1816;
-  --secondary-foreground: #f6efe4;
-  --muted: #1a1816;
-  --muted-foreground: rgba(246, 239, 228, 0.66);
-  --accent: var(--sten);
-  --accent-foreground: #000000;
-  --destructive: #e5484d;
+  color-scheme: light;
+  --radius: 1rem;
+  --ink: #1d1a16;
+  --sand: #efe5d3;
+  --sand-mork: #e4d6bd;
+  --bla: #1f62ff;
+  --bla-mork: #1748c2;
+  --background: var(--sand);
+  --foreground: var(--ink);
+  --card: #f7f0e3;
+  --card-foreground: var(--ink);
+  --popover: #f7f0e3;
+  --popover-foreground: var(--ink);
+  --primary: var(--bla);
+  --primary-foreground: #ffffff;
+  --secondary: var(--sand-mork);
+  --secondary-foreground: var(--ink);
+  --muted: var(--sand-mork);
+  --muted-foreground: #5d554a;
+  --accent: var(--bla);
+  --accent-foreground: #ffffff;
+  --destructive: #b42318;
   --destructive-foreground: #ffffff;
-  --border: #2a2724;
-  --input: #2a2724;
-  --ring: var(--sten);
+  --border: #d6c6a8;
+  --input: #cdbb9a;
+  --ring: var(--bla);
 }
 
 @layer base {
@@ -105,7 +108,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--sten);
+    outline: 2px solid var(--bla);
     outline-offset: 3px;
   }
 }
@@ -127,136 +130,165 @@
     background-color 200ms ease,
     color 200ms ease,
     border-color 200ms ease;
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
-/* Ljus pill – huvudknapp på den mörka grunden */
 @utility btn-dark {
-  background-color: var(--elfenben);
-  color: var(--ink);
+  background-color: var(--ink);
+  color: var(--sand);
   &:hover {
-    background-color: var(--sten);
+    background-color: #3a342c;
+  }
+}
+
+@utility btn-bla {
+  background-color: var(--bla);
+  color: #fff;
+  &:hover {
+    background-color: var(--bla-mork);
   }
 }
 
 @utility btn-outline {
-  border: 1px solid rgb(246 239 228 / 0.5);
-  color: var(--elfenben);
+  border: 1px solid var(--ink);
+  color: var(--ink);
   &:hover {
-    background-color: var(--elfenben);
-    color: var(--ink);
+    background-color: var(--ink);
+    color: var(--sand);
   }
 }
 
-/* ---------- Drönarflygningen (src/components/Dronarflygning.tsx) ---------- */
+/* ---------- Stadsslingan (src/components/Stadsslinga.tsx) ---------- */
 
-.flight {
+.slinga {
   position: relative;
-  /* Längden på flygningen. Mer höjd = långsammare, lugnare flygning. */
-  height: 620vh;
+  /* Hur länge man scrollar genom slingan. Mer höjd = lugnare tempo. */
+  height: 700vh;
 }
 
-.flight__stage {
+.slinga__scen {
   position: sticky;
   top: 0;
   height: 100vh;
   height: 100lvh;
   width: 100%;
   overflow: hidden;
-  background: #000;
+  background: var(--sand);
 }
 
-.flight__poster,
-.flight__canvas,
-.flight__haze,
-.flight__vignette,
-.flight__black {
+.slinga__karta,
+.slinga__spar,
+.slinga__ton {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.flight__poster {
-  object-fit: cover;
-  object-position: 50% 50%;
-  transition: opacity 0.6s ease;
-}
-
-.flight__canvas {
-  display: block;
-}
-
-.flight[data-ready] .flight__poster {
+.slinga__karta {
   opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
-.flight__haze {
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 90% 70% at 55% 35%,
-    rgba(255, 244, 226, 0.95),
-    rgba(255, 236, 210, 0.55) 60%,
-    rgba(255, 232, 205, 0.35)
-  );
-  mix-blend-mode: screen;
-  opacity: var(--haze, 0);
+.slinga[data-karta] .slinga__karta {
+  opacity: 1;
 }
 
-.flight__vignette {
+.slinga__spar,
+.slinga__ton {
   pointer-events: none;
+}
+
+/* Mjuk ljus ram så att texten alltid går att läsa mot kartan. */
+.slinga__ton {
   background:
-    radial-gradient(ellipse 120% 95% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.38) 100%),
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.28),
-      transparent 26%,
-      transparent 78%,
-      rgba(0, 0, 0, 0.32)
-    );
-  opacity: var(--vignette, 1);
+    linear-gradient(to bottom, rgba(239, 229, 211, 0.92), rgba(239, 229, 211, 0) 34%),
+    linear-gradient(to top, rgba(239, 229, 211, 0.85), rgba(239, 229, 211, 0) 30%);
 }
 
-.flight__black {
-  pointer-events: none;
-  background: #000;
-  opacity: var(--black-o, 0);
+.slinga .maplibregl-ctrl-attrib {
+  font-size: 10px;
+  background: rgba(239, 229, 211, 0.75);
 }
 
-.flight__hero {
+.slinga__hero {
   position: absolute;
   left: 0;
   right: 0;
-  top: clamp(72px, 13vh, 140px);
+  top: clamp(64px, 12vh, 132px);
   padding: 0 16px;
   text-align: center;
   opacity: var(--hero-o, 1);
-  transform: translateY(var(--hero-y, 0px));
-  will-change: opacity, transform;
   pointer-events: none;
-  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
 }
 
-.flight__eyebrow {
-  margin: 0 0 0.7rem;
-  font-size: clamp(0.72rem, 0.9vw, 0.82rem);
-  letter-spacing: 0.32em;
+.overrad,
+.slinga__overrad {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(246, 239, 228, 0.78);
+  color: var(--bla);
 }
 
-.flight__title {
+.slinga__rubrik {
   margin: 0;
-  font-size: clamp(2.8rem, 8vw, 7.5rem);
-  line-height: 0.95;
+  font-size: clamp(2.6rem, 7.4vw, 6.6rem);
+  line-height: 0.98;
 }
 
-.flight__title em {
+.slinga__underrad {
+  margin: 1.1rem 0 0;
+  font-family: var(--font-display);
   font-style: italic;
-  font-size: 0.7em;
-  color: rgba(246, 239, 228, 0.78);
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  color: var(--muted-foreground);
 }
 
-.flight__cue {
+.slinga__kapitellista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slinga__kapitel {
+  position: absolute;
+  left: clamp(16px, 5vw, 72px);
+  bottom: clamp(28px, 8vh, 88px);
+  width: min(440px, calc(100% - 32px));
+  padding: 1.4rem 1.5rem 1.5rem;
+  border-radius: 1rem;
+  background: rgba(247, 240, 227, 0.94);
+  box-shadow:
+    0 1px 0 rgba(29, 26, 22, 0.06),
+    0 18px 40px -18px rgba(29, 26, 22, 0.35);
+  will-change: opacity, transform;
+}
+
+.slinga__kapitel h2 {
+  margin: 0.35rem 0 0.5rem;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+}
+
+.slinga__kapitel p {
+  margin: 0;
+  line-height: 1.5;
+  color: #4a4339;
+}
+
+.slinga__nummer,
+.pelare__nummer {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--bla);
+}
+
+.slinga__ledtrad {
   position: absolute;
   left: 50%;
   bottom: max(28px, env(safe-area-inset-bottom));
@@ -268,49 +300,249 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(246, 239, 228, 0.78);
   white-space: nowrap;
-  opacity: var(--cue-o, 1);
+  color: var(--muted-foreground);
+  opacity: var(--hero-o, 1);
   pointer-events: none;
 }
 
-.flight__cue i {
+.slinga__ledtrad i {
   position: relative;
   width: 1px;
   height: 44px;
-  background: rgba(246, 239, 228, 0.25);
+  background: rgba(29, 26, 22, 0.18);
   overflow: hidden;
 }
 
-.flight__cue i::after {
+.slinga__ledtrad i::after {
   content: "";
   position: absolute;
   left: 0;
   top: -40%;
   width: 100%;
   height: 40%;
-  background: var(--elfenben);
-  animation: flight-cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  background: var(--bla);
+  animation: ledtrad 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
-@keyframes flight-cue {
+@keyframes ledtrad {
   to {
     top: 100%;
   }
 }
 
-/* Sidan innanför huvudentrén. Svart tills vidare. */
-.inside {
-  min-height: 100vh;
-  background: #000;
+/* ---------- Innehållet efter slingan ---------- */
+
+.innehall {
+  padding: clamp(72px, 12vw, 160px) 16px;
+}
+
+.innehall__inre {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.innehall h2 {
+  margin: 0;
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+}
+
+.ingress {
+  margin: 1.2rem 0 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  max-width: 34ch;
+}
+
+.om {
+  background: var(--card);
+}
+
+.om__inre {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.om__text {
+  margin-top: 2.2rem;
+  columns: 2 280px;
+  column-gap: 3rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.om__text p {
+  margin: 0 0 1rem;
+  break-inside: avoid;
+}
+
+.pelare {
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.pelare li {
+  padding: 1.75rem 1.6rem 1.9rem;
+  border-top: 2px solid var(--ink);
+  background: rgba(247, 240, 227, 0.6);
+}
+
+.pelare h3 {
+  margin: 0.8rem 0 0.7rem;
+  font-size: 1.75rem;
+}
+
+.pelare p {
+  margin: 0;
+  line-height: 1.6;
+  color: #4a4339;
+}
+
+.praktiskt {
+  background: var(--ink);
+  color: var(--sand);
+}
+
+.praktiskt .overrad {
+  color: #8fb0ff;
+}
+
+.praktiskt__inre,
+.boka__inre {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.fakta {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.fakta div {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(239, 229, 211, 0.2);
+}
+
+.fakta div:first-child {
+  border-top: 1px solid rgba(239, 229, 211, 0.2);
+}
+
+.fakta dt {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(239, 229, 211, 0.6);
+}
+
+.fakta dd {
+  margin: 0.4rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+/* ---------- Bokning ---------- */
+
+.bokning {
+  display: grid;
+  gap: 1rem;
+}
+
+.bokning__rad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.bokning__rad--tre {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.bokning label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.bokning label em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.bokning input,
+.bokning textarea {
+  width: 100%;
+  border: 1px solid var(--input);
+  border-radius: 0.6rem;
+  background: #fbf7ef;
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.bokning input:focus,
+.bokning textarea:focus {
+  outline: 2px solid var(--bla);
+  outline-offset: 0;
+  border-color: transparent;
+}
+
+.bokning__falla {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.bokning__fot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.bokning__fel {
+  margin: 0;
+  color: var(--destructive);
+}
+
+.bokning__klart h3 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.sidfot {
+  padding: 2.5rem 16px 3rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  border-top: 1px solid var(--border);
+}
+
+.sidfot p {
+  margin: 0.3rem 0;
+}
+
+.sidfot__kalla {
+  font-size: 0.78rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flight__cue i::after {
+  .slinga__ledtrad i::after {
     animation: none;
     top: 30%;
-  }
-  .flight__poster {
-    transition: none;
   }
 }
