@@ -1663,3 +1663,37 @@
     top: 30%;
   }
 }
+
+/* ---------- TV och dokumentär (mörk, återanvänder .praktiskt) ---------- */
+
+.tv .ingress.tv__ingress {
+  max-width: 46ch;
+  color: rgba(239, 229, 211, 0.72);
+}
+
+.tv__dokumentar {
+  margin-top: 2rem;
+  padding: 1.4rem 1.5rem 1.5rem;
+  border-radius: 18px;
+  border: 1px solid rgba(239, 229, 211, 0.18);
+  background: rgba(239, 229, 211, 0.05);
+}
+
+.tv__dokumentar .tv__etikett {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8fb0ff;
+}
+
+.tv__dokumentar h3 {
+  margin: 0.5rem 0 0.6rem;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+}
+
+.tv__dokumentar p:last-child {
+  margin: 0;
+  line-height: 1.6;
+  color: rgba(239, 229, 211, 0.8);
+}

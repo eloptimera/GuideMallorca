@@ -66,8 +66,16 @@ type Texter = {
     overrad: string;
     ingress: string;
     roller: readonly string[];
-    text: [string, string];
+    text: readonly string[];
     bildAlt: string;
+  };
+  tv: {
+    overrad: string;
+    rubrik: string;
+    ingress: string;
+    fakta: readonly { etikett: string; text: string }[];
+    dokumentarEtikett: string;
+    dokumentarText: string;
   };
   blogg: { overrad: string; rubrik: string; ingress: string; exempel: string };
   fragor: {
@@ -179,10 +187,34 @@ const SV: Texter = {
     ingress: "Journalist, TV-konsult, historieälskare och Spanienexpert – bosatt på Mallorca.",
     roller: ["Journalist", "TV-konsult", "Historieälskare", "Spanienexpert"],
     text: [
-      "Caroline är svensk journalist med djup förankring i det spanska och mallorcanska samhället. Hon arbetar som TV-konsult, leder boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
+      "Caroline har arbetat med tv och journalistik i hela sitt yrkesliv – på MTV, STRIX och CNN, som redaktör för Stina Dabrowskis intervjuprogram, hos dokumentärfilmaren Folke Rydén och som programledare och journalist i Spanien.",
+      "I dag bor hon på Mallorca, där hon leder boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
       "Genom Shoot for the Moon delar hon sin passion för Spaniens historia, politik och kultur med alla som är nyfikna – och är den som kan förklara varför saker är som de är.",
     ],
     bildAlt: "Caroline Palmstierna, leende med en blombukett",
+  },
+  tv: {
+    overrad: "Shoot for the Moon",
+    rubrik: "TV och dokumentär",
+    ingress:
+      "Shoot for the Moon är också Carolines oberoende produktionsbolag. Bolaget utvecklar och producerar tv-serier och dokumentärer, och är konsult åt skandinaviska tv-producenter och internationella distributörer som söker samproduktioner inom drama och dokumentär.",
+    fakta: [
+      {
+        etikett: "Erfarenhet",
+        text: "Omkring tio år av att utveckla, finansiera, sälja och lansera svenska och danska tv-serier.",
+      },
+      {
+        etikett: "Filmlance International",
+        text: "Som försäljningschef ansvarade Caroline för den internationella lanseringen och finansieringen av Bron, Arne Dahl och Morden i Sandhamn.",
+      },
+      {
+        etikett: "Uppdragsgivare",
+        text: "Skandinaviska tv-bolag och produktionsbolag samt internationella produktions- och distributionsbolag i Belgien, Nederländerna, Storbritannien och Island.",
+      },
+    ],
+    dokumentarEtikett: "Dokumentär",
+    dokumentarText:
+      "Om hur skandinavisk tv-dramatik erövrade världen – med bland andra Sofia Helin, Sidse Babett Knudsen, Krister Henriksson och Sofie Gråböl. Shoot for the Moon står för produktion, utveckling, finansiering och världsförsäljning.",
   },
   blogg: {
     overrad: "Från Mallorca",
@@ -240,6 +272,7 @@ const SV: Texter = {
       ["#rundvandring", "Rundvandring"],
       ["#kommande", "Kommande aktiviteter"],
       ["#om-caroline", "Om Caroline"],
+      ["#tv", "TV och dokumentär"],
       ["#anteckningar", "Anteckningar"],
       ["#kontakt", "Kontakt"],
     ],
@@ -317,10 +350,34 @@ const EN: Texter = {
     ingress: "Journalist, TV consultant, history lover and Spain expert – based in Mallorca.",
     roller: ["Journalist", "TV consultant", "History lover", "Spain expert"],
     text: [
-      "Caroline is a Swedish journalist deeply rooted in Spanish and Mallorcan society. She works as a TV consultant, hosts book talks, gives lectures and works with networks such as SWEA Mallorca.",
+      "Caroline has worked in television and journalism throughout her career – at MTV, STRIX and CNN, as editor of Stina Dabrowski's interview programmes, with documentary maker Folke Rydén, and as a TV host and journalist in Spain.",
+      "Today she lives in Mallorca, where she hosts book talks, gives lectures and works with networks such as SWEA Mallorca.",
       "Through Shoot for the Moon she shares her passion for Spanish history, politics and culture with anyone who is curious – and she is the one who can explain why things are the way they are.",
     ],
     bildAlt: "Caroline Palmstierna, smiling with a bouquet of flowers",
+  },
+  tv: {
+    overrad: "Shoot for the Moon",
+    rubrik: "TV and documentary",
+    ingress:
+      "Shoot for the Moon is also Caroline's independent production company. It develops and produces TV series and documentaries, and consults for Scandinavian TV producers and international distributors looking for drama and documentary co-productions.",
+    fakta: [
+      {
+        etikett: "Experience",
+        text: "Around ten years of developing, financing, selling and launching Swedish and Danish TV series.",
+      },
+      {
+        etikett: "Filmlance International",
+        text: "As Director of Sales, Caroline handled the international launch and financing of The Bridge, Arne Dahl and Murder in Sandhamn.",
+      },
+      {
+        etikett: "Clients",
+        text: "Scandinavian broadcasters and production companies, and international production and distribution companies in Belgium, the Netherlands, Great Britain and Iceland.",
+      },
+    ],
+    dokumentarEtikett: "Documentary",
+    dokumentarText:
+      "How Scandinavian TV drama conquered the world – featuring Sofia Helin, Sidse Babett Knudsen, Krister Henriksson and Sofie Gråböl, among others. Shoot for the Moon handles production, development, financing and worldwide sales.",
   },
   blogg: {
     overrad: "From Mallorca",
@@ -378,6 +435,7 @@ const EN: Texter = {
       ["#rundvandring", "Walk"],
       ["#kommande", "Upcoming events"],
       ["#om-caroline", "About Caroline"],
+      ["#tv", "TV and documentary"],
       ["#anteckningar", "Notes"],
       ["#kontakt", "Contact"],
     ],
@@ -455,10 +513,34 @@ const ES: Texter = {
       "Periodista, consultora de televisión, apasionada de la historia y experta en España, afincada en Mallorca.",
     roller: ["Periodista", "Consultora de TV", "Apasionada de la historia", "Experta en España"],
     text: [
-      "Caroline es una periodista sueca profundamente arraigada en la sociedad española y mallorquina. Trabaja como consultora de televisión, modera presentaciones de libros, da conferencias y colabora con redes como SWEA Mallorca.",
+      "Caroline ha trabajado en televisión y periodismo durante toda su carrera: en MTV, STRIX y CNN, como editora de los programas de entrevistas de Stina Dabrowski, con el documentalista Folke Rydén y como presentadora y periodista en España.",
+      "Hoy vive en Mallorca, donde modera presentaciones de libros, da conferencias y colabora con redes como SWEA Mallorca.",
       "Con Shoot for the Moon comparte su pasión por la historia, la política y la cultura de España con cualquiera que sienta curiosidad, y sabe explicar por qué las cosas son como son.",
     ],
     bildAlt: "Caroline Palmstierna, sonriente con un ramo de flores",
+  },
+  tv: {
+    overrad: "Shoot for the Moon",
+    rubrik: "Televisión y documental",
+    ingress:
+      "Shoot for the Moon es también la productora independiente de Caroline. Desarrolla y produce series y documentales, y asesora a productoras de televisión escandinavas y a distribuidores internacionales que buscan coproducciones de drama y documental.",
+    fakta: [
+      {
+        etikett: "Experiencia",
+        text: "Unos diez años desarrollando, financiando, vendiendo y lanzando series de televisión suecas y danesas.",
+      },
+      {
+        etikett: "Filmlance International",
+        text: "Como directora de ventas, Caroline se encargó del lanzamiento internacional y la financiación de El Puente, Arne Dahl y Los crímenes de Sandhamn.",
+      },
+      {
+        etikett: "Clientes",
+        text: "Cadenas y productoras escandinavas, y productoras y distribuidoras internacionales de Bélgica, los Países Bajos, Gran Bretaña e Islandia.",
+      },
+    ],
+    dokumentarEtikett: "Documental",
+    dokumentarText:
+      "Cómo el drama televisivo escandinavo conquistó el mundo, con Sofia Helin, Sidse Babett Knudsen, Krister Henriksson y Sofie Gråböl, entre otros. Shoot for the Moon se encarga de la producción, el desarrollo, la financiación y las ventas internacionales.",
   },
   blogg: {
     overrad: "Desde Mallorca",
@@ -516,6 +598,7 @@ const ES: Texter = {
       ["#rundvandring", "Paseo"],
       ["#kommande", "Próximas actividades"],
       ["#om-caroline", "Sobre Caroline"],
+      ["#tv", "Televisión y documental"],
       ["#anteckningar", "Apuntes"],
       ["#kontakt", "Contacto"],
     ],

@@ -8,7 +8,8 @@ import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
 
 // Hela startsidan på ett språk. Routerna /, /en och /es renderar den här med sitt språk.
 // Ordning när man scrollar: Shoot for the Moon → erbjudandena (Stand Up History, film,
-// museum) → rundvandringen med kartan → kommande aktiviteter → om Caroline → anteckningar
+// museum) → rundvandringen med kartan → kommande aktiviteter → om Caroline → tv och
+// dokumentär (Shoot for the Moon som produktionsbolag) → anteckningar
 // (bloggen) → frågor → kontakt.
 // Texterna ligger i src/lib/sprak.ts, aktiviteter och inlägg i src/lib/innehall.ts.
 // Svaren på de vanliga frågorna fyller Caroline i. Lägg inte till FAQ-schema för Google förrän
@@ -127,10 +128,34 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
               ))}
             </ul>
             <div className="om__text">
-              <p>{t.om.text[0]}</p>
-              <p>{t.om.text[1]}</p>
+              {t.om.text.map((stycke) => (
+                <p key={stycke}>{stycke}</p>
+              ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="innehall praktiskt tv" id="tv" aria-labelledby="tv-rubrik">
+        <div className="innehall__inre praktiskt__inre">
+          <div>
+            <p className="overrad">{t.tv.overrad}</p>
+            <h2 id="tv-rubrik">{t.tv.rubrik}</h2>
+            <p className="ingress tv__ingress">{t.tv.ingress}</p>
+            <div className="tv__dokumentar">
+              <p className="tv__etikett">{t.tv.dokumentarEtikett}</p>
+              <h3>Nordic Noir: The Rise of Scandi Drama</h3>
+              <p>{t.tv.dokumentarText}</p>
+            </div>
+          </div>
+          <dl className="fakta">
+            {t.tv.fakta.map((f) => (
+              <div key={f.etikett}>
+                <dt>{f.etikett}</dt>
+                <dd>{f.text}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
