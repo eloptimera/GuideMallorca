@@ -23,7 +23,7 @@ const SMAL = 760;
 /** Tröghet i sekunder. */
 const TROGHET = 0.1;
 
-const BLA = "#1f62ff";
+const BLA = "#0593c6";
 
 /** Kostnad per gatuklass i OpenMapTiles. Saknas klassen går rutten inte där. */
 const GATUVIKT: Record<string, number> = {
@@ -45,13 +45,13 @@ export const KARTSTIL: StyleSpecification = {
     omt: { type: "vector", url: "https://tiles.openfreemap.org/planet" },
   },
   layers: [
-    { id: "bakgrund", type: "background", paint: { "background-color": "#efe5d3" } },
+    { id: "bakgrund", type: "background", paint: { "background-color": "#f3f8fa" } },
     {
       id: "gront",
       type: "fill",
       source: "omt",
       "source-layer": "park",
-      paint: { "fill-color": "#dcdcc0" },
+      paint: { "fill-color": "#dfeadf" },
     },
     {
       id: "vegetation",
@@ -59,21 +59,21 @@ export const KARTSTIL: StyleSpecification = {
       source: "omt",
       "source-layer": "landcover",
       filter: ["in", ["get", "class"], ["literal", ["grass", "wood", "farmland"]]],
-      paint: { "fill-color": "#dcdcc0", "fill-opacity": 0.8 },
+      paint: { "fill-color": "#dfeadf", "fill-opacity": 0.8 },
     },
     {
       id: "vatten",
       type: "fill",
       source: "omt",
       "source-layer": "water",
-      paint: { "fill-color": "#9cc6c8" },
+      paint: { "fill-color": "#a6d6e8" },
     },
     {
       id: "hus",
       type: "fill",
       source: "omt",
       "source-layer": "building",
-      paint: { "fill-color": "#e2d0b2", "fill-outline-color": "#d3bc98" },
+      paint: { "fill-color": "#e2ebf0", "fill-outline-color": "#cddae2" },
     },
     {
       id: "gator-stora",
@@ -491,8 +491,8 @@ export function startaSlinga(sektion: HTMLElement): () => void {
       const klar = avklarad[i];
       ctx!.beginPath();
       ctx!.arc(q.x, q.y, 11, 0, Math.PI * 2);
-      ctx!.fillStyle = klar ? BLA : "#fffaf1";
-      ctx!.shadowColor = "rgba(29,26,22,0.25)";
+      ctx!.fillStyle = klar ? BLA : "#ffffff";
+      ctx!.shadowColor = "rgba(18,28,43,0.25)";
       ctx!.shadowBlur = 6;
       ctx!.fill();
       ctx!.shadowBlur = 0;
@@ -511,7 +511,7 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     const puls = minskadRorelse.matches ? 0.5 : (tid / 1600) % 1;
     ctx!.beginPath();
     ctx!.arc(q.x, q.y, 10 + puls * 22, 0, Math.PI * 2);
-    ctx!.fillStyle = `rgba(31,98,255,${(0.28 * (1 - puls)).toFixed(3)})`;
+    ctx!.fillStyle = `rgba(5,147,198,${(0.28 * (1 - puls)).toFixed(3)})`;
     ctx!.fill();
     ctx!.beginPath();
     ctx!.arc(q.x, q.y, 10, 0, Math.PI * 2);

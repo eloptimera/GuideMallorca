@@ -12,8 +12,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import frauncesUrl from "@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url";
-import dmSansUrl from "@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url";
+import cormorantUrl from "@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Analytics } from "@vercel/analytics/react";
 import { FORETAG, VERIFIERING } from "@/lib/foretag";
@@ -82,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: FORETAG.namn },
       { name: "description", content: FORETAG.beskrivning },
       { property: "og:site_name", content: FORETAG.namn },
-      { name: "theme-color", content: "#efe5d3" },
+      { name: "theme-color", content: "#121c2b" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       // Bevisar för Google och Bing att sajten är vår (miljövariabler i Vercel).
@@ -95,12 +94,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // Typsnitten förladdas så att texten inte byter typsnitt och knuffar layouten.
       {
         rel: "preload",
-        href: frauncesUrl,
+        href: cormorantUrl,
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
       },
-      { rel: "preload", href: dmSansUrl, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: appCss,

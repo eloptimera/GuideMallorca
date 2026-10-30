@@ -1,17 +1,18 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import "@fontsource-variable/fraunces/opsz.css";
-@import "@fontsource-variable/fraunces/opsz-italic.css";
-@import "@fontsource-variable/dm-sans/wght.css";
+@import "@fontsource-variable/cormorant-garamond/wght.css";
+@import "@fontsource-variable/cormorant-garamond/wght-italic.css";
 @import "maplibre-gl/dist/maplibre-gl.css";
 
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Designsystem – Guide Mallorca
- * Varm sandstensgrund (samma som kartan), mörk bläckfärgad text och en blå accent som är
- * pluppens färg. Rubriker i Fraunces (mjuk, varm serif), brödtext i DM Sans.
+ * Designsystem – Shoot for the Moon
+ * Färgerna: Sky Blue #0593C6, White #FCFFFF och Hot Pink #D83995. Texten och de mörka
+ * sektionerna är loggans nattblå. Allt i Cormorant Garamond, loggans typsnitt.
+ * Sky Blue och Hot Pink klarar inte kontrastkraven för liten text på vitt, så liten text och
+ * knappar använder de mörkare varianterna (--bla-text, --rosa-text).
  */
 
 @theme inline {
@@ -20,8 +21,9 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 6px);
   --radius-2xl: calc(var(--radius) + 12px);
-  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
-  --font-sans: "DM Sans Variable", system-ui, sans-serif;
+  /* Loggans typsnitt används på hela sajten. */
+  --font-display: "Cormorant Garamond Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Cormorant Garamond Variable", Georgia, "Times New Roman", serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -49,29 +51,35 @@
 :root {
   color-scheme: light;
   --radius: 1rem;
-  --ink: #1d1a16;
-  --sand: #efe5d3;
-  --sand-mork: #e4d6bd;
-  --bla: #1f62ff;
-  --bla-mork: #1748c2;
+  --ink: #121c2b;
+  --sand: #fcffff;
+  --sand-mork: #e2eef4;
+  --bla: #0593c6;
+  --bla-mork: #036e95;
+  --bla-text: #036e95;
+  --bla-ljus: #6cc4e6;
+  --rosa: #d83995;
+  --rosa-text: #b02574;
+  --brons: #b08a5b;
+  --creme: #efe6d6;
   --background: var(--sand);
   --foreground: var(--ink);
-  --card: #f7f0e3;
+  --card: #eef6fa;
   --card-foreground: var(--ink);
-  --popover: #f7f0e3;
+  --popover: #eef6fa;
   --popover-foreground: var(--ink);
   --primary: var(--bla);
   --primary-foreground: #ffffff;
   --secondary: var(--sand-mork);
   --secondary-foreground: var(--ink);
   --muted: var(--sand-mork);
-  --muted-foreground: #5d554a;
+  --muted-foreground: #4e5d6c;
   --accent: var(--bla);
   --accent-foreground: #ffffff;
   --destructive: #b42318;
   --destructive-foreground: #ffffff;
-  --border: #d6c6a8;
-  --input: #cdbb9a;
+  --border: #cfe0ea;
+  --input: #b7ccd8;
   --ring: var(--bla);
 }
 
@@ -82,6 +90,8 @@
 
   html {
     background: var(--background);
+    /* Cormorant har liten x-höjd; allt i rem skalas upp lite så att brödtexten blir läsbar. */
+    font-size: 112.5%;
   }
 
   body {
@@ -89,6 +99,8 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-weight: 500;
+    font-variant-numeric: lining-nums;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -98,10 +110,9 @@
   h4,
   .font-display {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-optical-sizing: auto;
+    font-weight: 500;
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     text-wrap: balance;
   }
 
@@ -142,12 +153,12 @@
   background-color: var(--ink);
   color: var(--sand);
   &:hover {
-    background-color: #3a342c;
+    background-color: #24344a;
   }
 }
 
 @utility btn-bla {
-  background-color: var(--bla);
+  background-color: var(--bla-text);
   color: #fff;
   &:hover {
     background-color: var(--bla-mork);
@@ -174,12 +185,12 @@
   gap: 4px;
   padding: 4px;
   border-radius: 999px;
-  background: rgba(251, 246, 236, 0.86);
+  background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow:
-    0 0 0 1px rgba(29, 26, 22, 0.08),
-    0 10px 24px -14px rgba(29, 26, 22, 0.45);
+    0 0 0 1px rgba(18, 28, 43, 0.08),
+    0 10px 24px -14px rgba(18, 28, 43, 0.45);
 }
 
 .sprakval__flagga {
@@ -233,12 +244,12 @@
   text-align: center;
   color: var(--sand);
   background:
-    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(31, 98, 255, 0.28), rgba(31, 98, 255, 0) 70%),
-    radial-gradient(circle at 20% 25%, rgba(239, 229, 211, 0.5) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 72% 18%, rgba(239, 229, 211, 0.4) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 85% 62%, rgba(239, 229, 211, 0.35) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 12% 70%, rgba(239, 229, 211, 0.3) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 40% 85%, rgba(239, 229, 211, 0.3) 0 1px, transparent 1.5px), #141519;
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(5, 147, 198, 0.28), rgba(5, 147, 198, 0) 70%),
+    radial-gradient(circle at 20% 25%, rgba(252, 255, 255, 0.5) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 72% 18%, rgba(252, 255, 255, 0.4) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 85% 62%, rgba(252, 255, 255, 0.35) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 12% 70%, rgba(252, 255, 255, 0.3) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 40% 85%, rgba(252, 255, 255, 0.3) 0 1px, transparent 1.5px), #121c2b;
 }
 
 /* Månen: en mjuk, varm skiva bakom rubriken. */
@@ -246,10 +257,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(62vmin, 560px);
+  width: min(30vmin, 260px);
   aspect-ratio: 1;
   border-radius: 50%;
-  transform: translate(-50%, -54%);
+  transform: translate(clamp(90px, 26vw, 420px), -110%);
   background:
     radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%),
     radial-gradient(circle at 62% 64%, rgba(196, 178, 146, 0.45) 0 9%, transparent 10%),
@@ -257,23 +268,10 @@
     radial-gradient(circle at 70% 32%, rgba(196, 178, 146, 0.3) 0 5%, transparent 6%),
     radial-gradient(circle at 50% 50%, #f3ead8, #e2d3b5 70%, #cbb894);
   box-shadow:
-    0 0 80px 10px rgba(239, 229, 211, 0.18),
-    0 0 220px 40px rgba(31, 98, 255, 0.12);
-  opacity: 0.92;
+    0 0 80px 10px rgba(252, 255, 255, 0.18),
+    0 0 220px 40px rgba(5, 147, 198, 0.12);
+  opacity: 0.85;
   animation: mane-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.manen__rubrik {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  font-size: clamp(3.2rem, 11vw, 10rem);
-  font-weight: 380;
-  line-height: 0.92;
-  color: #fbf6ec;
-  text-shadow: 0 2px 40px rgba(20, 21, 25, 0.55);
-  mix-blend-mode: normal;
-  animation: rubrik-in 1.2s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .manen__ledtrad {
@@ -288,7 +286,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(239, 229, 211, 0.7);
+  color: rgba(252, 255, 255, 0.7);
   text-decoration: none;
 }
 
@@ -296,7 +294,7 @@
   position: relative;
   width: 1px;
   height: 44px;
-  background: rgba(239, 229, 211, 0.22);
+  background: rgba(252, 255, 255, 0.22);
   overflow: hidden;
 }
 
@@ -307,15 +305,96 @@
   top: -40%;
   width: 100%;
   height: 40%;
-  background: #8fb0ff;
+  background: #6cc4e6;
   animation: ledtrad 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 @keyframes mane-in {
   from {
     opacity: 0;
-    transform: translate(-50%, -44%) scale(0.94);
+    transform: translate(clamp(90px, 26vw, 420px), -100%) scale(0.94);
   }
+}
+
+/* ---------- Loggan (src/components/Logga.tsx) ---------- */
+
+.logga {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--creme);
+  text-transform: uppercase;
+  animation: rubrik-in 1.2s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.logga__ord {
+  font-size: var(--logga, clamp(4rem, 13vw, 9.5rem));
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+}
+
+.logga__ord::first-letter {
+  font-size: 1.1em;
+}
+
+.logga__mitt {
+  margin: 0.32em 0 0.18em;
+  font-size: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 0.22);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
+  color: var(--brons);
+}
+
+.logga__linje {
+  width: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 1.15);
+  height: 1px;
+  margin: 0.55em 0 0.5em;
+  font-size: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 0.3);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--brons) 18%,
+    var(--brons) 82%,
+    transparent
+  );
+}
+
+.logga__under {
+  margin-top: 0.7em;
+  font-size: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 0.13);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+  white-space: nowrap;
+}
+
+.logga__under i {
+  font-style: normal;
+  margin: 0 0.6em;
+  color: var(--brons);
+}
+
+.logga--liten {
+  --logga: 2.6rem;
+  display: inline-flex;
+  margin-bottom: 1.25rem;
+  animation: none;
+}
+
+.logga--liten .logga__under {
+  font-size: 0.62rem;
+}
+
+.logga--liten .logga__linje {
+  background: var(--brons);
 }
 
 @keyframes rubrik-in {
@@ -372,7 +451,7 @@
 
 .erbjudande__text > p {
   margin: 0 0 1rem;
-  color: #4a4339;
+  color: #3b4a5a;
 }
 
 .erbjudande__text > .erbjudande__rubrik {
@@ -462,13 +541,13 @@
 /* Mjuk ljus ram så att texten alltid går att läsa mot kartan. */
 .slinga__ton {
   background:
-    linear-gradient(to bottom, rgba(239, 229, 211, 0.92), rgba(239, 229, 211, 0) 34%),
+    linear-gradient(to bottom, rgba(252, 255, 255, 0.92), rgba(252, 255, 255, 0) 34%),
     linear-gradient(
       to top,
-      #f7f0e3,
-      rgba(247, 240, 227, 0.82) 5%,
-      rgba(247, 240, 227, 0.35) 13%,
-      rgba(247, 240, 227, 0) 24%
+      #eef6fa,
+      rgba(238, 246, 250, 0.82) 5%,
+      rgba(238, 246, 250, 0.35) 13%,
+      rgba(238, 246, 250, 0) 24%
     );
 }
 
@@ -481,22 +560,22 @@
   background:
     linear-gradient(
       to right,
-      rgba(239, 229, 211, 0.95),
-      rgba(239, 229, 211, 0.75) 26%,
-      rgba(239, 229, 211, 0) 42%
+      rgba(252, 255, 255, 0.95),
+      rgba(252, 255, 255, 0.75) 26%,
+      rgba(252, 255, 255, 0) 42%
     ),
     linear-gradient(
       to top,
-      #f7f0e3,
-      rgba(247, 240, 227, 0.82) 5%,
-      rgba(247, 240, 227, 0.35) 13%,
-      rgba(247, 240, 227, 0) 24%
+      #eef6fa,
+      rgba(238, 246, 250, 0.82) 5%,
+      rgba(238, 246, 250, 0.35) 13%,
+      rgba(238, 246, 250, 0) 24%
     );
 }
 
 .slinga .maplibregl-ctrl-attrib {
   font-size: 10px;
-  background: rgba(239, 229, 211, 0.75);
+  background: rgba(252, 255, 255, 0.75);
 }
 
 /* Kartans upphovsrättsrad ska synas ovanför den ljusa tonen. */
@@ -526,7 +605,7 @@
 .slinga__rubrik {
   margin: 0;
   font-size: clamp(2.6rem, 7vw, 6.4rem);
-  font-weight: 380;
+  font-weight: 500;
   line-height: 0.98;
   transition: font-size 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -552,7 +631,7 @@
   height: 2.4em;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 0 3px #fbf6ec;
+  box-shadow: 0 0 0 3px #ffffff;
 }
 
 .slinga[data-flyttad] .slinga__hero {
@@ -577,8 +656,8 @@
   width: calc(100% - 28px);
   padding: 0.8rem 1rem 0.9rem;
   border-radius: 12px;
-  background: rgba(251, 246, 236, 0.92);
-  box-shadow: 0 10px 30px -18px rgba(29, 26, 22, 0.45);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px -18px rgba(18, 28, 43, 0.45);
 }
 
 .slinga[data-smal][data-flyttad] .slinga__overrad {
@@ -601,7 +680,7 @@
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--bla);
+  color: var(--bla-text);
 }
 
 .slinga__rubrik {
@@ -632,10 +711,10 @@
   left: 0;
   width: 320px;
   border-radius: 14px;
-  background: #fbf6ec;
+  background: #ffffff;
   box-shadow:
-    0 1px 0 rgba(29, 26, 22, 0.06),
-    0 22px 48px -20px rgba(29, 26, 22, 0.45);
+    0 1px 0 rgba(18, 28, 43, 0.06),
+    0 22px 48px -20px rgba(18, 28, 43, 0.45);
   will-change: opacity, transform;
 }
 
@@ -646,7 +725,7 @@
   width: 14px;
   height: 14px;
   margin-left: -7px;
-  background: #fbf6ec;
+  background: #ffffff;
   transform: rotate(45deg);
   bottom: -7px;
 }
@@ -680,7 +759,7 @@
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.5;
-  color: #4a4339;
+  color: #3b4a5a;
 }
 
 .slinga__knapp {
@@ -733,7 +812,13 @@
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: var(--bla);
+  color: var(--bla-text);
+}
+
+.pelare__nummer {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--rosa-text);
 }
 
 .slinga__ledtrad {
@@ -758,7 +843,7 @@
   position: relative;
   width: 1px;
   height: 44px;
-  background: rgba(29, 26, 22, 0.18);
+  background: rgba(18, 28, 43, 0.18);
   overflow: hidden;
 }
 
@@ -877,9 +962,9 @@
   object-fit: cover;
   border-radius: 18px;
   box-shadow:
-    0 1px 2px rgba(29, 26, 22, 0.08),
-    0 14px 28px -16px rgba(29, 26, 22, 0.35),
-    0 40px 70px -40px rgba(29, 26, 22, 0.55);
+    0 1px 2px rgba(18, 28, 43, 0.08),
+    0 14px 28px -16px rgba(18, 28, 43, 0.35),
+    0 40px 70px -40px rgba(18, 28, 43, 0.55);
 }
 
 .om__bild figcaption {
@@ -920,7 +1005,7 @@
 .pelare li {
   padding: 1.75rem 1.6rem 1.9rem;
   border-top: 2px solid var(--ink);
-  background: rgba(247, 240, 227, 0.6);
+  background: rgba(238, 246, 250, 0.6);
 }
 
 .pelare h3 {
@@ -931,7 +1016,7 @@
 .pelare p {
   margin: 0;
   line-height: 1.6;
-  color: #4a4339;
+  color: #3b4a5a;
 }
 
 .praktiskt {
@@ -953,7 +1038,7 @@
 }
 
 .praktiskt .overrad {
-  color: #8fb0ff;
+  color: #6cc4e6;
 }
 
 .praktiskt__inre,
@@ -972,18 +1057,18 @@
 
 .fakta div {
   padding: 1.2rem 0;
-  border-bottom: 1px solid rgba(239, 229, 211, 0.2);
+  border-bottom: 1px solid rgba(252, 255, 255, 0.2);
 }
 
 .fakta div:first-child {
-  border-top: 1px solid rgba(239, 229, 211, 0.2);
+  border-top: 1px solid rgba(252, 255, 255, 0.2);
 }
 
 .fakta dt {
   font-size: 0.78rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(239, 229, 211, 0.6);
+  color: rgba(252, 255, 255, 0.6);
 }
 
 .fakta dd {
@@ -1037,7 +1122,7 @@
   min-height: 3.05rem;
   border: 1px solid var(--input);
   border-radius: 0.6rem;
-  background: #fbf7ef;
+  background: #ffffff;
   padding: 0.8rem 2.4rem 0.8rem 0.9rem;
   font: inherit;
   font-size: 1rem;
@@ -1049,11 +1134,11 @@
 }
 
 .datum__knapp[data-tom] {
-  color: #8a8174;
+  color: #6b7a89;
 }
 
 .datum__knapp:hover {
-  border-color: #b9a682;
+  border-color: #9fb6c4;
 }
 
 .datum__knapp:focus-visible,
@@ -1067,7 +1152,7 @@
   flex: 0 0 auto;
   width: 18px;
   height: 18px;
-  color: var(--bla);
+  color: var(--bla-text);
 }
 
 .datum__knapp span {
@@ -1107,14 +1192,14 @@
   padding: 0.35rem !important;
   border-radius: 14px !important;
   border-color: var(--border) !important;
-  background: #fbf7ef !important;
-  box-shadow: 0 24px 48px -20px rgba(29, 26, 22, 0.4) !important;
+  background: #ffffff !important;
+  box-shadow: 0 24px 48px -20px rgba(18, 28, 43, 0.4) !important;
 }
 
 .datum__idag button:not([data-selected-single="true"]) {
   font-weight: 600;
-  color: var(--bla);
-  box-shadow: inset 0 0 0 1px rgba(31, 98, 255, 0.35);
+  color: var(--bla-text);
+  box-shadow: inset 0 0 0 1px rgba(5, 147, 198, 0.35);
 }
 
 .datum__ruta .rdp-caption_label {
@@ -1135,7 +1220,7 @@
   width: 100%;
   border: 1px solid var(--input);
   border-radius: 0.6rem;
-  background: #fbf7ef;
+  background: #ffffff;
   padding: 0.8rem 0.9rem;
   font: inherit;
   font-size: 1rem;
@@ -1209,7 +1294,7 @@
 }
 
 .kontakt__rad:hover {
-  color: var(--bla);
+  color: var(--bla-text);
 }
 
 .kontakt__etikett {
@@ -1260,7 +1345,7 @@
 }
 
 .faq__rad summary:hover {
-  color: var(--bla);
+  color: var(--bla-text);
 }
 
 /* Plus som blir minus. */
@@ -1332,15 +1417,15 @@
   margin: 0 auto;
   border-radius: clamp(18px, 2.4vw, 30px);
   background:
-    radial-gradient(ellipse 70% 90% at 100% 0%, rgba(31, 98, 255, 0.32), rgba(31, 98, 255, 0) 60%),
+    radial-gradient(ellipse 70% 90% at 100% 0%, rgba(5, 147, 198, 0.32), rgba(5, 147, 198, 0) 60%),
     radial-gradient(
       ellipse 50% 70% at 85% 10%,
-      rgba(216, 195, 160, 0.18),
-      rgba(216, 195, 160, 0) 70%
+      rgba(216, 57, 149, 0.18),
+      rgba(216, 57, 149, 0) 70%
     ),
-    #141519;
-  color: rgba(239, 229, 211, 0.72);
-  box-shadow: 0 30px 60px -40px rgba(29, 26, 22, 0.6);
+    #121c2b;
+  color: rgba(252, 255, 255, 0.72);
+  box-shadow: 0 30px 60px -40px rgba(18, 28, 43, 0.6);
 }
 
 .sidfot__topp {
@@ -1361,7 +1446,7 @@
   font-size: clamp(2.2rem, 4.2vw, 3.6rem);
   line-height: 1;
   letter-spacing: -0.02em;
-  color: #fbf6ec;
+  color: #ffffff;
 }
 
 .sidfot__text {
@@ -1377,9 +1462,9 @@
   gap: 0.6rem;
   margin-top: 1.75rem;
   padding: 0.8rem 1.35rem;
-  border: 1px solid rgba(239, 229, 211, 0.28);
+  border: 1px solid rgba(252, 255, 255, 0.28);
   border-radius: 999px;
-  color: #fbf6ec;
+  color: #ffffff;
   text-decoration: none;
   transition:
     background-color 0.2s ease,
@@ -1388,8 +1473,8 @@
 }
 
 .sidfot__knapp:hover {
-  background: #fbf6ec;
-  border-color: #fbf6ec;
+  background: #ffffff;
+  border-color: #ffffff;
   color: var(--ink);
 }
 
@@ -1405,14 +1490,14 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8fb0ff;
+  color: #6cc4e6;
 }
 
 .sidfot__kolumn a,
 .sidfot__ort {
   width: fit-content;
   font-size: 1.05rem;
-  color: rgba(239, 229, 211, 0.85);
+  color: rgba(252, 255, 255, 0.85);
   text-decoration: none;
   overflow-wrap: anywhere;
   transition: color 0.2s ease;
@@ -1431,16 +1516,16 @@
   max-width: 1120px;
   margin: 0 auto;
   padding: 1.4rem clamp(20px, 4vw, 40px) 1.6rem;
-  border-top: 1px solid rgba(239, 229, 211, 0.1);
+  border-top: 1px solid rgba(252, 255, 255, 0.1);
   font-size: 0.85rem;
-  color: rgba(239, 229, 211, 0.5);
+  color: rgba(252, 255, 255, 0.5);
 }
 
 .sidfot__tab {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  color: rgba(239, 229, 211, 0.55);
+  color: rgba(252, 255, 255, 0.55);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -1454,11 +1539,11 @@
 
 .sidfot__tab-namn {
   font-weight: 600;
-  color: #fbf6ec;
+  color: #ffffff;
 }
 
 .sidfot__tab:hover {
-  color: rgba(239, 229, 211, 0.85);
+  color: rgba(252, 255, 255, 0.85);
 }
 
 .sidfot__tab:hover img {
@@ -1505,7 +1590,7 @@
   padding: clamp(1.1rem, 2.5vw, 1.6rem);
   border-radius: 18px;
   background: var(--sand);
-  box-shadow: 0 0 0 1px rgba(29, 26, 22, 0.06);
+  box-shadow: 0 0 0 1px rgba(18, 28, 43, 0.06);
 }
 
 .aktivitet__datum {
@@ -1514,7 +1599,7 @@
   align-content: center;
   aspect-ratio: 1;
   border-radius: 14px;
-  background: var(--ink);
+  background: var(--rosa-text);
   color: var(--sand);
   text-align: center;
 }
@@ -1549,7 +1634,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--bla);
+  color: var(--bla-text);
 }
 
 .aktivitet h3 {
@@ -1560,7 +1645,7 @@
 .aktivitet__text > p:last-child {
   margin: 0;
   line-height: 1.55;
-  color: #4a4339;
+  color: #3b4a5a;
 }
 
 @media (max-width: 760px) {
@@ -1580,12 +1665,12 @@
   display: inline-block;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
-  background: var(--sand-mork);
+  background: rgba(216, 57, 149, 0.12);
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  color: var(--rosa-text);
 }
 
 /* ---------- Om Caroline: rollerna ---------- */
@@ -1622,7 +1707,7 @@
   overflow: hidden;
   border-radius: 18px;
   background: var(--sand);
-  box-shadow: 0 0 0 1px rgba(29, 26, 22, 0.06);
+  box-shadow: 0 0 0 1px rgba(18, 28, 43, 0.06);
 }
 
 .inlagg img {
@@ -1655,7 +1740,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .manen__mane,
-  .manen__rubrik {
+  .logga {
     animation: none;
   }
   .manen__ledtrad i::after {
@@ -1668,15 +1753,15 @@
 
 .tv .ingress.tv__ingress {
   max-width: 46ch;
-  color: rgba(239, 229, 211, 0.72);
+  color: rgba(252, 255, 255, 0.72);
 }
 
 .tv__dokumentar {
   margin-top: 2rem;
   padding: 1.4rem 1.5rem 1.5rem;
   border-radius: 18px;
-  border: 1px solid rgba(239, 229, 211, 0.18);
-  background: rgba(239, 229, 211, 0.05);
+  border: 1px solid rgba(252, 255, 255, 0.18);
+  background: rgba(252, 255, 255, 0.05);
 }
 
 .tv__dokumentar .tv__etikett {
@@ -1684,7 +1769,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #8fb0ff;
+  color: #6cc4e6;
 }
 
 .tv__dokumentar h3 {
@@ -1695,5 +1780,12 @@
 .tv__dokumentar p:last-child {
   margin: 0;
   line-height: 1.6;
-  color: rgba(239, 229, 211, 0.8);
+  color: rgba(252, 255, 255, 0.8);
+}
+
+@media (max-width: 600px) {
+  .manen__mane {
+    width: 92px;
+    transform: translate(40px, -260%);
+  }
 }

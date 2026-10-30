@@ -1,4 +1,5 @@
 import { Bokningsformular } from "@/components/Bokningsformular";
+import { Logga } from "@/components/Logga";
 import { Sprakvaljare } from "@/components/Sprakvaljare";
 import { Stadsslinga } from "@/components/Stadsslinga";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
@@ -28,7 +29,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
 
       <header className="manen">
         <div className="manen__mane" aria-hidden="true" />
-        <h1 className="manen__rubrik">Shoot for the Moon</h1>
+        <Logga som="h1" />
         <a className="manen__ledtrad" href="#stand-up-history">
           <span>{t.hero.ledtrad}</span>
           <i aria-hidden="true" />
@@ -224,7 +225,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         <div className="sidfot__kort">
           <div className="sidfot__topp">
             <div className="sidfot__presentation">
-              <p className="sidfot__namn">Shoot for the Moon</p>
+              <Logga storlek="liten" />
               <p className="sidfot__text">{t.sidfot.text}</p>
               <a className="sidfot__knapp" href="#kontakt">
                 {t.sidfot.kontakta} <span aria-hidden="true">→</span>
