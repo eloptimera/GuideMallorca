@@ -220,6 +220,204 @@
   transform: translateY(-1px);
 }
 
+/* ---------- Shoot for the Moon – första vyn ---------- */
+
+.manen {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 96px 16px;
+  overflow: hidden;
+  text-align: center;
+  color: var(--sand);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(31, 98, 255, 0.28), rgba(31, 98, 255, 0) 70%),
+    radial-gradient(circle at 20% 25%, rgba(239, 229, 211, 0.5) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 72% 18%, rgba(239, 229, 211, 0.4) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 85% 62%, rgba(239, 229, 211, 0.35) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 12% 70%, rgba(239, 229, 211, 0.3) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 40% 85%, rgba(239, 229, 211, 0.3) 0 1px, transparent 1.5px), #141519;
+}
+
+/* Månen: en mjuk, varm skiva bakom rubriken. */
+.manen__mane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(62vmin, 560px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -54%);
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%),
+    radial-gradient(circle at 62% 64%, rgba(196, 178, 146, 0.45) 0 9%, transparent 10%),
+    radial-gradient(circle at 30% 62%, rgba(196, 178, 146, 0.35) 0 6%, transparent 7%),
+    radial-gradient(circle at 70% 32%, rgba(196, 178, 146, 0.3) 0 5%, transparent 6%),
+    radial-gradient(circle at 50% 50%, #f3ead8, #e2d3b5 70%, #cbb894);
+  box-shadow:
+    0 0 80px 10px rgba(239, 229, 211, 0.18),
+    0 0 220px 40px rgba(31, 98, 255, 0.12);
+  opacity: 0.92;
+  animation: mane-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.manen__rubrik {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(3.2rem, 11vw, 10rem);
+  font-weight: 380;
+  line-height: 0.92;
+  color: #fbf6ec;
+  text-shadow: 0 2px 40px rgba(20, 21, 25, 0.55);
+  mix-blend-mode: normal;
+  animation: rubrik-in 1.2s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.manen__ledtrad {
+  position: absolute;
+  left: 50%;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(239, 229, 211, 0.7);
+  text-decoration: none;
+}
+
+.manen__ledtrad i {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  background: rgba(239, 229, 211, 0.22);
+  overflow: hidden;
+}
+
+.manen__ledtrad i::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 100%;
+  height: 40%;
+  background: #8fb0ff;
+  animation: ledtrad 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes mane-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -44%) scale(0.94);
+  }
+}
+
+@keyframes rubrik-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* ---------- Erbjudandena: Stand Up History, film, museum ---------- */
+
+.erbjudanden {
+  background: var(--sand);
+  padding: clamp(64px, 8vw, 112px) 16px clamp(48px, 6vw, 80px);
+}
+
+.erbjudanden__intro {
+  max-width: 1120px;
+  margin: 0 auto clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.erbjudanden__intro h2 {
+  margin: 0;
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+}
+
+.erbjudande {
+  max-width: 1120px;
+  margin: 0 auto;
+  scroll-margin-top: 24px;
+  border-top: 2px solid var(--ink);
+}
+
+.erbjudande:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.erbjudande__inre {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(1.25rem, 5vw, 4.5rem);
+  padding: clamp(1.75rem, 4vw, 3rem) 0 clamp(2rem, 4vw, 3.25rem);
+}
+
+.erbjudande__namn h3 {
+  margin: 0.7rem 0 0;
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+}
+
+.erbjudande__text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.erbjudande__text > p {
+  margin: 0 0 1rem;
+  color: #4a4339;
+}
+
+.erbjudande__text > .erbjudande__rubrik {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.erbjudande__text > .erbjudande__etikett {
+  margin: 1.5rem 0 0.6rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.erbjudande__teman {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.erbjudande__teman li {
+  padding: 0.4rem 0.9rem;
+  border: 1px dashed var(--input);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+.erbjudande__knapp {
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 760px) {
+  .erbjudande__inre {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- Stadsslingan (src/components/Stadsslinga.tsx) ---------- */
 
 .slinga {
@@ -473,7 +671,7 @@
   padding: 1rem 1.15rem 1.15rem;
 }
 
-.slinga__kort h2 {
+.slinga__kort h3 {
   margin: 0.3rem 0 0.4rem;
   font-size: 1.65rem;
 }
@@ -521,7 +719,7 @@
   padding: 0.85rem 0.95rem 0.95rem;
 }
 
-.slinga[data-smal] .slinga__kort h2 {
+.slinga[data-smal] .slinga__kort h3 {
   font-size: 1.3rem;
 }
 
@@ -647,12 +845,13 @@
   max-width: 34ch;
 }
 
-.om {
+.aktiviteter,
+.blogg {
   --sektion-bg: var(--card);
   background: var(--sektion-bg);
 }
 
-.vandringar,
+.om,
 .fragor,
 .boka {
   --sektion-bg: var(--sand);
@@ -1283,6 +1482,183 @@
 
 @media (prefers-reduced-motion: reduce) {
   .slinga__ledtrad i::after {
+    animation: none;
+    top: 30%;
+  }
+}
+
+/* ---------- Kommande aktiviteter (skyltfönstret) ---------- */
+
+.aktiviteter__lista {
+  display: grid;
+  gap: 1rem;
+  margin: 2.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aktivitet {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+  border-radius: 18px;
+  background: var(--sand);
+  box-shadow: 0 0 0 1px rgba(29, 26, 22, 0.06);
+}
+
+.aktivitet__datum {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--sand);
+  text-align: center;
+}
+
+.aktivitet__dag {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.aktivitet__manad {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.aktivitet__snart {
+  padding: 0 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.aktivitet__typ {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bla);
+}
+
+.aktivitet h3 {
+  margin: 0.45rem 0 0.35rem;
+  font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+}
+
+.aktivitet__text > p:last-child {
+  margin: 0;
+  line-height: 1.55;
+  color: #4a4339;
+}
+
+@media (max-width: 760px) {
+  .aktivitet {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+  }
+  .aktivitet__dag {
+    font-size: 2rem;
+  }
+  .aktivitet__knapp {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Liten etikett på exempelinnehåll tills Carolines riktiga innehåll finns. */
+.exempel {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--sand-mork);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* ---------- Om Caroline: rollerna ---------- */
+
+.om__roller {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.om__roller li {
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--sand);
+  font-size: 0.85rem;
+}
+
+/* ---------- Anteckningar (bloggflödet) ---------- */
+
+.blogg__flode {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin: 2.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inlagg {
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--sand);
+  box-shadow: 0 0 0 1px rgba(29, 26, 22, 0.06);
+}
+
+.inlagg img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.inlagg__text {
+  padding: 1rem 1.15rem 1.25rem;
+}
+
+.inlagg time {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.inlagg p {
+  margin: 0.55rem 0 0;
+  line-height: 1.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manen__mane,
+  .manen__rubrik {
+    animation: none;
+  }
+  .manen__ledtrad i::after {
     animation: none;
     top: 30%;
   }

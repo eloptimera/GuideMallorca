@@ -3,20 +3,107 @@ import { Sprakvaljare } from "@/components/Sprakvaljare";
 import { Stadsslinga } from "@/components/Stadsslinga";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
-import { TEXTER, type Sprak } from "@/lib/sprak";
+import { AKTIVITETER, INLAGG } from "@/lib/innehall";
+import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
 
 // Hela startsidan på ett språk. Routerna /, /en och /es renderar den här med sitt språk.
-// Texterna ligger i src/lib/sprak.ts (stoppen i src/lib/slinga/stopp.ts).
+// Ordning när man scrollar: Shoot for the Moon → erbjudandena (Stand Up History, film,
+// museum) → rundvandringen med kartan → kommande aktiviteter → om Caroline → anteckningar
+// (bloggen) → frågor → kontakt.
+// Texterna ligger i src/lib/sprak.ts, aktiviteter och inlägg i src/lib/innehall.ts.
 // Svaren på de vanliga frågorna fyller Caroline i. Lägg inte till FAQ-schema för Google förrän
 // svaren är riktiga.
 
 export function Startsida({ sprak }: { sprak: Sprak }) {
   const t = TEXTER[sprak];
   const fragor: Fraga[] = t.fragor.lista.map((fraga) => ({ fraga, svar: t.fragor.platshallare }));
+  const locale = SPRAKKOD[sprak].html;
+  const datumText = (iso: string, alt: Intl.DateTimeFormatOptions) =>
+    new Date(`${iso}T12:00:00`).toLocaleDateString(locale, alt);
+
   return (
     <>
       <Sprakvaljare sprak={sprak} />
+
+      <header className="manen">
+        <div className="manen__mane" aria-hidden="true" />
+        <h1 className="manen__rubrik">Shoot for the Moon</h1>
+        <a className="manen__ledtrad" href="#stand-up-history">
+          <span>{t.hero.ledtrad}</span>
+          <i aria-hidden="true" />
+        </a>
+      </header>
+
+      <div className="erbjudanden">
+        <div className="erbjudanden__intro">
+          <p className="overrad">{t.erbjudanden.overrad}</p>
+          <h2>{t.erbjudanden.rubrik}</h2>
+        </div>
+        {t.erbjudanden.lista.map((e, i) => (
+          <section key={e.id} id={e.id} className="erbjudande" aria-labelledby={`${e.id}-rubrik`}>
+            <div className="erbjudande__inre">
+              <div className="erbjudande__namn">
+                <span className="pelare__nummer">{String(i + 1).padStart(2, "0")}</span>
+                <h3 id={`${e.id}-rubrik`}>{e.namn}</h3>
+              </div>
+              <div className="erbjudande__text">
+                <p className="erbjudande__rubrik">{e.rubrik}</p>
+                <p>{e.text}</p>
+                <p className="erbjudande__etikett">{t.erbjudanden.temanRubrik}</p>
+                <ul className="erbjudande__teman">
+                  {e.teman.map((tema, j) => (
+                    <li key={j}>{tema}</li>
+                  ))}
+                </ul>
+                <a className="btn-base btn-outline erbjudande__knapp" href="#kontakt">
+                  {t.erbjudanden.knapp}
+                </a>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
+
       <Stadsslinga sprak={sprak} />
+
+      <section className="innehall aktiviteter" id="kommande" aria-labelledby="kommande-rubrik">
+        <div className="innehall__inre">
+          <p className="overrad">{t.aktiviteter.overrad}</p>
+          <h2 id="kommande-rubrik">{t.aktiviteter.rubrik}</h2>
+          <p className="ingress">{t.aktiviteter.ingress}</p>
+          <ul className="aktiviteter__lista">
+            {AKTIVITETER.map((a, i) => (
+              <li key={i} className="aktivitet">
+                <div className="aktivitet__datum">
+                  {a.datum ? (
+                    <>
+                      <span className="aktivitet__dag">
+                        {datumText(a.datum, { day: "numeric" })}
+                      </span>
+                      <span className="aktivitet__manad">
+                        {datumText(a.datum, { month: "short" })}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="aktivitet__snart">{t.aktiviteter.datumMeddelas}</span>
+                  )}
+                </div>
+                <div className="aktivitet__text">
+                  <p className="aktivitet__typ">
+                    {t.aktiviteter.typer[a.typ]} · {a.plats[sprak]}
+                    {a.exempel && <span className="exempel">{t.aktiviteter.exempel}</span>}
+                  </p>
+                  <h3>{a.titel[sprak]}</h3>
+                  <p>{a.text[sprak]}</p>
+                </div>
+                <a className="btn-base btn-bla aktivitet__knapp" href="#kontakt">
+                  {t.aktiviteter.anmal}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       <section className="innehall om" id="om-caroline" aria-labelledby="om-rubrik">
         <div className="innehall__inre om__inre">
@@ -34,6 +121,11 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
             <p className="overrad">{t.om.overrad}</p>
             <h2 id="om-rubrik">Caroline Palmstierna</h2>
             <p className="ingress">{t.om.ingress}</p>
+            <ul className="om__roller">
+              {t.om.roller.map((r) => (
+                <li key={r}>{r}</li>
+              ))}
+            </ul>
             <div className="om__text">
               <p>{t.om.text[0]}</p>
               <p>{t.om.text[1]}</p>
@@ -42,40 +134,32 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         </div>
       </section>
 
-      <section
-        className="innehall vandringar"
-        id="stadsvandringar"
-        aria-labelledby="vandring-rubrik"
-      >
+      <section className="innehall blogg" id="anteckningar" aria-labelledby="blogg-rubrik">
         <div className="innehall__inre">
-          <p className="overrad">{t.vandringar.overrad}</p>
-          <h2 id="vandring-rubrik">{t.vandringar.rubrik}</h2>
-          <ol className="pelare">
-            {t.vandringar.pelare.map((p, i) => (
-              <li key={p.rubrik}>
-                <span className="pelare__nummer">{String(i + 1).padStart(2, "0")}</span>
-                <h3>{p.rubrik}</h3>
-                <p>{p.text}</p>
+          <p className="overrad">{t.blogg.overrad}</p>
+          <h2 id="blogg-rubrik">{t.blogg.rubrik}</h2>
+          <p className="ingress">{t.blogg.ingress}</p>
+          <ul className="blogg__flode">
+            {INLAGG.map((p) => (
+              <li key={p.datum + p.bild.src} className="inlagg">
+                <img
+                  src={p.bild.src}
+                  alt={p.bild.alt[sprak]}
+                  width={800}
+                  height={800}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="inlagg__text">
+                  <time dateTime={p.datum}>
+                    {datumText(p.datum, { day: "numeric", month: "long", year: "numeric" })}
+                    {p.exempel && <span className="exempel">{t.blogg.exempel}</span>}
+                  </time>
+                  <p>{p.text[sprak]}</p>
+                </div>
               </li>
             ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="innehall praktiskt" id="praktiskt" aria-labelledby="praktiskt-rubrik">
-        <div className="innehall__inre praktiskt__inre">
-          <div>
-            <p className="overrad">{t.praktiskt.overrad}</p>
-            <h2 id="praktiskt-rubrik">{t.praktiskt.rubrik}</h2>
-          </div>
-          <dl className="fakta">
-            {t.praktiskt.fakta.map((f) => (
-              <div key={f.etikett}>
-                <dt>{f.etikett}</dt>
-                <dd>{f.text}</dd>
-              </div>
-            ))}
-          </dl>
+          </ul>
         </div>
       </section>
 
@@ -89,20 +173,20 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         </div>
       </section>
 
-      <section className="innehall boka" id="boka" aria-labelledby="boka-rubrik">
+      <section className="innehall boka" id="kontakt" aria-labelledby="kontakt-rubrik">
         <div className="innehall__inre boka__inre">
           <div>
-            <p className="overrad">{t.boka.overrad}</p>
-            <h2 id="boka-rubrik">{t.boka.rubrik}</h2>
-            <p className="ingress">{t.boka.ingress}</p>
+            <p className="overrad">{t.kontakt.overrad}</p>
+            <h2 id="kontakt-rubrik">{t.kontakt.rubrik}</h2>
+            <p className="ingress">{t.kontakt.ingress}</p>
             <div className="kontakt">
-              <p className="kontakt__rubrik">{t.boka.direkt}</p>
+              <p className="kontakt__rubrik">{t.kontakt.direkt}</p>
               <a className="kontakt__rad" href={`mailto:${FORETAG.epost}`}>
-                <span className="kontakt__etikett">{t.boka.epost}</span>
+                <span className="kontakt__etikett">{t.kontakt.epost}</span>
                 {FORETAG.epost}
               </a>
               <a className="kontakt__rad" href={`tel:${FORETAG.telefonLank}`}>
-                <span className="kontakt__etikett">{t.boka.telefon}</span>
+                <span className="kontakt__etikett">{t.kontakt.telefon}</span>
                 {FORETAG.telefon}
               </a>
             </div>
@@ -115,10 +199,10 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         <div className="sidfot__kort">
           <div className="sidfot__topp">
             <div className="sidfot__presentation">
-              <p className="sidfot__namn">Caroline Palmstierna</p>
+              <p className="sidfot__namn">Shoot for the Moon</p>
               <p className="sidfot__text">{t.sidfot.text}</p>
-              <a className="sidfot__knapp" href="#boka">
-                {t.sidfot.boka} <span aria-hidden="true">→</span>
+              <a className="sidfot__knapp" href="#kontakt">
+                {t.sidfot.kontakta} <span aria-hidden="true">→</span>
               </a>
             </div>
             <nav className="sidfot__kolumn" aria-label={t.sidfot.sidor}>
@@ -131,6 +215,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
             </nav>
             <div className="sidfot__kolumn">
               <p className="sidfot__etikett">{t.sidfot.kontakt}</p>
+              <p className="sidfot__ort">Caroline Palmstierna</p>
               <a href={`mailto:${FORETAG.epost}`}>{FORETAG.epost}</a>
               <a href={`tel:${FORETAG.telefonLank}`}>{FORETAG.telefon}</a>
               <p className="sidfot__ort">{FORETAG.ort}</p>

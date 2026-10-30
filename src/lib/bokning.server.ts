@@ -41,10 +41,10 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
     method: "POST",
     headers: { Authorization: `Bearer ${nyckel}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env["KONTAKT_FRAN"] ?? "Guide Mallorca <onboarding@resend.dev>",
+      from: process.env["KONTAKT_FRAN"] ?? "Shoot for the Moon <onboarding@resend.dev>",
       to: till.split(",").map((a) => a.trim()),
       reply_to: data.epost,
-      subject: `Bokningsförfrågan stadsvandring – ${data.namn}`,
+      subject: `Förfrågan via hemsidan – ${data.namn}`,
       text: rader.join("\n"),
     }),
   });

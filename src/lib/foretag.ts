@@ -7,7 +7,7 @@ export const FORETAG: {
   kortnamn: string;
   /** En mening om vad sajten är – används i metadata och strukturerad data. */
   beskrivning: string;
-  /** Platsen guiden handlar om. */
+  /** Var Caroline finns. */
   ort: string;
   /** Carolines kontaktuppgifter. */
   epost: string;
@@ -15,10 +15,10 @@ export const FORETAG: {
   /** Telefonnumret för tel:-länkar, utan mellanslag. */
   telefonLank: string;
 } = {
-  namn: "Guide Mallorca",
-  kortnamn: "Guide Mallorca",
+  namn: "Shoot for the Moon",
+  kortnamn: "Shoot for the Moon",
   beskrivning:
-    "Guidade stadsvandringar i Palma de Mallorca med journalisten och Spanienexperten Caroline Palmstierna – historia, nutid och politik bortom turiststråken.",
+    "Caroline Palmstierna – journalist, TV-konsult och Spanienexpert – delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
   ort: "Palma de Mallorca",
   epost: "caroline@shootforthemoon.se",
   telefon: "+46 70-726 87 78",

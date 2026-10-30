@@ -4,7 +4,7 @@
 //   RESEND_API_KEY  – API-nyckel från Resend
 //   KONTAKT_TILL    – adressen som ska ta emot bokningarna (flera separeras med komma)
 // Valfritt:
-//   KONTAKT_FRAN    – avsändare, t.ex. "Guide Mallorca <hej@er-doman.se>" när domänen är
+//   KONTAKT_FRAN    – avsändare, t.ex. "Shoot for the Moon <hej@er-doman.se>" när domänen är
 //                     verifierad i Resend. Utan den används Resends testavsändare, som bara
 //                     kan skicka till adressen Resend-kontot är registrerat på.
 import { createServerFn } from "@tanstack/react-start";

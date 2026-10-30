@@ -1,6 +1,9 @@
 // Sajtens tre språk och alla texter som syns på sidan. Stoppens texter ligger i
-// src/lib/slinga/stopp.ts. Svenska är originalet; engelska och spanska är översättningar –
-// låt gärna Caroline läsa dem innan sajten används skarpt.
+// src/lib/slinga/stopp.ts, aktiviteterna och inläggen i src/lib/innehall.ts.
+// Svenska är originalet; engelska och spanska är översättningar – låt gärna Caroline läsa dem
+// innan sajten används skarpt.
+//
+// Ordet "guide" används medvetet inte någonstans på sajten.
 
 export const SPRAK = ["sv", "en", "es"] as const;
 export type Sprak = (typeof SPRAK)[number];
@@ -21,8 +24,25 @@ export function sprakFor(sokvag: string): Sprak {
   return forsta === "en" || forsta === "es" ? forsta : "sv";
 }
 
+export type Erbjudande = {
+  /** Ankare på sidan, t.ex. #stand-up-history */
+  id: "stand-up-history" | "film" | "museum";
+  namn: string;
+  rubrik: string;
+  text: string;
+  teman: readonly string[];
+};
+
 type Texter = {
   meta: { titel: string; beskrivning: string; bildAlt: string };
+  hero: { ledtrad: string };
+  erbjudanden: {
+    overrad: string;
+    rubrik: string;
+    temanRubrik: string;
+    knapp: string;
+    lista: readonly Erbjudande[];
+  };
   slinga: {
     etikett: string;
     overrad: string;
@@ -33,29 +53,30 @@ type Texter = {
     boka: string;
     ledtrad: string;
   };
+  aktiviteter: {
+    overrad: string;
+    rubrik: string;
+    ingress: string;
+    datumMeddelas: string;
+    anmal: string;
+    exempel: string;
+    typer: Record<"stand-up-history" | "film" | "museum" | "rundvandring", string>;
+  };
   om: {
     overrad: string;
     ingress: string;
+    roller: readonly string[];
     text: [string, string];
     bildAlt: string;
   };
-  vandringar: {
-    overrad: string;
-    rubrik: string;
-    pelare: readonly { rubrik: string; text: string }[];
-  };
-  praktiskt: {
-    overrad: string;
-    rubrik: string;
-    fakta: readonly { etikett: string; text: string }[];
-  };
+  blogg: { overrad: string; rubrik: string; ingress: string; exempel: string };
   fragor: {
     overrad: string;
     rubrik: string;
     lista: readonly string[];
     platshallare: string;
   };
-  boka: {
+  kontakt: {
     overrad: string;
     rubrik: string;
     ingress: string;
@@ -82,7 +103,7 @@ type Texter = {
   };
   sidfot: {
     text: string;
-    boka: string;
+    kontakta: string;
     sidor: string;
     lankar: readonly [string, string][];
     kontakt: string;
@@ -94,77 +115,98 @@ type Texter = {
 
 const SV: Texter = {
   meta: {
-    titel: "Stadsvandringar i Palma med Caroline Palmstierna",
+    titel: "Stand Up History, film och föreläsningar med Caroline Palmstierna",
     beskrivning:
-      "Guidade stadsvandringar i Palma de Mallorca med journalisten och Spanienexperten Caroline Palmstierna – historia, nutid och politik bortom turiststråken.",
-    bildAlt:
-      "Guidad rundvandring i Palma med Caroline Palmstierna – karta över rutten genom gamla stan",
+      "Shoot for the Moon – Caroline Palmstierna, journalist, TV-konsult och Spanienexpert, delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
+    bildAlt: "Shoot for the Moon – Caroline Palmstierna på Mallorca",
+  },
+  hero: { ledtrad: "Scrolla" },
+  erbjudanden: {
+    overrad: "Det här gör jag",
+    rubrik: "Historia som man minns",
+    temanRubrik: "Teman",
+    knapp: "Anmäl intresse",
+    lista: [
+      {
+        id: "stand-up-history",
+        namn: "Stand Up History",
+        rubrik: "Historia med publik, humor och allvar",
+        text: "Kvällar där Spaniens och Mallorcas historia berättas som den borde – med skvaller, skandaler och sammanhang. Varje session har ett eget tema.",
+        teman: ["Tema meddelas", "Tema meddelas", "Tema meddelas"],
+      },
+      {
+        id: "film",
+        namn: "Film & föreläsning",
+        rubrik: "Se filmen – förstå historien bakom",
+        text: "Filmvisningar där Caroline föreläser innan filmen börjar: vad som verkligen hände, vem som bestämde och varför det fortfarande spelar roll.",
+        teman: ["Filmer meddelas"],
+      },
+      {
+        id: "museum",
+        namn: "Museivandringar",
+        rubrik: "Museet, med berättelserna som inte står på skyltarna",
+        text: "Föreläsningar på plats i Palmas museer. Ett tema, några utvalda föremål och historierna som får dem att leva.",
+        teman: ["Museer meddelas"],
+      },
+    ],
   },
   slinga: {
-    etikett: "Stadsvandringens rutt genom Palma",
+    etikett: "Rundvandringens väg genom Palma",
     overrad: "Ca två timmar till fots",
-    rubrik: ["Guidad rundvandring", "i Palma"],
+    rubrik: ["Rundvandring", "i Palma"],
     med: "med Caroline Palmstierna",
     stopp: (nr, av) => `Stopp ${nr} av ${av}`,
     slutEtikett: "Ca 2 timmar",
-    boka: "Boka en vandring",
-    ledtrad: "Scrolla för att gå rutten",
+    boka: "Anmäl intresse",
+    ledtrad: "Scrolla för att följa vägen",
+  },
+  aktiviteter: {
+    overrad: "På gång",
+    rubrik: "Kommande aktiviteter",
+    ingress: "Det här händer framöver. Anmäl intresse så hör Caroline av sig med detaljer.",
+    datumMeddelas: "Datum meddelas",
+    anmal: "Anmäl intresse",
+    exempel: "Exempel",
+    typer: {
+      "stand-up-history": "Stand Up History",
+      film: "Film & föreläsning",
+      museum: "Museivandring",
+      rundvandring: "Rundvandring",
+    },
   },
   om: {
-    overrad: "Din guide",
-    ingress: "Journalist och Spanienexpert, bosatt på Mallorca.",
+    overrad: "Om Caroline",
+    ingress: "Journalist, TV-konsult, historieälskare och Spanienexpert – bosatt på Mallorca.",
+    roller: ["Journalist", "TV-konsult", "Historieälskare", "Spanienexpert"],
     text: [
-      "Caroline är svensk journalist med djup förankring i det spanska och mallorcanska samhället. I Palmas kulturliv leder hon boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
-      "Hon delar med sig av spansk historia, lokalpolitik, kultur och det genuina mallorcanska hantverket – och är den som kan förklara varför staden ser ut som den gör.",
+      "Caroline är svensk journalist med djup förankring i det spanska och mallorcanska samhället. Hon arbetar som TV-konsult, leder boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
+      "Genom Shoot for the Moon delar hon sin passion för Spaniens historia, politik och kultur med alla som är nyfikna – och är den som kan förklara varför saker är som de är.",
     ],
     bildAlt: "Caroline Palmstierna, leende med en blombukett",
   },
-  vandringar: {
-    overrad: "Stadsvandringarna",
-    rubrik: "Historia, nutid och politik – till fots",
-    pelare: [
-      {
-        rubrik: "Berättelser, inte årtal",
-        text: "Vandringen handlar mindre om byggnadsstilar och mer om människorna. Caroline knyter ihop Spaniens nutidshistoria, dagens lokalpolitik och anekdoterna som får staden att bli begriplig.",
-      },
-      {
-        rubrik: "Kvinnorna bakom Mallorca",
-        text: "Många turer har ett tydligt fokus på kvinnorna i öns historia – de kända och de bortglömda – och på hur de har format Mallorca.",
-      },
-      {
-        rubrik: "Bakom fasaderna",
-        text: "Promenaden går genom Palmas historiska gator, in på innergårdar och förbi kyrkor och arkitektur som de flesta besökare missar.",
-      },
-    ],
-  },
-  praktiskt: {
-    overrad: "Praktiskt",
-    rubrik: "Så går det till",
-    fakta: [
-      { etikett: "Längd", text: "Cirka två timmar, i lugnt promenadtempo." },
-      { etikett: "Var", text: "Palmas historiska kvarter, gränder och innergårdar." },
-      {
-        etikett: "Avslutning",
-        text: "Ofta en salongskväll i kvarnkvarteret Es Jonquet, med förfriskningar, lokalt tilltugg och samtal i en personlig miljö.",
-      },
-    ],
+  blogg: {
+    overrad: "Från Mallorca",
+    rubrik: "Anteckningar",
+    ingress: "Bilder, upptäckter och tankar från vardagen på ön.",
+    exempel: "Exempel",
   },
   fragor: {
     overrad: "Vanliga frågor",
     rubrik: "Bra att veta",
     lista: [
-      "Vilket språk sker guidningen på?",
-      "Hur bokar och betalar man?",
-      "Vad händer vid dåligt väder?",
-      "Är turen tillgänglighetsanpassad?",
-      "Vad är avbokningsreglerna?",
+      "Vilket språk sker föreläsningarna på?",
+      "Hur anmäler och betalar man?",
+      "Kan man boka en kväll för sin förening eller sitt företag?",
+      "Är lokalerna tillgänglighetsanpassade?",
+      "Vad gäller vid avbokning?",
     ],
     platshallare: "Caroline får fylla i",
   },
-  boka: {
-    overrad: "Boka",
-    rubrik: "Boka en stadsvandring",
-    ingress: "Berätta när ni vill gå och hur många ni är, så återkommer Caroline med förslag.",
+  kontakt: {
+    overrad: "Kontakt",
+    rubrik: "Hör av dig",
+    ingress:
+      "Berätta vad du är intresserad av, när och hur många ni är, så återkommer Caroline med förslag.",
     direkt: "Eller hör av dig direkt",
     epost: "E-post",
     telefon: "Telefon",
@@ -180,7 +222,7 @@ const SV: Texter = {
     antal: "Antal personer",
     meddelande: "Meddelande",
     meddelandeHint:
-      "Är ni ett sällskap, en förening eller ett företag? Något särskilt ni vill höra om?",
+      "Vad är du intresserad av – Stand Up History, film, museum eller rundvandring? Är ni ett sällskap, en förening eller ett företag?",
     skicka: "Skicka förfrågan",
     skickar: "Skickar…",
     fel: "Förfrågan kunde inte skickas just nu. Försök igen om en stund.",
@@ -188,16 +230,18 @@ const SV: Texter = {
     tackText: "Caroline återkommer till dig via e-post så snart hon kan.",
   },
   sidfot: {
-    text: "Guidade stadsvandringar i Palma – historia, nutid och politik bortom turiststråken.",
-    boka: "Boka en vandring",
+    text: "Stand Up History, filmkvällar och föreläsningar om Mallorca och Spanien.",
+    kontakta: "Hör av dig",
     sidor: "Sidor",
     lankar: [
-      ["#", "Rutten"],
+      ["#stand-up-history", "Stand Up History"],
+      ["#film", "Film & föreläsning"],
+      ["#museum", "Museivandringar"],
+      ["#rundvandring", "Rundvandring"],
+      ["#kommande", "Kommande aktiviteter"],
       ["#om-caroline", "Om Caroline"],
-      ["#stadsvandringar", "Stadsvandringarna"],
-      ["#praktiskt", "Praktiskt"],
-      ["#fragor", "Vanliga frågor"],
-      ["#boka", "Boka"],
+      ["#anteckningar", "Anteckningar"],
+      ["#kontakt", "Kontakt"],
     ],
     kontakt: "Kontakt",
     kartdata: "Kartdata © OpenStreetMap-bidragsgivare",
@@ -208,78 +252,99 @@ const SV: Texter = {
 
 const EN: Texter = {
   meta: {
-    titel: "Guided walking tours of Palma with Caroline Palmstierna",
+    titel: "Stand Up History, film and talks with Caroline Palmstierna",
     beskrivning:
-      "Guided walking tours of Palma de Mallorca with journalist and Spain expert Caroline Palmstierna – history, current affairs and politics beyond the tourist trail.",
-    bildAlt:
-      "Guided walking tour of Palma with Caroline Palmstierna – map of the route through the old town",
+      "Shoot for the Moon – Caroline Palmstierna, journalist, TV consultant and Spain expert, shares her passion for the history of Mallorca and Spain through Stand Up History, film nights and talks.",
+    bildAlt: "Shoot for the Moon – Caroline Palmstierna in Mallorca",
+  },
+  hero: { ledtrad: "Scroll" },
+  erbjudanden: {
+    overrad: "What I do",
+    rubrik: "History you remember",
+    temanRubrik: "Themes",
+    knapp: "Register interest",
+    lista: [
+      {
+        id: "stand-up-history",
+        namn: "Stand Up History",
+        rubrik: "History with an audience, humour and gravity",
+        text: "Evenings where the history of Spain and Mallorca is told the way it should be – with gossip, scandal and context. Every session has its own theme.",
+        teman: ["Theme to be announced", "Theme to be announced", "Theme to be announced"],
+      },
+      {
+        id: "film",
+        namn: "Film & talk",
+        rubrik: "See the film – understand the history behind it",
+        text: "Film screenings where Caroline gives a talk before the film starts: what really happened, who decided and why it still matters.",
+        teman: ["Films to be announced"],
+      },
+      {
+        id: "museum",
+        namn: "Museum walks",
+        rubrik: "The museum, with the stories that aren't on the labels",
+        text: "Talks on site in Palma's museums. One theme, a few chosen objects and the stories that bring them to life.",
+        teman: ["Museums to be announced"],
+      },
+    ],
   },
   slinga: {
     etikett: "The walking route through Palma",
     overrad: "About two hours on foot",
-    rubrik: ["Guided walking tour", "of Palma"],
+    rubrik: ["A walk", "through Palma"],
     med: "with Caroline Palmstierna",
     stopp: (nr, av) => `Stop ${nr} of ${av}`,
     slutEtikett: "About 2 hours",
-    boka: "Book a tour",
-    ledtrad: "Scroll to walk the route",
+    boka: "Register interest",
+    ledtrad: "Scroll to follow the route",
+  },
+  aktiviteter: {
+    overrad: "Coming up",
+    rubrik: "Upcoming events",
+    ingress:
+      "Here's what's coming. Register your interest and Caroline will get back to you with details.",
+    datumMeddelas: "Date to be announced",
+    anmal: "Register interest",
+    exempel: "Example",
+    typer: {
+      "stand-up-history": "Stand Up History",
+      film: "Film & talk",
+      museum: "Museum walk",
+      rundvandring: "Walk",
+    },
   },
   om: {
-    overrad: "Your guide",
-    ingress: "Journalist and Spain expert, based in Mallorca.",
+    overrad: "About Caroline",
+    ingress: "Journalist, TV consultant, history lover and Spain expert – based in Mallorca.",
+    roller: ["Journalist", "TV consultant", "History lover", "Spain expert"],
     text: [
-      "Caroline is a Swedish journalist deeply rooted in Spanish and Mallorcan society. In Palma's cultural life she hosts book talks, gives lectures and works with networks such as SWEA Mallorca.",
-      "She shares Spanish history, local politics, culture and genuine Mallorcan craftsmanship – and she is the one who can explain why the city looks the way it does.",
+      "Caroline is a Swedish journalist deeply rooted in Spanish and Mallorcan society. She works as a TV consultant, hosts book talks, gives lectures and works with networks such as SWEA Mallorca.",
+      "Through Shoot for the Moon she shares her passion for Spanish history, politics and culture with anyone who is curious – and she is the one who can explain why things are the way they are.",
     ],
     bildAlt: "Caroline Palmstierna, smiling with a bouquet of flowers",
   },
-  vandringar: {
-    overrad: "The walking tours",
-    rubrik: "History, today and politics – on foot",
-    pelare: [
-      {
-        rubrik: "Stories, not dates",
-        text: "The walk is less about architectural styles and more about people. Caroline weaves together Spain's recent history, today's local politics and the anecdotes that make the city make sense.",
-      },
-      {
-        rubrik: "The women behind Mallorca",
-        text: "Many tours focus on the women in the island's history – the famous and the forgotten – and on how they shaped Mallorca.",
-      },
-      {
-        rubrik: "Behind the façades",
-        text: "The walk winds through Palma's historic streets, into hidden courtyards and past churches and architecture that most visitors miss.",
-      },
-    ],
-  },
-  praktiskt: {
-    overrad: "Practical information",
-    rubrik: "How it works",
-    fakta: [
-      { etikett: "Duration", text: "About two hours, at an easy walking pace." },
-      { etikett: "Where", text: "Palma's historic quarters, alleys and courtyards." },
-      {
-        etikett: "Finale",
-        text: "Often a salon evening in the old windmill quarter of Es Jonquet, with refreshments, local bites and conversation in a personal setting.",
-      },
-    ],
+  blogg: {
+    overrad: "From Mallorca",
+    rubrik: "Notes",
+    ingress: "Pictures, discoveries and thoughts from everyday life on the island.",
+    exempel: "Example",
   },
   fragor: {
     overrad: "Frequently asked questions",
     rubrik: "Good to know",
     lista: [
-      "Which language is the tour in?",
-      "How do I book and pay?",
-      "What happens if the weather is bad?",
-      "Is the tour accessible?",
+      "Which language are the talks in?",
+      "How do I register and pay?",
+      "Can I book an evening for my association or company?",
+      "Are the venues accessible?",
       "What is the cancellation policy?",
     ],
     platshallare: "Caroline will fill this in",
   },
-  boka: {
-    overrad: "Book",
-    rubrik: "Book a walking tour",
+  kontakt: {
+    overrad: "Contact",
+    rubrik: "Get in touch",
     ingress:
-      "Tell us when you would like to go and how many you are, and Caroline will get back to you.",
+      "Tell us what you're interested in, when and how many you are, and Caroline will get back to you.",
     direkt: "Or get in touch directly",
     epost: "Email",
     telefon: "Phone",
@@ -295,7 +360,7 @@ const EN: Texter = {
     antal: "Number of people",
     meddelande: "Message",
     meddelandeHint:
-      "Are you a group, an association or a company? Anything in particular you would like to hear about?",
+      "What are you interested in – Stand Up History, film, museum or a walk? Are you a group, an association or a company?",
     skicka: "Send request",
     skickar: "Sending…",
     fel: "Your request could not be sent right now. Please try again in a moment.",
@@ -303,16 +368,18 @@ const EN: Texter = {
     tackText: "Caroline will reply by email as soon as she can.",
   },
   sidfot: {
-    text: "Guided walking tours of Palma – history, current affairs and politics beyond the tourist trail.",
-    boka: "Book a tour",
+    text: "Stand Up History, film nights and talks about Mallorca and Spain.",
+    kontakta: "Get in touch",
     sidor: "Pages",
     lankar: [
-      ["#", "The route"],
+      ["#stand-up-history", "Stand Up History"],
+      ["#film", "Film & talk"],
+      ["#museum", "Museum walks"],
+      ["#rundvandring", "Walk"],
+      ["#kommande", "Upcoming events"],
       ["#om-caroline", "About Caroline"],
-      ["#stadsvandringar", "The walking tours"],
-      ["#praktiskt", "Practical information"],
-      ["#fragor", "FAQ"],
-      ["#boka", "Book"],
+      ["#anteckningar", "Notes"],
+      ["#kontakt", "Contact"],
     ],
     kontakt: "Contact",
     kartdata: "Map data © OpenStreetMap contributors",
@@ -323,78 +390,99 @@ const EN: Texter = {
 
 const ES: Texter = {
   meta: {
-    titel: "Visitas guiadas a pie por Palma con Caroline Palmstierna",
+    titel: "Stand Up History, cine y charlas con Caroline Palmstierna",
     beskrivning:
-      "Visitas guiadas a pie por Palma de Mallorca con la periodista y experta en España Caroline Palmstierna: historia, actualidad y política más allá de las rutas turísticas.",
-    bildAlt:
-      "Visita guiada por Palma con Caroline Palmstierna: mapa de la ruta por el casco antiguo",
+      "Shoot for the Moon: Caroline Palmstierna, periodista, consultora de televisión y experta en España, comparte su pasión por la historia de Mallorca y España con Stand Up History, noches de cine y charlas.",
+    bildAlt: "Shoot for the Moon: Caroline Palmstierna en Mallorca",
+  },
+  hero: { ledtrad: "Desliza" },
+  erbjudanden: {
+    overrad: "Lo que hago",
+    rubrik: "Historia que se recuerda",
+    temanRubrik: "Temas",
+    knapp: "Me interesa",
+    lista: [
+      {
+        id: "stand-up-history",
+        namn: "Stand Up History",
+        rubrik: "Historia con público, humor y seriedad",
+        text: "Veladas en las que la historia de España y de Mallorca se cuenta como debería: con chismes, escándalos y contexto. Cada sesión tiene su propio tema.",
+        teman: ["Tema por anunciar", "Tema por anunciar", "Tema por anunciar"],
+      },
+      {
+        id: "film",
+        namn: "Cine y charla",
+        rubrik: "Ver la película y entender la historia que hay detrás",
+        text: "Proyecciones en las que Caroline da una charla antes de la película: qué pasó de verdad, quién decidió y por qué sigue importando.",
+        teman: ["Películas por anunciar"],
+      },
+      {
+        id: "museum",
+        namn: "Recorridos por museos",
+        rubrik: "El museo, con las historias que no están en las cartelas",
+        text: "Charlas en los museos de Palma. Un tema, unas cuantas piezas escogidas y las historias que les dan vida.",
+        teman: ["Museos por anunciar"],
+      },
+    ],
   },
   slinga: {
-    etikett: "La ruta de la visita por Palma",
+    etikett: "El recorrido a pie por Palma",
     overrad: "Unas dos horas a pie",
-    rubrik: ["Visita guiada", "por Palma"],
+    rubrik: ["Un paseo", "por Palma"],
     med: "con Caroline Palmstierna",
     stopp: (nr, av) => `Parada ${nr} de ${av}`,
     slutEtikett: "Unas 2 horas",
-    boka: "Reservar una visita",
-    ledtrad: "Desplázate para recorrer la ruta",
+    boka: "Me interesa",
+    ledtrad: "Desplázate para seguir el recorrido",
+  },
+  aktiviteter: {
+    overrad: "Próximamente",
+    rubrik: "Próximas actividades",
+    ingress: "Esto es lo que viene. Dinos que te interesa y Caroline te enviará los detalles.",
+    datumMeddelas: "Fecha por anunciar",
+    anmal: "Me interesa",
+    exempel: "Ejemplo",
+    typer: {
+      "stand-up-history": "Stand Up History",
+      film: "Cine y charla",
+      museum: "Recorrido por un museo",
+      rundvandring: "Paseo",
+    },
   },
   om: {
-    overrad: "Tu guía",
-    ingress: "Periodista y experta en España, afincada en Mallorca.",
+    overrad: "Sobre Caroline",
+    ingress:
+      "Periodista, consultora de televisión, apasionada de la historia y experta en España, afincada en Mallorca.",
+    roller: ["Periodista", "Consultora de TV", "Apasionada de la historia", "Experta en España"],
     text: [
-      "Caroline es una periodista sueca profundamente arraigada en la sociedad española y mallorquina. En la vida cultural de Palma modera presentaciones de libros, da conferencias y colabora con redes como SWEA Mallorca.",
-      "Comparte la historia de España, la política local, la cultura y la auténtica artesanía mallorquina, y sabe explicar por qué la ciudad es como es.",
+      "Caroline es una periodista sueca profundamente arraigada en la sociedad española y mallorquina. Trabaja como consultora de televisión, modera presentaciones de libros, da conferencias y colabora con redes como SWEA Mallorca.",
+      "Con Shoot for the Moon comparte su pasión por la historia, la política y la cultura de España con cualquiera que sienta curiosidad, y sabe explicar por qué las cosas son como son.",
     ],
     bildAlt: "Caroline Palmstierna, sonriente con un ramo de flores",
   },
-  vandringar: {
-    overrad: "Las visitas",
-    rubrik: "Historia, actualidad y política, a pie",
-    pelare: [
-      {
-        rubrik: "Historias, no fechas",
-        text: "La visita trata menos de estilos arquitectónicos y más de personas. Caroline enlaza la historia reciente de España, la política local de hoy y las anécdotas que hacen comprensible la ciudad.",
-      },
-      {
-        rubrik: "Las mujeres detrás de Mallorca",
-        text: "Muchas visitas se centran en las mujeres de la historia de la isla, las conocidas y las olvidadas, y en cómo dieron forma a Mallorca.",
-      },
-      {
-        rubrik: "Detrás de las fachadas",
-        text: "El paseo recorre las calles históricas de Palma, entra en patios escondidos y pasa por iglesias y rincones que la mayoría de los visitantes no ve.",
-      },
-    ],
-  },
-  praktiskt: {
-    overrad: "Información práctica",
-    rubrik: "Cómo funciona",
-    fakta: [
-      { etikett: "Duración", text: "Unas dos horas, a paso tranquilo." },
-      { etikett: "Dónde", text: "Los barrios históricos, callejones y patios de Palma." },
-      {
-        etikett: "Final",
-        text: "A menudo una velada en el barrio de los molinos de Es Jonquet, con refrescos, picoteo local y conversación en un ambiente cercano.",
-      },
-    ],
+  blogg: {
+    overrad: "Desde Mallorca",
+    rubrik: "Apuntes",
+    ingress: "Imágenes, descubrimientos y reflexiones del día a día en la isla.",
+    exempel: "Ejemplo",
   },
   fragor: {
     overrad: "Preguntas frecuentes",
     rubrik: "Conviene saber",
     lista: [
-      "¿En qué idioma es la visita?",
-      "¿Cómo se reserva y se paga?",
-      "¿Qué pasa si hace mal tiempo?",
-      "¿Es la visita accesible?",
+      "¿En qué idioma son las charlas?",
+      "¿Cómo se inscribe uno y cómo se paga?",
+      "¿Se puede reservar una velada para una asociación o empresa?",
+      "¿Son accesibles los espacios?",
       "¿Cuál es la política de cancelación?",
     ],
     platshallare: "Caroline lo completará",
   },
-  boka: {
-    overrad: "Reservar",
-    rubrik: "Reserva una visita",
+  kontakt: {
+    overrad: "Contacto",
+    rubrik: "Escríbenos",
     ingress:
-      "Cuéntanos cuándo queréis ir y cuántos sois, y Caroline te responderá con una propuesta.",
+      "Cuéntanos qué te interesa, cuándo y cuántos sois, y Caroline te responderá con una propuesta.",
     direkt: "O contacta directamente",
     epost: "Correo",
     telefon: "Teléfono",
@@ -410,7 +498,7 @@ const ES: Texter = {
     antal: "Número de personas",
     meddelande: "Mensaje",
     meddelandeHint:
-      "¿Sois un grupo, una asociación o una empresa? ¿Algo en particular que os gustaría conocer?",
+      "¿Qué te interesa: Stand Up History, cine, museo o un paseo? ¿Sois un grupo, una asociación o una empresa?",
     skicka: "Enviar solicitud",
     skickar: "Enviando…",
     fel: "No se ha podido enviar la solicitud. Inténtalo de nuevo en un momento.",
@@ -418,16 +506,18 @@ const ES: Texter = {
     tackText: "Caroline te responderá por correo lo antes posible.",
   },
   sidfot: {
-    text: "Visitas guiadas a pie por Palma: historia, actualidad y política más allá de las rutas turísticas.",
-    boka: "Reservar una visita",
+    text: "Stand Up History, noches de cine y charlas sobre Mallorca y España.",
+    kontakta: "Escríbenos",
     sidor: "Páginas",
     lankar: [
-      ["#", "La ruta"],
+      ["#stand-up-history", "Stand Up History"],
+      ["#film", "Cine y charla"],
+      ["#museum", "Recorridos por museos"],
+      ["#rundvandring", "Paseo"],
+      ["#kommande", "Próximas actividades"],
       ["#om-caroline", "Sobre Caroline"],
-      ["#stadsvandringar", "Las visitas"],
-      ["#praktiskt", "Información práctica"],
-      ["#fragor", "Preguntas frecuentes"],
-      ["#boka", "Reservar"],
+      ["#anteckningar", "Apuntes"],
+      ["#kontakt", "Contacto"],
     ],
     kontakt: "Contacto",
     kartdata: "Datos del mapa © colaboradores de OpenStreetMap",

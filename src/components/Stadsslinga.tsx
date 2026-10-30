@@ -4,7 +4,7 @@ import { STOPP } from "@/lib/slinga/stopp";
 import { TEXTER, type Sprak } from "@/lib/sprak";
 
 /**
- * Startsidans scrollsektion: kartan, pluppen som går rutten och kortet vid varje stopp.
+ * Rundvandringens scrollsektion: kartan, pluppen som går rutten och kortet vid varje stopp.
  * Motorn ligger i src/lib/slinga/, stoppen i src/lib/slinga/stopp.ts.
  */
 export function Stadsslinga({ sprak }: { sprak: Sprak }) {
@@ -17,7 +17,7 @@ export function Stadsslinga({ sprak }: { sprak: Sprak }) {
   }, []);
 
   return (
-    <section ref={ref} className="slinga" aria-label={t.etikett}>
+    <section ref={ref} id="rundvandring" className="slinga" aria-label={t.etikett}>
       <div className="slinga__scen">
         <div className="slinga__karta" aria-hidden="true" />
         <canvas className="slinga__spar" aria-hidden="true" />
@@ -25,9 +25,9 @@ export function Stadsslinga({ sprak }: { sprak: Sprak }) {
 
         <header className="slinga__hero">
           <p className="slinga__overrad">{t.overrad}</p>
-          <h1 className="slinga__rubrik">
+          <h2 className="slinga__rubrik">
             {t.rubrik[0]} <span className="slinga__radbryt">{t.rubrik[1]}</span>
-          </h1>
+          </h2>
           <p className="slinga__underrad">
             <img
               className="slinga__avatar"
@@ -63,10 +63,10 @@ export function Stadsslinga({ sprak }: { sprak: Sprak }) {
                 <span className="slinga__nummer">
                   {s.slut ? t.slutEtikett : t.stopp(i + 1, STOPP.length - 1)}
                 </span>
-                <h2>{s.namn[sprak]}</h2>
+                <h3>{s.namn[sprak]}</h3>
                 <p>{s.text[sprak]}</p>
                 {s.slut && (
-                  <a className="btn-base btn-bla slinga__knapp" href="#boka">
+                  <a className="btn-base btn-bla slinga__knapp" href="#kontakt">
                     {t.boka}
                   </a>
                 )}

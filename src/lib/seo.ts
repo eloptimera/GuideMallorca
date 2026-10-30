@@ -66,11 +66,11 @@ export function grundSchema(sprak: Sprak = "sv"): Schema {
     description: TEXTER[sprak].meta.beskrivning,
     url: absolut(sprakSokvag(sprak)),
     inLanguage: SPRAKKOD[sprak].html,
-    about: { "@type": "City", name: FORETAG.ort },
+    about: { "@type": "Place", name: "Mallorca" },
     author: {
       "@type": "Person",
       name: "Caroline Palmstierna",
-      jobTitle: "Journalist och guide",
+      jobTitle: "Journalist, TV-konsult och föreläsare",
       email: FORETAG.epost,
       telephone: FORETAG.telefonLank,
     },
