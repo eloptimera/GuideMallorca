@@ -251,7 +251,7 @@ function RutaInnehall({ sprak, a }: { sprak: Sprak; a: Aktivitet }) {
     }
     try {
       // Mejlet till Caroline skrivs alltid på svenska, oavsett besökarens språk.
-      const evenemang = `${a.titel.sv} – ${datumDel("sv", a.datum, { weekday: "long", day: "numeric", month: "long" })} kl. ${a.tid}${slut ? " (VÄNTELISTA)" : ""}${a.exempel ? " [EXEMPEL-EVENEMANG]" : ""}`;
+      const evenemang = `${a.titel.sv}, ${datumDel("sv", a.datum, { weekday: "long", day: "numeric", month: "long" })} kl. ${a.tid}${slut ? " (VÄNTELISTA)" : ""}${a.exempel ? " [EXEMPEL-EVENEMANG]" : ""}`;
       await skickaBokning({
         data: {
           namn: svar.namn,

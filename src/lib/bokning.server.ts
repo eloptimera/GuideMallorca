@@ -24,7 +24,7 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
   const nyckel = process.env["RESEND_API_KEY"];
   const till = process.env["KONTAKT_TILL"];
   if (!nyckel || !till) {
-    console.error("Bokning: RESEND_API_KEY eller KONTAKT_TILL saknas – inget mejl skickades.");
+    console.error("Bokning: RESEND_API_KEY eller KONTAKT_TILL saknas, inget mejl skickades.");
     throw new Error("Formuläret är inte kopplat till någon mottagare ännu.");
   }
 
@@ -47,8 +47,8 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
       to: till.split(",").map((a) => a.trim()),
       reply_to: data.epost,
       subject: data.evenemang
-        ? `Anmälan: ${data.evenemang} – ${data.namn}`
-        : `Förfrågan via hemsidan – ${data.namn}`,
+        ? `Anmälan: ${data.evenemang} (${data.namn})`
+        : `Förfrågan via hemsidan från ${data.namn}`,
       text: rader.join("\n"),
     }),
   });

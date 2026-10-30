@@ -6,14 +6,14 @@ import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
 import { Evenemangsruta, Kalender, useValtEvenemang } from "@/components/Evenemang";
 import { EVENEMANG_TEXTER } from "@/lib/evenemangtexter";
-import { CITAT, INLAGG, kommande } from "@/lib/innehall";
+import { CITAT, kommande } from "@/lib/innehall";
 import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
 
 // Hela startsidan på ett språk. Routerna /, /en och /es renderar den här med sitt språk.
 // Ordning när man scrollar: första vyn → erbjudandena (Stand Up History, film, museum) →
 // bilder från tidigare kvällar och citat → kalendern med kommande evenemang (varje evenemang
 // öppnas i en ruta med anmälan) → rundvandringen med kartan → om Caroline → tv och
-// dokumentär → anteckningar (bloggen) → frågor → kontakt.
+// dokumentär → frågor → kontakt.
 // Texterna ligger i src/lib/sprak.ts, aktiviteter och inlägg i src/lib/innehall.ts.
 // Svaren på de vanliga frågorna fyller Caroline i. Lägg inte till FAQ-schema för Google förrän
 // svaren är riktiga.
@@ -262,35 +262,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
               </div>
             ))}
           </dl>
-        </div>
-      </section>
-
-      <section className="innehall blogg" id="anteckningar" aria-labelledby="blogg-rubrik">
-        <div className="innehall__inre">
-          <p className="overrad">{t.blogg.overrad}</p>
-          <h2 id="blogg-rubrik">{t.blogg.rubrik}</h2>
-          <p className="ingress">{t.blogg.ingress}</p>
-          <ul className="blogg__flode">
-            {INLAGG.map((p) => (
-              <li key={p.datum + p.bild.src} className="inlagg">
-                {p.exempel && <span className="exempel inlagg__exempel">{t.blogg.exempel}</span>}
-                <img
-                  src={p.bild.src}
-                  alt={p.bild.alt[sprak]}
-                  width={800}
-                  height={800}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="inlagg__text">
-                  <time dateTime={p.datum}>
-                    {datumText(p.datum, { day: "numeric", month: "long", year: "numeric" })}
-                  </time>
-                  <p>{p.text[sprak]}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 

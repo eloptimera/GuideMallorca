@@ -18,7 +18,7 @@ export const FORETAG: {
   namn: "Shoot for the Moon",
   kortnamn: "Shoot for the Moon",
   beskrivning:
-    "Caroline Palmstierna – journalist, TV-konsult och Spanienexpert – delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
+    "Caroline Palmstierna, journalist, TV-konsult och Spanienexpert, delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
   ort: "Palma de Mallorca",
   epost: "caroline@shootforthemoon.se",
   telefon: "+46 70-726 87 78",

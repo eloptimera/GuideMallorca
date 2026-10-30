@@ -1,6 +1,6 @@
-// Det som ändras ofta: evenemangen i kalendern, citaten och inläggen i flödet.
+// Det som ändras ofta: evenemangen i kalendern och citaten.
 // ALLT HÄR ÄR EXEMPEL tills Caroline har skickat riktigt innehåll – `exempel: true` visar en
-// etikett på sajten så att ingen tar dem för riktiga datum, citat eller inlägg.
+// etikett på sajten så att ingen tar dem för riktiga datum eller citat.
 // Checklistan för vad som ska bytas inför lansering ligger i LANSERING.md.
 // Tanken är att den här filen ersätts av ett CMS där Caroline själv lägger in aktiviteter
 // och inlägg; komponenterna läser bara listorna nedan.
@@ -62,11 +62,8 @@ const KVALL = {
   },
 } as const;
 
-const PALMA_SALONG = {
-  sv: "Salong i Palma (adress i bekräftelsen)",
-  en: "Salon in Palma (address in the confirmation)",
-  es: "Salón en Palma (dirección en la confirmación)",
-};
+// Exakt adress skickas i bekräftelsen (står i anmälningstexten).
+const PALMA_SALONG = { sv: "Salong i Palma", en: "Salon in Palma", es: "Salón en Palma" };
 
 /**
  * EXEMPEL – alla evenemang nedan är påhittade för utkastet. Byt mot Carolines riktiga
@@ -85,8 +82,8 @@ export const AKTIVITETER: readonly Aktivitet[] = [
       es: "Las mujeres que dieron forma a Mallorca",
     },
     ingress: {
-      sv: "Drottningar, helgon och rebeller – de kvinnor historieböckerna glömde.",
-      en: "Queens, saints and rebels – the women the history books forgot.",
+      sv: "Drottningar, helgon och rebeller. De kvinnor historieböckerna glömde.",
+      en: "Queens, saints and rebels. The women the history books forgot.",
       es: "Reinas, santas y rebeldes: las mujeres que olvidaron los libros de historia.",
     },
     text: {
@@ -123,8 +120,8 @@ export const AKTIVITETER: readonly Aktivitet[] = [
       es: "Una breve charla sitúa la película en su contexto antes de que se apaguen las luces.",
     },
     text: {
-      sv: "Caroline föreläser i 30 minuter om perioden filmen skildrar – vad som hände, vem som bestämde och varför det fortfarande spelar roll. Därefter visas filmen, och efteråt finns tid för samtal.",
-      en: "Caroline gives a 30-minute talk on the period the film portrays – what happened, who decided and why it still matters. Then the film is shown, with time for conversation afterwards.",
+      sv: "Caroline föreläser i 30 minuter om perioden filmen skildrar: vad som hände, vem som bestämde och varför det fortfarande spelar roll. Därefter visas filmen, och efteråt finns tid för samtal.",
+      en: "Caroline gives a 30-minute talk on the period the film portrays: what happened, who decided and why it still matters. Then the film is shown, with time for conversation afterwards.",
       es: "Caroline da una charla de 30 minutos sobre la época que retrata la película: qué pasó, quién decidió y por qué sigue importando. Después se proyecta la película y hay tiempo para conversar.",
     },
     plats: { sv: "Biograf i Palma", en: "Cinema in Palma", es: "Cine en Palma" },
@@ -171,8 +168,8 @@ export const AKTIVITETER: readonly Aktivitet[] = [
     langd: { sv: "ca 2 timmar", en: "about 2 hours", es: "unas 2 horas" },
     typ: "stand-up-history",
     titel: {
-      sv: "Inkvisitionen – skvaller, makt och rädsla",
-      en: "The Inquisition – gossip, power and fear",
+      sv: "Inkvisitionen: skvaller, makt och rädsla",
+      en: "The Inquisition: gossip, power and fear",
       es: "La Inquisición: chismes, poder y miedo",
     },
     ingress: {
@@ -209,8 +206,8 @@ export const AKTIVITETER: readonly Aktivitet[] = [
       es: "De Reyes al carnaval",
     },
     ingress: {
-      sv: "Varför Mallorca firar som det gör – traditionerna och historien bakom.",
-      en: "Why Mallorca celebrates the way it does – the traditions and the history behind them.",
+      sv: "Varför Mallorca firar som det gör, och historien bakom traditionerna.",
+      en: "Why Mallorca celebrates the way it does, and the history behind the traditions.",
       es: "Por qué Mallorca celebra como celebra: las tradiciones y la historia detrás.",
     },
     text: {
@@ -271,60 +268,6 @@ export const CITAT: readonly Citat[] = [
     },
     namn: "Karin B.",
     sammanhang: { sv: "Föreningskväll", en: "Association evening", es: "Velada de asociación" },
-    exempel: true,
-  },
-];
-
-export type Inlagg = {
-  /** ÅÅÅÅ-MM-DD */
-  datum: string;
-  bild: { src: string; alt: PerSprak };
-  text: PerSprak;
-  exempel?: boolean;
-};
-
-export const INLAGG: readonly Inlagg[] = [
-  {
-    datum: "2026-10-24",
-    bild: {
-      src: "/stopp/la-seu.webp",
-      alt: {
-        sv: "Katedralen La Seu i Palma",
-        en: "La Seu cathedral in Palma",
-        es: "La Seu, la catedral de Palma",
-      },
-    },
-    text: {
-      sv: "Morgonljuset över La Seu. Här börjar nästan varje berättelse om Palma – och nästan ingen av dem handlar om katedralen.",
-      en: "Morning light over La Seu. Almost every story about Palma starts here – and almost none of them are about the cathedral.",
-      es: "Luz de mañana sobre La Seu. Casi todas las historias de Palma empiezan aquí, y casi ninguna trata de la catedral.",
-    },
-    exempel: true,
-  },
-  {
-    datum: "2026-10-17",
-    bild: {
-      src: "/stopp/mercat-olivar.webp",
-      alt: { sv: "Mercat de l'Olivar", en: "Mercat de l'Olivar", es: "Mercat de l'Olivar" },
-    },
-    text: {
-      sv: "Lördag på Olivar. Vill man förstå Mallorca ska man börja vid fiskdisken.",
-      en: "Saturday at the Olivar market. If you want to understand Mallorca, start at the fish counter.",
-      es: "Sábado en el Olivar. Si quieres entender Mallorca, empieza por la pescadería.",
-    },
-    exempel: true,
-  },
-  {
-    datum: "2026-10-09",
-    bild: {
-      src: "/stopp/sa-llotja.webp",
-      alt: { sv: "Sa Llotja i Palma", en: "Sa Llotja in Palma", es: "Sa Llotja en Palma" },
-    },
-    text: {
-      sv: "Sa Llotja – byggd av köpmän som ville visa att de var lika mäktiga som kyrkan. Det syns fortfarande.",
-      en: "Sa Llotja – built by merchants who wanted to show they were as powerful as the Church. It still shows.",
-      es: "Sa Llotja, construida por mercaderes que querían demostrar que eran tan poderosos como la Iglesia. Todavía se nota.",
-    },
     exempel: true,
   },
 ];

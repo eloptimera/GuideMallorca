@@ -43,8 +43,8 @@ export const STOPP: readonly Stopp[] = [
   {
     namn: samma("Mercat de l'Olivar"),
     text: {
-      sv: "Stadens största och mest färgstarka saluhall – ett sensoriskt äventyr fyllt av mallorcanska smaker, färsk fisk och lokala råvaror.",
-      en: "The city's largest and most colourful market hall – a feast for the senses full of Mallorcan flavours, fresh fish and local produce.",
+      sv: "Stadens största och mest färgstarka saluhall, ett sensoriskt äventyr fyllt av mallorcanska smaker, färsk fisk och lokala råvaror.",
+      en: "The city's largest and most colourful market hall, a feast for the senses full of Mallorcan flavours, fresh fish and local produce.",
       es: "El mercado más grande y colorido de la ciudad: una aventura para los sentidos llena de sabores mallorquines, pescado fresco y producto local.",
     },
     lat: 39.5729,

@@ -2743,3 +2743,159 @@ button.glas__aktivitet {
   text-align: left;
   cursor: pointer;
 }
+
+/* ---------- Mjuka övergångar mellan sektionerna ----------
+ * Övergångarna ligger i sektionernas befintliga luft (padding) och tonar ut mot den fasta
+ * bakgrundstoningen bakom sidan, så att sidan inte blir längre. */
+
+:root {
+  --fade-ljus: linear-gradient(170deg, #cde9f6 0%, #eaeff9 46%, #f5d2e6 100%);
+}
+
+/* Första vyn tonar ut nertill mot sidans bakgrund. */
+.glas {
+  padding-bottom: clamp(110px, 14vh, 170px);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 calc(100% - clamp(110px, 14vh, 170px)),
+    rgba(0, 0, 0, 0.55) calc(100% - clamp(110px, 14vh, 170px) * 0.55),
+    rgba(0, 0, 0, 0.18) calc(100% - clamp(110px, 14vh, 170px) * 0.25),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 calc(100% - clamp(110px, 14vh, 170px)),
+    rgba(0, 0, 0, 0.55) calc(100% - clamp(110px, 14vh, 170px) * 0.55),
+    rgba(0, 0, 0, 0.18) calc(100% - clamp(110px, 14vh, 170px) * 0.25),
+    transparent 100%
+  );
+}
+
+/* Egenskaperna i första vyn utan punkter. */
+.glas__egenskaper li {
+  padding-top: 0;
+}
+
+.glas__egenskaper li::before {
+  content: none;
+}
+
+/* TV och dokumentär: tonar in uppifrån och ut nertill. */
+.praktiskt {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.2) 22px,
+    rgba(0, 0, 0, 0.6) 44px,
+    #000 72px,
+    #000 calc(100% - 80px),
+    rgba(0, 0, 0, 0.6) calc(100% - 50px),
+    rgba(0, 0, 0, 0.2) calc(100% - 24px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.2) 22px,
+    rgba(0, 0, 0, 0.6) 44px,
+    #000 72px,
+    #000 calc(100% - 80px),
+    rgba(0, 0, 0, 0.6) calc(100% - 50px),
+    rgba(0, 0, 0, 0.2) calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+.praktiskt {
+  padding-top: max(72px, clamp(44px, 5vw, 72px));
+}
+
+/* Kartan: tonar in och ut mot sidans bakgrund i stället för mot en fast färg. */
+.slinga__scen {
+  background: transparent;
+}
+
+.slinga__karta,
+.slinga__spar {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.5) 7%,
+    #000 16%,
+    #000 80%,
+    rgba(0, 0, 0, 0.5) 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.5) 7%,
+    #000 16%,
+    #000 80%,
+    rgba(0, 0, 0, 0.5) 90%,
+    transparent 100%
+  );
+}
+
+.slinga__ton {
+  background: none;
+}
+
+.slinga[data-flyttad]:not([data-smal]) .slinga__ton {
+  background: linear-gradient(
+    to right,
+    rgba(234, 239, 249, 0.92),
+    rgba(234, 239, 249, 0.7) 26%,
+    rgba(234, 239, 249, 0) 42%
+  );
+}
+
+/* ---------- Citaten: lika höga kort, namnen på samma rad ---------- */
+
+.citat__lista li {
+  display: flex;
+}
+
+.citat__lista figure {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.citat__lista figcaption {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.citat__lista blockquote {
+  margin-bottom: 0;
+}
+
+/* ---------- Evenemangsrutan: bredare, inga konstiga radbrytningar ---------- */
+
+.ruta {
+  width: min(860px, calc(100vw - 24px));
+}
+
+.ruta__fakta dd {
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  .ruta__fakta {
+    grid-template-columns: 1fr;
+  }
+  .ruta__fakta div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 1rem;
+  }
+  .ruta__fakta dd {
+    margin: 0;
+    text-align: right;
+  }
+}

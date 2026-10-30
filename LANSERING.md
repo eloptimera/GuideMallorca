@@ -10,7 +10,6 @@ bekräftas innan sajten går live på shootforthemoon.se. Sök i koden efter `ex
 | --- | --- | --- |
 | **Evenemangen i kalendern** (5 st, påhittade titlar, datum, tider, priser, platser och antal platser) | `src/lib/innehall.ts` → `AKTIVITETER` | Riktiga evenemang: titel, datum, tid, längd, lokal, pris, språk, antal platser, kort text, bild |
 | **Citaten** (Anna L., Peter S., Karin B. är påhittade) | `src/lib/innehall.ts` → `CITAT` | Riktiga omdömen **med personens tillåtelse** att publicera namn |
-| **Anteckningarna/bloggen** (3 inlägg med stockbilder från rundvandringen) | `src/lib/innehall.ts` → `INLAGG` | Egna bilder och texter, eller beslut att koppla Instagram i stället |
 | **Teman** för Stand Up History, film och museum ("Teman meddelas") | `src/lib/sprak.ts` → `erbjudanden.lista[].teman` | Lista med teman, filmer och museer |
 | **Vanliga frågor** (svaren är "Caroline får fylla i") | `src/lib/sprak.ts` → `fragor` | Svar på alla fem frågorna. Lägg därefter gärna till FAQ-schema i `seo.ts` |
 | **Om Caroline** och **TV och dokumentär** | `src/lib/sprak.ts` → `om`, `tv` | Bekräfta att uppgifterna stämmer i dag (Filmlance, Nordic Noir m.m.) |
@@ -38,6 +37,7 @@ av sig själva.
       Länka den vid formulären. Kräver Carolines bolagsuppgifter.
 - [ ] **Rundvandringen med kartan** visar rutten publikt. Caroline har sagt att hon inte kan visa
       rutten. Beslut krävs: ta bort kartan, eller få hennes uttryckliga ja.
+- [ ] Inga tankstreck (– eller —) i texterna; skriv om med kommatecken, kolon eller punkt.
 - [ ] Ordet "guide" ska inte förekomma någonstans (kontrollerat i utkastet, kontrollera igen efter
       nya texter).
 - [ ] **Domän**: koppla shootforthemoon.se i Vercel och byt `DOMAN` i `vite.config.ts`.
@@ -46,6 +46,10 @@ av sig själva.
       lansering så att den gamla bilden ("Guidad rundvandring") inte ligger kvar i cachen.
 
 ## 4. Efter lansering
+
+- [ ] **Bloggen/anteckningarna togs bort ur utkastet** (okt 2026). Caroline bad i sitt första mejl om
+      ett sätt att blogga med bild och kommentar. Bestäm med henne: egen blogg via CMS, eller
+      Instagram-flöde på sajten.
 
 - [ ] CMS så att Caroline själv kan lägga in evenemang, inlägg och citat utan oss.
 - [ ] Nyhetsbrev eller Instagram-länk så att besökare får veta när nya evenemang släpps.
