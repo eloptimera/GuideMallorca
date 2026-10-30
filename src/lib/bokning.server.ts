@@ -11,6 +11,7 @@ const BokningSchema = z.object({
   meddelande: z.string().trim().max(3000),
   falla: z.string().max(500),
   sprak: z.enum(["sv", "en", "es"]).catch("sv"),
+  evenemang: z.string().trim().max(300).optional().default(""),
 });
 
 const SPRAKNAMN = { sv: "svenska", en: "engelska", es: "spanska" } as const;
@@ -28,11 +29,12 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
   }
 
   const rader = [
+    data.evenemang && `ANMÄLAN TILL: ${data.evenemang}\n`,
     `Namn: ${data.namn}`,
     `E-post: ${data.epost}`,
     data.telefon && `Telefon: ${data.telefon}`,
     data.datum && `Önskat datum: ${data.datum}`,
-    data.antal && `Antal personer: ${data.antal}`,
+    data.antal && `${data.evenemang ? "Antal platser" : "Antal personer"}: ${data.antal}`,
     `Språk på sajten: ${SPRAKNAMN[data.sprak]}`,
     data.meddelande && `\nMeddelande:\n${data.meddelande}`,
   ].filter(Boolean);
@@ -44,7 +46,9 @@ export async function hanteraBokning(indata: unknown): Promise<{ ok: true }> {
       from: process.env["KONTAKT_FRAN"] ?? "Shoot for the Moon <onboarding@resend.dev>",
       to: till.split(",").map((a) => a.trim()),
       reply_to: data.epost,
-      subject: `Förfrågan via hemsidan – ${data.namn}`,
+      subject: data.evenemang
+        ? `Anmälan: ${data.evenemang} – ${data.namn}`
+        : `Förfrågan via hemsidan – ${data.namn}`,
       text: rader.join("\n"),
     }),
   });

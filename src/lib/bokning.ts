@@ -22,6 +22,8 @@ export type Bokning = {
   falla: string;
   /** Språket besökaren använde på sajten. */
   sprak: "sv" | "en" | "es";
+  /** Vid anmälan till ett evenemang: titel, datum och tid. Tomt för allmänna förfrågningar. */
+  evenemang?: string;
 };
 
 export const skickaBokning = createServerFn({ method: "POST" })

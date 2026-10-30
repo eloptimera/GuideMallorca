@@ -1115,6 +1115,7 @@
 }
 
 .bokning input,
+.bokning select,
 .bokning textarea {
   width: 100%;
   border: 1px solid var(--input);
@@ -1127,6 +1128,7 @@
 }
 
 .bokning input:focus,
+.bokning select:focus,
 .bokning textarea:focus {
   outline: 2px solid var(--bla);
   outline-offset: 0;
@@ -2225,4 +2227,519 @@ body {
   .glas__namn .logga {
     --logga: 2.1rem;
   }
+}
+
+/* ---------- Bilder från tidigare kvällar och citat ---------- */
+
+.galleri__bilder {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2.25rem;
+}
+
+.galleri__bilder img {
+  display: block;
+  width: 100%;
+  height: clamp(260px, 32vw, 440px);
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 26px 50px -32px rgba(18, 28, 43, 0.5);
+}
+
+@media (max-width: 760px) {
+  .galleri__bilder {
+    grid-template-columns: 1fr 1fr;
+  }
+  .galleri__stor {
+    grid-column: 1 / -1;
+  }
+  .galleri__bilder img {
+    height: 240px;
+  }
+}
+
+.citat {
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.citat__rubrik {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.6vw, 3rem);
+}
+
+.citat__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.citat__lista figure {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 1.6rem 1.5rem 1.4rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 22px 44px -30px rgba(18, 28, 43, 0.35);
+}
+
+.citat__lista .exempel {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.citat__lista blockquote {
+  margin: 1.2rem 0 1rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.citat__lista figcaption {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--rosa-text);
+}
+
+/* ---------- Kalendern ---------- */
+
+.kalender__notis {
+  display: inline-block;
+  margin: 1.25rem 0 0;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  background: rgba(216, 57, 149, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(176, 37, 116, 0.25);
+  font-size: 0.95rem;
+  color: var(--rosa-text);
+}
+
+.kalender__inre {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+  margin-top: 2.25rem;
+}
+
+@media (max-width: 860px) {
+  .kalender__inre {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kalender__man {
+  padding: 1.25rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 22px 44px -30px rgba(18, 28, 43, 0.35);
+}
+
+@media (min-width: 861px) {
+  .kalender__man {
+    position: sticky;
+    top: 2rem;
+  }
+}
+
+.kalender__huvud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.kalender__huvud p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  text-transform: capitalize;
+}
+
+.kalender__huvud button {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(18, 28, 43, 0.06);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.kalender__huvud button:hover {
+  background: rgba(18, 28, 43, 0.12);
+}
+
+.kalender__huvud svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.kalender__rutnat {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.kalender__veckodag {
+  padding-bottom: 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.kalender__dag {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+}
+
+.kalender__dag--idag {
+  box-shadow: inset 0 0 0 1px var(--bla);
+  color: var(--ink);
+}
+
+button.kalender__dag {
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.kalender__dag--evenemang {
+  background: var(--fade-mork);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 8px 18px -8px rgba(176, 37, 116, 0.7);
+  transition: transform 0.15s ease;
+}
+
+.kalender__dag--evenemang:hover {
+  transform: scale(1.08);
+}
+
+.kalender__lista {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kalender__tom {
+  padding: 1.5rem;
+  color: var(--muted-foreground);
+}
+
+.evenemang {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+  padding: 1.1rem;
+  border: 0;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 22px 44px -30px rgba(18, 28, 43, 0.35);
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.evenemang:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 28px 50px -28px rgba(176, 37, 116, 0.45);
+}
+
+.evenemang__datum {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: var(--fade-mork);
+  color: #ffffff;
+}
+
+.evenemang__dag {
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  line-height: 1;
+}
+
+.evenemang__manad {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.evenemang__text {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.evenemang__typ {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bla-text);
+}
+
+.evenemang__titel {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  line-height: 1.15;
+}
+
+.evenemang__ingress {
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.evenemang__fot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 0.4rem;
+  font-size: 0.92rem;
+}
+
+.evenemang__platser {
+  color: var(--bla-text);
+  font-weight: 600;
+}
+
+.evenemang__platser--slut {
+  color: var(--rosa-text);
+}
+
+.evenemang__las {
+  font-weight: 700;
+  color: var(--rosa-text);
+}
+
+/* ---------- Evenemangsrutan ---------- */
+
+.ruta__bakgrund {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(18, 28, 43, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: ruta-tona 0.2s ease;
+}
+
+.ruta {
+  position: fixed;
+  z-index: 61;
+  top: 50%;
+  left: 50%;
+  width: min(720px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translate(-50%, -50%);
+  border-radius: 24px;
+  background: #fcffff;
+  color: var(--ink);
+  box-shadow: 0 40px 90px -30px rgba(18, 28, 43, 0.6);
+  animation: ruta-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ruta:focus {
+  outline: none;
+}
+
+.ruta__bild {
+  position: relative;
+}
+
+.ruta__bild img {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 34vh, 300px);
+  object-fit: cover;
+}
+
+.ruta__bild .exempel {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+}
+
+.ruta__stang {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 6px 16px -8px rgba(18, 28, 43, 0.5);
+}
+
+.ruta__stang svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.ruta__inre {
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+
+.ruta__titel {
+  margin: 0.4rem 0 0.5rem;
+  font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+}
+
+.ruta__ingress {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.ruta__fakta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(18, 28, 43, 0.08);
+}
+
+@media (max-width: 560px) {
+  .ruta__fakta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ruta__fakta div {
+  padding: 0.8rem 1rem;
+  background: #f4f8fb;
+}
+
+.ruta__fakta dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.ruta__fakta dd {
+  margin: 0.25rem 0 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.ruta__fakta dd::first-letter {
+  text-transform: uppercase;
+}
+
+.ruta__slut {
+  color: var(--rosa-text);
+}
+
+.ruta__text {
+  margin: 0 0 1rem;
+  line-height: 1.65;
+}
+
+.ruta__dela {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--bla-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.ruta__anmalan {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid transparent;
+  border-image: var(--fade) 1;
+}
+
+.ruta__anmalan h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.8rem;
+}
+
+.ruta__anmalingress {
+  margin: 0 0 1rem;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+@keyframes ruta-tona {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ruta-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%);
+  }
+}
+
+/* Knapparna i första vyns glaskort är knappar nu, inte länkar. */
+button.glas__aktivitet {
+  width: 100%;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }

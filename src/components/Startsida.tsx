@@ -4,20 +4,45 @@ import { Sprakvaljare } from "@/components/Sprakvaljare";
 import { Stadsslinga } from "@/components/Stadsslinga";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
-import { AKTIVITETER, INLAGG } from "@/lib/innehall";
+import { Evenemangsruta, Kalender, useValtEvenemang } from "@/components/Evenemang";
+import { EVENEMANG_TEXTER } from "@/lib/evenemangtexter";
+import { CITAT, INLAGG, kommande } from "@/lib/innehall";
 import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
 
 // Hela startsidan på ett språk. Routerna /, /en och /es renderar den här med sitt språk.
-// Ordning när man scrollar: Shoot for the Moon → erbjudandena (Stand Up History, film,
-// museum) → rundvandringen med kartan → kommande aktiviteter → om Caroline → tv och
-// dokumentär (Shoot for the Moon som produktionsbolag) → anteckningar
-// (bloggen) → frågor → kontakt.
+// Ordning när man scrollar: första vyn → erbjudandena (Stand Up History, film, museum) →
+// bilder från tidigare kvällar och citat → kalendern med kommande evenemang (varje evenemang
+// öppnas i en ruta med anmälan) → rundvandringen med kartan → om Caroline → tv och
+// dokumentär → anteckningar (bloggen) → frågor → kontakt.
 // Texterna ligger i src/lib/sprak.ts, aktiviteter och inlägg i src/lib/innehall.ts.
 // Svaren på de vanliga frågorna fyller Caroline i. Lägg inte till FAQ-schema för Google förrän
 // svaren är riktiga.
 
+/** Citattecken enligt varje språks praxis. */
+const CITATTECKEN = { sv: ["”", "”"], en: ["“", "”"], es: ["«", "»"] } as const;
+
+const GALLERI_ALT = {
+  publik: {
+    sv: "Publik i soffor och stolar lyssnar på Caroline",
+    en: "An audience on sofas and chairs listening to Caroline",
+    es: "Público en sofás y sillas escuchando a Caroline",
+  },
+  scen: {
+    sv: "Caroline berättar inför publik",
+    en: "Caroline speaking to an audience",
+    es: "Caroline hablando ante el público",
+  },
+  buffe: {
+    sv: "Caroline vid ett dukat bord med tilltugg",
+    en: "Caroline by a table set with food",
+    es: "Caroline junto a una mesa con picoteo",
+  },
+} as const;
+
 export function Startsida({ sprak }: { sprak: Sprak }) {
   const t = TEXTER[sprak];
+  const te = EVENEMANG_TEXTER[sprak];
+  const { id: valtEvenemang, oppna, stang } = useValtEvenemang();
   const fragor: Fraga[] = t.fragor.lista.map((fraga) => ({ fraga, svar: t.fragor.platshallare }));
   const locale = SPRAKKOD[sprak].html;
   const datumText = (iso: string, alt: Intl.DateTimeFormatOptions) =>
@@ -50,20 +75,26 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         <aside className="glas__kort" aria-label={t.hero.kortRubrik}>
           <span className="glas__handtag" aria-hidden="true" />
           <p className="glas__kortrubrik">{t.hero.kortRubrik}</p>
-          {AKTIVITETER.slice(0, 2).map((a, i) => (
-            <a key={i} className="glas__aktivitet" href="#kommande">
-              <span className="glas__typ">
-                <span>{t.aktiviteter.typer[a.typ]}</span>
-                <span>{a.plats[sprak]}</span>
-              </span>
-              <span className="glas__titel">{a.titel[sprak]}</span>
-              <span className="glas__datum">
-                {a.datum
-                  ? datumText(a.datum, { day: "numeric", month: "long" })
-                  : t.aktiviteter.datumMeddelas}
-              </span>
-            </a>
-          ))}
+          {kommande()
+            .slice(0, 2)
+            .map((a) => (
+              <button
+                key={a.id}
+                type="button"
+                className="glas__aktivitet"
+                onClick={() => oppna(a.id)}
+              >
+                <span className="glas__typ">
+                  <span>{t.aktiviteter.typer[a.typ]}</span>
+                  <span>{a.exempel ? te.kalender.exempel : a.tid}</span>
+                </span>
+                <span className="glas__titel">{a.titel[sprak]}</span>
+                <span className="glas__datum">
+                  {datumText(a.datum, { weekday: "short", day: "numeric", month: "long" })} ·{" "}
+                  {a.tid}
+                </span>
+              </button>
+            ))}
         </aside>
 
         <div className="glas__text">
@@ -118,46 +149,68 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         ))}
       </div>
 
-      <Stadsslinga sprak={sprak} />
-
-      <section className="innehall aktiviteter" id="kommande" aria-labelledby="kommande-rubrik">
+      <section className="innehall galleri" aria-labelledby="galleri-rubrik">
         <div className="innehall__inre">
-          <p className="overrad">{t.aktiviteter.overrad}</p>
-          <h2 id="kommande-rubrik">{t.aktiviteter.rubrik}</h2>
-          <p className="ingress">{t.aktiviteter.ingress}</p>
-          <ul className="aktiviteter__lista">
-            {AKTIVITETER.map((a, i) => (
-              <li key={i} className="aktivitet">
-                <div className="aktivitet__datum">
-                  {a.datum ? (
-                    <>
-                      <span className="aktivitet__dag">
-                        {datumText(a.datum, { day: "numeric" })}
-                      </span>
-                      <span className="aktivitet__manad">
-                        {datumText(a.datum, { month: "short" })}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="aktivitet__snart">{t.aktiviteter.datumMeddelas}</span>
-                  )}
-                </div>
-                <div className="aktivitet__text">
-                  <p className="aktivitet__typ">
-                    {t.aktiviteter.typer[a.typ]} · {a.plats[sprak]}
-                    {a.exempel && <span className="exempel">{t.aktiviteter.exempel}</span>}
-                  </p>
-                  <h3>{a.titel[sprak]}</h3>
-                  <p>{a.text[sprak]}</p>
-                </div>
-                <a className="btn-base btn-bla aktivitet__knapp" href="#kontakt">
-                  {t.aktiviteter.anmal}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <p className="overrad">{te.galleri.overrad}</p>
+          <h2 id="galleri-rubrik">{te.galleri.rubrik}</h2>
+          <p className="ingress">{te.galleri.ingress}</p>
+          <div className="galleri__bilder">
+            <img
+              className="galleri__stor"
+              src="/evenemang/publik-salong.webp"
+              alt={GALLERI_ALT.publik[sprak]}
+              width={1400}
+              height={1050}
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              src="/evenemang/caroline-pa-scen.webp"
+              alt={GALLERI_ALT.scen[sprak]}
+              width={768}
+              height={1024}
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              src="/evenemang/salong-buffe.webp"
+              alt={GALLERI_ALT.buffe[sprak]}
+              width={768}
+              height={1024}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div className="citat" aria-labelledby="citat-rubrik">
+            <p className="overrad">{te.citat.overrad}</p>
+            <h3 id="citat-rubrik" className="citat__rubrik">
+              {te.citat.rubrik}
+            </h3>
+            <ul className="citat__lista">
+              {CITAT.map((c) => (
+                <li key={c.namn}>
+                  <figure>
+                    {c.exempel && <span className="exempel">{te.citat.exempel}</span>}
+                    <blockquote>
+                      {CITATTECKEN[sprak][0]}
+                      {c.text[sprak]}
+                      {CITATTECKEN[sprak][1]}
+                    </blockquote>
+                    <figcaption>
+                      {c.namn} · {c.sammanhang[sprak]}
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
+
+      <Kalender sprak={sprak} oppna={oppna} />
+
+      <Stadsslinga sprak={sprak} />
 
       <section className="innehall om" id="om-caroline" aria-labelledby="om-rubrik">
         <div className="innehall__inre om__inre">
@@ -316,6 +369,8 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
           </div>
         </div>
       </footer>
+
+      <Evenemangsruta sprak={sprak} id={valtEvenemang} stang={stang} />
     </>
   );
 }
