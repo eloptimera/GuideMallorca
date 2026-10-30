@@ -44,7 +44,6 @@ type Texter = {
     oppnaMeny: string;
     stangMeny: string;
     kortRubrik: string;
-    egenskaper: readonly string[];
   };
   erbjudanden: {
     overrad: string;
@@ -165,13 +164,6 @@ const SV: Texter = {
     oppnaMeny: "Öppna menyn",
     stangMeny: "Stäng menyn",
     kortRubrik: "På gång",
-    egenskaper: [
-      "Stand Up History med olika teman",
-      "Filmvisningar med föreläsning",
-      "Museivandringar med föreläsning",
-      "Journalist och TV-konsult",
-      "Bosatt på Mallorca",
-    ],
   },
   erbjudanden: {
     overrad: "Det här gör jag",
@@ -357,13 +349,6 @@ const EN: Texter = {
     oppnaMeny: "Open menu",
     stangMeny: "Close menu",
     kortRubrik: "Coming up",
-    egenskaper: [
-      "Stand Up History on different themes",
-      "Film screenings with a talk",
-      "Museum walks with a talk",
-      "Journalist and TV consultant",
-      "Based in Mallorca",
-    ],
   },
   erbjudanden: {
     overrad: "What I do",
@@ -550,13 +535,6 @@ const ES: Texter = {
     oppnaMeny: "Abrir menú",
     stangMeny: "Cerrar menú",
     kortRubrik: "Próximamente",
-    egenskaper: [
-      "Stand Up History con distintos temas",
-      "Proyecciones con charla",
-      "Recorridos por museos con charla",
-      "Periodista y consultora de TV",
-      "Afincada en Mallorca",
-    ],
   },
   erbjudanden: {
     overrad: "Lo que hago",

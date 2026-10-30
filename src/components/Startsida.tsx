@@ -129,12 +129,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
             </a>
           </div>
         </div>
-
-        <ul className="glas__egenskaper">
-          {t.hero.egenskaper.map((e) => (
-            <li key={e}>{e}</li>
-          ))}
-        </ul>
       </header>
 
       <div className="erbjudanden">
@@ -255,7 +249,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
           <div>
             <p className="overrad">{t.om.overrad}</p>
             <h2 id="om-rubrik">Caroline Palmstierna</h2>
-            <p className="ingress">{t.om.ingress}</p>
             <div className="om__text">
               {t.om.text.map((stycke) => (
                 <p key={stycke}>{stycke}</p>

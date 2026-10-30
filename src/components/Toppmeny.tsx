@@ -27,7 +27,7 @@ export function Toppmeny({
   const [oppen, setOppen] = useState(false);
 
   useEffect(() => {
-    const kolla = () => setScrollad(window.scrollY > window.innerHeight * 0.6);
+    const kolla = () => setScrollad(window.scrollY > 24);
     kolla();
     window.addEventListener("scroll", kolla, { passive: true });
     return () => window.removeEventListener("scroll", kolla);
