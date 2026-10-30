@@ -159,7 +159,7 @@ const SV: Texter = {
   },
   erbjudanden: {
     overrad: "Det här gör jag",
-    rubrik: "Historia som man minns",
+    rubrik: "Tre sätt att uppleva historien",
     temanRubrik: "Teman",
     knapp: "Anmäl intresse",
     lista: [
@@ -168,7 +168,7 @@ const SV: Texter = {
         namn: "Stand Up History",
         rubrik: "Historia med publik, humor och allvar",
         text: "Kvällar där Spaniens och Mallorcas historia berättas som den borde – med skvaller, skandaler och sammanhang. Varje session har ett eget tema.",
-        teman: ["Tema meddelas", "Tema meddelas", "Tema meddelas"],
+        teman: ["Teman meddelas"],
       },
       {
         id: "film",
@@ -341,7 +341,7 @@ const EN: Texter = {
   },
   erbjudanden: {
     overrad: "What I do",
-    rubrik: "History you remember",
+    rubrik: "Three ways to experience history",
     temanRubrik: "Themes",
     knapp: "Register interest",
     lista: [
@@ -350,7 +350,7 @@ const EN: Texter = {
         namn: "Stand Up History",
         rubrik: "History with an audience, humour and gravity",
         text: "Evenings where the history of Spain and Mallorca is told the way it should be – with gossip, scandal and context. Every session has its own theme.",
-        teman: ["Theme to be announced", "Theme to be announced", "Theme to be announced"],
+        teman: ["Themes to be announced"],
       },
       {
         id: "film",
@@ -524,7 +524,7 @@ const ES: Texter = {
   },
   erbjudanden: {
     overrad: "Lo que hago",
-    rubrik: "Historia que se recuerda",
+    rubrik: "Tres maneras de vivir la historia",
     temanRubrik: "Temas",
     knapp: "Me interesa",
     lista: [
@@ -533,7 +533,7 @@ const ES: Texter = {
         namn: "Stand Up History",
         rubrik: "Historia con público, humor y seriedad",
         text: "Veladas en las que la historia de España y de Mallorca se cuenta como debería: con chismes, escándalos y contexto. Cada sesión tiene su propio tema.",
-        teman: ["Tema por anunciar", "Tema por anunciar", "Tema por anunciar"],
+        teman: ["Temas por anunciar"],
       },
       {
         id: "film",

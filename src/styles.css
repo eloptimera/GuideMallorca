@@ -242,15 +242,12 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--logga) * 0.55) calc(var(--logga) * 0.75) calc(var(--logga) * 0.5);
-  border-radius: calc(var(--logga) * 0.22);
-  background: #f5efe4;
-  color: #161616;
+  color: #ffffff;
   font-family: var(--font-display);
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
-  box-shadow: 0 18px 40px -24px rgba(18, 28, 43, 0.55);
+  text-shadow: 0 2px 24px rgba(18, 28, 43, 0.25);
 }
 
 .logga--mellan {
@@ -272,14 +269,14 @@
   font-size: calc(var(--logga) * 0.24);
   font-weight: 600;
   letter-spacing: 0.3em;
-  color: #a57c4e;
+  color: var(--creme);
 }
 
 .logga__linje {
   width: calc(var(--logga) * 1.2);
   height: 1px;
   margin: calc(var(--logga) * 0.22) 0 calc(var(--logga) * 0.16);
-  background: #a57c4e;
+  background: var(--creme);
 }
 
 .logga__under {
@@ -1598,7 +1595,7 @@
 
 .blogg__flode {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.25rem;
   margin: 2.25rem 0 0;
   padding: 0;
@@ -2186,5 +2183,46 @@ body {
 @media (max-width: 960px) {
   .glas__namn .logga {
     --logga: 1.7rem;
+  }
+}
+
+/* ---------- Finputs ---------- */
+
+.inlagg {
+  position: relative;
+}
+
+.inlagg__exempel {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  z-index: 1;
+}
+
+/* Loggan i första vyn: större, så att undertexten går att läsa. */
+.glas__namn .logga {
+  --logga: 2.9rem;
+}
+
+.glas__namn .logga__under {
+  font-size: max(0.56rem, calc(var(--logga) * 0.15));
+}
+
+/* Erbjudandena: tätare och med namnet fäst när man läser texten bredvid. */
+.erbjudande__inre {
+  padding: clamp(1.5rem, 3vw, 2.4rem) 0 clamp(1.75rem, 3vw, 2.6rem);
+}
+
+@media (min-width: 761px) {
+  .erbjudande__namn {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+}
+
+@media (max-width: 960px) {
+  .glas__namn .logga {
+    --logga: 2.1rem;
   }
 }

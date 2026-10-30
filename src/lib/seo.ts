@@ -6,7 +6,7 @@ import { SPRAK, SPRAKKOD, TEXTER, sprakSokvag, type Sprak } from "@/lib/sprak";
 
 /** Standardbilden när en länk delas. Sidor med egen bild skickar `bild` till sidhuvud(). */
 // ?v= tvingar meddelandeappar och sociala medier att hämta bilden på nytt. Höj vid nästa byte.
-export const DELNINGSBILD = { src: "/og.jpg?v=2", bredd: 1200, hojd: 630 } as const;
+export const DELNINGSBILD = { src: "/og.jpg?v=3", bredd: 1200, hojd: 630 } as const;
 
 type Schema = Record<string, unknown>;
 

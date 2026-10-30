@@ -1,6 +1,6 @@
 /**
- * Loggan Shoot for the Moon i den krämvita varianten: svart text, "for the" och linjen i
- * brons, på en krämvit platta. Satt i text så att den är skarp i alla storlekar.
+ * Loggan Shoot for the Moon, transparent: vit text, "for the" och linjen i ljus
+ * brons-kräm, direkt på toningen. Satt i text så att den är skarp i alla storlekar.
  * Samma loggan ligger som favicon (public/favicon.ico och apple-touch-icon.png).
  */
 export function Logga({ storlek = "liten" }: { storlek?: "liten" | "mellan" }) {

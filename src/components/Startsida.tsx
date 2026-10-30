@@ -39,8 +39,8 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
             <Logga />
           </a>
           <div className="glas__meny">
-            {t.hero.meny.map(([href, namn], i) => (
-              <a key={href} href={href} className={i === 0 ? "glas__aktiv" : undefined}>
+            {t.hero.meny.map(([href, namn]) => (
+              <a key={href} href={href}>
                 {namn}
               </a>
             ))}
@@ -220,6 +220,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
           <ul className="blogg__flode">
             {INLAGG.map((p) => (
               <li key={p.datum + p.bild.src} className="inlagg">
+                {p.exempel && <span className="exempel inlagg__exempel">{t.blogg.exempel}</span>}
                 <img
                   src={p.bild.src}
                   alt={p.bild.alt[sprak]}
@@ -231,7 +232,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
                 <div className="inlagg__text">
                   <time dateTime={p.datum}>
                     {datumText(p.datum, { day: "numeric", month: "long", year: "numeric" })}
-                    {p.exempel && <span className="exempel">{t.blogg.exempel}</span>}
                   </time>
                   <p>{p.text[sprak]}</p>
                 </div>
