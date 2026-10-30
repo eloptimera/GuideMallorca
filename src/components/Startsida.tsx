@@ -36,7 +36,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
 
         <nav className="glas__topp" aria-label={t.sidfot.sidor}>
           <a className="glas__namn" href="#">
-            <span aria-hidden="true">☾</span> Shoot for the Moon
+            <Logga />
           </a>
           <div className="glas__meny">
             {t.hero.meny.map(([href, namn], i) => (
@@ -68,7 +68,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
 
         <div className="glas__text">
           <h1>
-            <span className="glas__logga">Shoot for the Moon</span>
             {t.hero.rubrik[0]} <span className="glas__radbryt">{t.hero.rubrik[1]}</span>
           </h1>
           <p>{t.hero.ingress}</p>
@@ -278,7 +277,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         <div className="sidfot__kort">
           <div className="sidfot__topp">
             <div className="sidfot__presentation">
-              <Logga storlek="liten" />
+              <Logga storlek="mellan" />
               <p className="sidfot__text">{t.sidfot.text}</p>
               <a className="sidfot__knapp" href="#kontakt">
                 {t.sidfot.kontakta} <span aria-hidden="true">→</span>

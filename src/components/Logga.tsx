@@ -1,17 +1,11 @@
 /**
- * Loggan Shoot for the Moon, satt i text så att den är skarp i alla storlekar.
- * Varianten är den nattblå: krämvit text, "for the" och linjen i brons.
- * `som="h1"` på första vyn; i sidfoten är den bara en bild av namnet.
+ * Loggan Shoot for the Moon i den krämvita varianten: svart text, "for the" och linjen i
+ * brons, på en krämvit platta. Satt i text så att den är skarp i alla storlekar.
+ * Samma loggan ligger som favicon (public/favicon.ico och apple-touch-icon.png).
  */
-export function Logga({
-  som: Tagg = "div",
-  storlek = "stor",
-}: {
-  som?: "h1" | "div";
-  storlek?: "stor" | "liten";
-}) {
+export function Logga({ storlek = "liten" }: { storlek?: "liten" | "mellan" }) {
   return (
-    <Tagg className={`logga logga--${storlek}`} aria-label="Shoot for the Moon">
+    <span className={`logga logga--${storlek}`} role="img" aria-label="Shoot for the Moon">
       <span className="logga__ord" aria-hidden="true">
         Shoot
       </span>
@@ -25,9 +19,9 @@ export function Logga({
       <span className="logga__under" aria-hidden="true">
         History <i>|</i> People <i>|</i> Places
       </span>
-      <span className="logga__under" aria-hidden="true">
+      <span className="logga__under logga__under--andra" aria-hidden="true">
         Spain &amp; Beyond
       </span>
-    </Tagg>
+    </span>
   );
 }

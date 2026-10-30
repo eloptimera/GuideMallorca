@@ -158,10 +158,11 @@
 }
 
 @utility btn-bla {
-  background-color: var(--bla-text);
+  background-color: var(--bla-mork);
+  background-image: linear-gradient(135deg, #036e95, #b02574);
   color: #fff;
   &:hover {
-    background-color: var(--bla-mork);
+    filter: brightness(1.12);
   }
 }
 
@@ -233,28 +234,32 @@
 
 /* ---------- Första vyn: glas-hero (se .glas längst ner) ---------- */
 
-/* ---------- Loggan (src/components/Logga.tsx) ---------- */
+/* ---------- Loggan (src/components/Logga.tsx) ----------
+ * Den krämvita varianten. Alla mått utgår från --logga (höjden på SHOOT/MOON). */
 
 .logga {
-  position: relative;
-  z-index: 1;
-  display: flex;
+  --logga: 2.4rem;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
+  padding: calc(var(--logga) * 0.55) calc(var(--logga) * 0.75) calc(var(--logga) * 0.5);
+  border-radius: calc(var(--logga) * 0.22);
+  background: #f5efe4;
+  color: #161616;
   font-family: var(--font-display);
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0;
-  color: var(--creme);
   text-transform: uppercase;
-  animation: rubrik-in 1.2s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 18px 40px -24px rgba(18, 28, 43, 0.55);
+}
+
+.logga--mellan {
+  --logga: 3.2rem;
 }
 
 .logga__ord {
-  font-size: var(--logga, clamp(4rem, 13vw, 9.5rem));
+  font-size: var(--logga);
   line-height: 0.86;
-  letter-spacing: 0.01em;
 }
 
 .logga__ord::first-letter {
@@ -262,56 +267,36 @@
 }
 
 .logga__mitt {
-  margin: 0.32em 0 0.18em;
-  font-size: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 0.22);
+  margin: 0.3em 0 0.2em;
+  padding-left: 0.3em;
+  font-size: calc(var(--logga) * 0.24);
   font-weight: 600;
-  letter-spacing: 0.32em;
-  padding-left: 0.32em;
-  color: var(--brons);
+  letter-spacing: 0.3em;
+  color: #a57c4e;
 }
 
 .logga__linje {
-  width: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 1.15);
+  width: calc(var(--logga) * 1.2);
   height: 1px;
-  margin: 0.55em 0 0.5em;
-  font-size: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 0.3);
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--brons) 18%,
-    var(--brons) 82%,
-    transparent
-  );
+  margin: calc(var(--logga) * 0.22) 0 calc(var(--logga) * 0.16);
+  background: #a57c4e;
 }
 
 .logga__under {
-  margin-top: 0.7em;
-  font-size: calc(var(--logga, clamp(4rem, 13vw, 9.5rem)) * 0.13);
-  font-weight: 500;
-  letter-spacing: 0.3em;
-  padding-left: 0.3em;
+  padding-left: 0.28em;
+  font-size: calc(var(--logga) * 0.15);
+  font-weight: 600;
+  letter-spacing: 0.28em;
   white-space: nowrap;
 }
 
+.logga__under--andra {
+  margin-top: 0.55em;
+}
+
 .logga__under i {
+  margin: 0 0.5em;
   font-style: normal;
-  margin: 0 0.6em;
-  color: var(--brons);
-}
-
-.logga--liten {
-  --logga: 2.6rem;
-  display: inline-flex;
-  margin-bottom: 1.25rem;
-  animation: none;
-}
-
-.logga--liten .logga__under {
-  font-size: 0.62rem;
-}
-
-.logga--liten .logga__linje {
-  background: var(--brons);
 }
 
 @keyframes rubrik-in {
@@ -1407,7 +1392,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #6cc4e6;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .sidfot__kolumn a,
@@ -1655,12 +1640,6 @@
   line-height: 1.55;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .logga {
-    animation: none;
-  }
-}
-
 /* ---------- TV och dokumentär (mörk, återanvänder .praktiskt) ---------- */
 
 .tv .ingress.tv__ingress {
@@ -1759,26 +1738,9 @@
 .glas__topp {
   grid-column: 1 / -1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1.5rem;
   padding-right: 130px;
-}
-
-.glas__namn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.glas__namn span {
-  font-size: 1.4rem;
-  color: var(--creme);
 }
 
 .glas__meny {
@@ -1906,18 +1868,6 @@
   text-shadow: 0 2px 30px rgba(18, 28, 43, 0.25);
 }
 
-.glas__logga {
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.32em;
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--creme);
-  text-shadow: none;
-}
-
 .glas__radbryt {
   white-space: nowrap;
 }
@@ -2031,5 +1981,210 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: rgba(18, 28, 43, 0.35);
+  }
+}
+
+/* ---------- Den rosa-blå toningen genom hela sajten ----------
+ * Samma toning som i första vyn: Sky Blue → Hot Pink. Ljusa sektioner ligger på en ljus
+ * version av toningen, de mörka (TV och dokumentär, sidfoten) får den fulla toningen med
+ * räfflat glas. Liten text och knappar använder de mörkare tonerna för kontrastens skull. */
+
+:root {
+  --fade: linear-gradient(135deg, #0593c6 0%, #3aa7d4 38%, #b8579f 72%, #d83995 100%);
+  --fade-mork: linear-gradient(135deg, #036e95, #b02574);
+  --fade-ljus: linear-gradient(170deg, #e3f3fa 0%, #f4f6fb 50%, #fbe6f1 100%);
+  --raffel: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.1) 0 1px,
+    rgba(255, 255, 255, 0) 1px 7px,
+    rgba(18, 28, 43, 0.06) 7px 8px,
+    rgba(255, 255, 255, 0) 8px 9px
+  );
+}
+
+/* Den ljusa toningen ligger fast bakom hela sidan. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--fade-ljus);
+  pointer-events: none;
+}
+
+html {
+  background: #f4f6fb;
+}
+
+body {
+  background: transparent;
+}
+
+.erbjudanden,
+.aktiviteter,
+.blogg,
+.om,
+.fragor,
+.boka,
+.sidfot {
+  --sektion-bg: transparent;
+  background: transparent;
+}
+
+/* Etiketterna ovanför rubrikerna i toningen. */
+.overrad {
+  background: var(--fade-mork);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Erbjudandena skiljs åt av en tunn toningslinje. */
+.erbjudande {
+  border-top: 2px solid transparent;
+  border-image: var(--fade) 1;
+}
+
+.erbjudande:last-child {
+  border-bottom: 0;
+}
+
+/* Kort i frostat vitt glas. */
+.aktivitet,
+.inlagg,
+.kontakt {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 22px 44px -30px rgba(18, 28, 43, 0.35);
+}
+
+.kontakt {
+  padding: 1.1rem 1.25rem;
+  border-radius: 18px;
+}
+
+.aktivitet__datum,
+.om__roller li {
+  background: var(--fade-mork);
+  color: #ffffff;
+}
+
+.erbjudande__teman li {
+  border-color: rgba(176, 37, 116, 0.35);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.exempel {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(176, 37, 116, 0.3);
+}
+
+.om__bild img {
+  box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.7),
+    0 30px 60px -34px rgba(176, 37, 116, 0.55);
+}
+
+/* Kartans ljusa ram tonar mot samma färger som toningen bakom sidan. */
+.slinga__scen {
+  background: #f4f6fb;
+}
+
+.slinga__ton,
+.slinga[data-flyttad]:not([data-smal]) .slinga__ton {
+  background:
+    linear-gradient(to bottom, rgba(227, 243, 250, 0.92), rgba(227, 243, 250, 0) 34%),
+    linear-gradient(
+      to top,
+      #fbe6f1,
+      rgba(251, 230, 241, 0.82) 5%,
+      rgba(251, 230, 241, 0.35) 13%,
+      rgba(251, 230, 241, 0) 24%
+    );
+}
+
+.slinga[data-flyttad]:not([data-smal]) .slinga__ton {
+  background:
+    linear-gradient(
+      to right,
+      rgba(227, 243, 250, 0.95),
+      rgba(227, 243, 250, 0.75) 26%,
+      rgba(227, 243, 250, 0) 42%
+    ),
+    linear-gradient(
+      to top,
+      #fbe6f1,
+      rgba(251, 230, 241, 0.82) 5%,
+      rgba(251, 230, 241, 0.35) 13%,
+      rgba(251, 230, 241, 0) 24%
+    );
+}
+
+/* Mörka sektioner: hela toningen med räfflat glas, som första vyn. */
+.praktiskt {
+  --sektion-bg: transparent;
+  background:
+    var(--raffel), linear-gradient(to top, rgba(18, 28, 43, 0.4), rgba(18, 28, 43, 0.15)),
+    var(--fade);
+  color: #ffffff;
+}
+
+.praktiskt::before {
+  display: none;
+}
+
+.praktiskt .overrad {
+  background: none;
+  color: #ffffff;
+}
+
+.tv .ingress.tv__ingress,
+.tv__dokumentar p:last-child {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.tv__dokumentar {
+  background: rgba(18, 28, 43, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.tv__dokumentar .tv__etikett,
+.praktiskt .fakta dt {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.praktiskt .fakta div {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidfot__kort {
+  background:
+    var(--raffel), linear-gradient(to top, rgba(18, 28, 43, 0.6), rgba(18, 28, 43, 0.35)),
+    var(--fade);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Första vyn: innehållet ska ligga över den suddiga bilden även i Safari. */
+.glas__topp,
+.glas__kort,
+.glas__text,
+.glas__egenskaper {
+  position: relative;
+  z-index: 1;
+}
+
+.glas__namn {
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+@media (max-width: 960px) {
+  .glas__namn .logga {
+    --logga: 1.7rem;
   }
 }
