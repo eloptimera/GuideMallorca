@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useRouter } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { skickaBokning } from "@/lib/bokning";
 import { EVENEMANG_TEXTER } from "@/lib/evenemangtexter";
@@ -12,8 +13,12 @@ import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
 
 const PREFIX = "#evenemang-";
 
+/** Elementet som öppnade rutan, så att fokus kan lämnas tillbaka dit när den stängs. */
+let oppnadFran: HTMLElement | null = null;
+
 /** Delat tillstånd: vilket evenemang som är öppet, synkat med adressens #. */
 export function useValtEvenemang() {
+  const router = useRouter();
   const [id, setId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,12 +32,26 @@ export function useValtEvenemang() {
   }, []);
 
   const oppna = (nytt: string) => {
+    if (document.activeElement instanceof HTMLElement) oppnadFran = document.activeElement;
     history.replaceState(null, "", `${PREFIX}${nytt}`);
     setId(nytt);
   };
   const stang = () => {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
+    // Adressen byts via routern utan att den scrollar till toppen. Läget sparas också och
+    // återställs som reserv, så att man alltid hamnar där man var när rutan öppnades.
+    const y = window.scrollY;
+    void router.navigate({
+      href: window.location.pathname + window.location.search,
+      replace: true,
+      resetScroll: false,
+    });
     setId(null);
+    const aterstall = () => {
+      if (Math.abs(window.scrollY - y) > 1) window.scrollTo({ top: y, behavior: "instant" });
+    };
+    aterstall();
+    requestAnimationFrame(aterstall);
+    for (const ms of [30, 80, 160, 320]) setTimeout(aterstall, ms);
   };
   return { id, oppna, stang };
 }
@@ -282,7 +301,15 @@ function RutaInnehall({ sprak, a }: { sprak: Sprak; a: Aktivitet }) {
   }
 
   return (
-    <Dialog.Content className="ruta" aria-describedby={`ruta-ingress-${a.id}`}>
+    <Dialog.Content
+      className="ruta"
+      aria-describedby={`ruta-ingress-${a.id}`}
+      // Fokus tillbaka till knappen som öppnade rutan, utan att sidan scrollar.
+      onCloseAutoFocus={(e) => {
+        e.preventDefault();
+        oppnadFran?.focus({ preventScroll: true });
+      }}
+    >
       <div className="ruta__bild">
         <img src={a.bild.src} alt={a.bild.alt[sprak]} width={800} height={600} />
         {a.exempel && <Exempel text={t.kalender.exempel} />}
