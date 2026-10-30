@@ -41,7 +41,7 @@ export function Sprakvaljare({
   /** Inuti toppmenyn i stället för fast uppe till höger. */
   inbyggd?: boolean;
   /** Vart varje flagga leder. Standard: startsidan på det språket. */
-  sokvagFor?: (s: Sprak) => string;
+  sokvagFor?: ((s: Sprak) => string) | undefined;
 }) {
   return (
     <nav

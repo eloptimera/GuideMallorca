@@ -8,7 +8,20 @@ import { TEXTER, type Sprak } from "@/lib/sprak";
  * man har scrollat. Språkvalet ligger i menyn. På mobil (och smala skärmar) blir länkarna en
  * meny bakom ☰-knappen.
  */
-export function Toppmeny({ sprak }: { sprak: Sprak }) {
+export function Toppmeny({
+  sprak,
+  bas = "",
+  sokvagFor,
+  frostad = false,
+}: {
+  sprak: Sprak;
+  /** Läggs före ankarlänkarna, t.ex. "/en" på en undersida så att länkarna leder till startsidan. */
+  bas?: string;
+  /** Vart språkflaggorna leder (standard: startsidan på varje språk). */
+  sokvagFor?: (s: Sprak) => string;
+  /** Alltid frostad bakgrund (på undersidor utan färgstark första vy). */
+  frostad?: boolean;
+}) {
   const t = TEXTER[sprak];
   const [scrollad, setScrollad] = useState(false);
   const [oppen, setOppen] = useState(false);
@@ -31,22 +44,22 @@ export function Toppmeny({ sprak }: { sprak: Sprak }) {
   return (
     <header
       className="toppmeny"
-      data-scrollad={scrollad || oppen ? "" : undefined}
+      data-scrollad={scrollad || oppen || frostad ? "" : undefined}
       data-oppen={oppen ? "" : undefined}
     >
       <div className="toppmeny__rad">
-        <a className="toppmeny__namn" href="#" onClick={() => setOppen(false)}>
+        <a className="toppmeny__namn" href={bas || "#"} onClick={() => setOppen(false)}>
           Shoot for the Moon
         </a>
         <nav className="toppmeny__lankar" aria-label={t.sidfot.sidor}>
           {t.hero.meny.map(([href, namn]) => (
-            <a key={href} href={href}>
+            <a key={href} href={bas + href}>
               {namn}
             </a>
           ))}
         </nav>
         <div className="toppmeny__hoger">
-          <Sprakvaljare sprak={sprak} inbyggd />
+          <Sprakvaljare sprak={sprak} inbyggd sokvagFor={sokvagFor} />
           <button
             type="button"
             className="toppmeny__knapp"
@@ -61,7 +74,7 @@ export function Toppmeny({ sprak }: { sprak: Sprak }) {
       </div>
       <nav id="mobilmeny" className="toppmeny__mobil" aria-label={t.sidfot.sidor} hidden={!oppen}>
         {t.hero.meny.map(([href, namn]) => (
-          <a key={href} href={href} onClick={() => setOppen(false)}>
+          <a key={href} href={bas + href} onClick={() => setOppen(false)}>
             {namn}
           </a>
         ))}

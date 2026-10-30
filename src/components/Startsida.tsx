@@ -1,7 +1,8 @@
 import { Bokningsformular } from "@/components/Bokningsformular";
 import { Logga } from "@/components/Logga";
 import { Toppmeny } from "@/components/Toppmeny";
-import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { TV_SOKVAG } from "@/components/Tvsida";
 import { Stadsslinga } from "@/components/Stadsslinga";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
@@ -22,8 +23,8 @@ import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
 // Hela startsidan på ett språk. Routerna /, /en och /es renderar den här med sitt språk.
 // Ordning när man scrollar: första vyn → erbjudandena (Stand Up History, film, museum) →
 // bilder från tidigare kvällar och citat → kalendern med kommande evenemang (varje evenemang
-// öppnas i en ruta med anmälan) → rundvandringen med kartan → om Caroline → tv och
-// dokumentär → frågor → kontakt.
+// öppnas i en ruta med anmälan) → rundvandringen med kartan → om Caroline → frågor → kontakt.
+// TV och dokumentär har en egen sida (Tvsida.tsx, /tv).
 // Texterna ligger i src/lib/sprak.ts, aktiviteter och inlägg i src/lib/innehall.ts.
 // Svaren på de vanliga frågorna fyller Caroline i. Lägg inte till FAQ-schema för Google förrän
 // svaren är riktiga.
@@ -55,7 +56,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
   const { id: valtEvenemang, oppna, stang } = useValtEvenemang();
   const [typfilter, setTypfilter] = useState<Typfilter>(null);
   const [rundvandringOppen, setRundvandringOppen] = useState(false);
-  const [tvOppen, setTvOppen] = useState(false);
   const fragor: Fraga[] = t.fragor.lista.map((fraga) => ({ fraga, svar: t.fragor.platshallare }));
   const locale = SPRAKKOD[sprak].html;
   const datumText = (iso: string, alt: Intl.DateTimeFormatOptions) =>
@@ -66,11 +66,23 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
       <Toppmeny sprak={sprak} />
 
       <header className="glas">
-        {/* Bakgrunden: Carolines porträtt suddat till färg, med ett räfflat glas framför. */}
+        {/* Bakgrunden: Carolines porträtt suddat till färg, med ett räfflat glas framför och
+            samma porträtt skarpt ovanpå till höger. */}
         <div className="glas__bakgrund" aria-hidden="true">
           <img src="/caroline.webp" alt="" width={800} height={1000} decoding="async" />
         </div>
         <div className="glas__raffel" aria-hidden="true" />
+        {/* Caroline, skarp, till höger. Tonar in i färgerna åt vänster och nedåt. */}
+        <div className="glas__portratt" aria-hidden="true">
+          <img
+            src="/caroline.webp"
+            alt=""
+            width={800}
+            height={1000}
+            decoding="async"
+            fetchPriority="high"
+          />
+        </div>
 
         <div className="glas__topp">
           <a className="glas__namn" href="#">
@@ -257,42 +269,9 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
               </svg>
               {t.om.instagram}
             </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="innehall praktiskt tv" id="tv" aria-labelledby="tv-rubrik">
-        <div className="innehall__inre tv__inre">
-          <div className="tv__text">
-            <p className="overrad">{t.tv.overrad}</p>
-            <h2 id="tv-rubrik">{t.tv.rubrik}</h2>
-            <p className="ingress tv__ingress">{t.tv.ingress}</p>
-          </div>
-          {/* På mobil fälls resten ut med knappen; på dator syns allt. */}
-          <button
-            type="button"
-            className="tv__knapp"
-            aria-expanded={tvOppen}
-            aria-controls="tv-mer"
-            onClick={() => setTvOppen((o) => !o)}
-          >
-            {tvOppen ? t.tv.visaMindre : t.tv.visaMer}
-            <ChevronDown aria-hidden="true" />
-          </button>
-          <div className="tv__mer" id="tv-mer" data-oppen={tvOppen ? "" : undefined}>
-            <div className="tv__dokumentar">
-              <p className="tv__etikett">{t.tv.dokumentarEtikett}</p>
-              <h3>Nordic Noir: The Rise of Scandi Drama</h3>
-              <p>{t.tv.dokumentarText}</p>
-            </div>
-            <dl className="fakta">
-              {t.tv.fakta.map((f) => (
-                <div key={f.etikett}>
-                  <dt>{f.etikett}</dt>
-                  <dd>{f.text}</dd>
-                </div>
-              ))}
-            </dl>
+            <a className="om__tvlank" href={TV_SOKVAG[sprak]}>
+              {t.tv.lank} <ArrowRight aria-hidden="true" />
+            </a>
           </div>
         </div>
       </section>

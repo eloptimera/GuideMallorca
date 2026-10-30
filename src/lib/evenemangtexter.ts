@@ -57,7 +57,7 @@ const SV: EvenemangTexter = {
   kalender: {
     overrad: "Kalender",
     rubrik: "Kommande evenemang",
-    ingress: "Välj ett evenemang för att läsa mer och anmäla dig.",
+    ingress: "Välj ett evenemang för att läsa mer och skicka en bokningsförfrågan.",
     exempelNotis:
       "Utkast: evenemangen nedan är exempel och byts mot riktiga datum innan sajten lanseras.",
     forra: "Föregående månad",
@@ -67,7 +67,7 @@ const SV: EvenemangTexter = {
     horAvDig: "Hör av dig så meddelar jag dig när nästa kväll släpps.",
     alla: "Alla",
     filterEtikett: "Visa typ av evenemang",
-    lasMer: "Läs mer och anmäl dig",
+    lasMer: "Läs mer och boka",
     platserKvar: (n) => (n === 1 ? "1 plats kvar" : `${n} platser kvar`),
     fullbokat: "Fullbokat",
     exempel: "Exempel",
@@ -80,8 +80,9 @@ const SV: EvenemangTexter = {
     pris: "Pris",
     sprak: "Språk",
     platser: "Platser",
-    anmalRubrik: "Anmäl dig",
-    anmalIngress: "Du får en bekräftelse med adress och betalningsinformation från mig via e-post.",
+    anmalRubrik: "Skicka en bokningsförfrågan",
+    anmalIngress:
+      "Platsen är inte bokad förrän jag har bekräftat den. Du får min bekräftelse via e-post inom ett dygn, med adress, hur du betalar och vad som gäller om du behöver avboka.",
     fullbokatText:
       "Det här evenemanget är fullbokat. Skriv upp dig på väntelistan så hör jag av mig om en plats blir ledig.",
     antal: "Antal platser",
@@ -90,11 +91,12 @@ const SV: EvenemangTexter = {
     telefon: "Telefon",
     valfritt: "(valfritt)",
     meddelande: "Meddelande",
-    skicka: "Skicka anmälan",
+    skicka: "Skicka bokningsförfrågan",
     skickar: "Skickar…",
     fel: "Anmälan kunde inte skickas just nu. Försök igen om en stund.",
-    tackRubrik: "Tack, din anmälan är skickad.",
-    tackText: "Jag bekräftar din plats via e-post så snart jag kan.",
+    tackRubrik: "Tack, din bokningsförfrågan är skickad.",
+    tackText:
+      "Din plats är inte bokad ännu. Inom ett dygn får du min bekräftelse via e-post med adress och betalningsinformation. Hittar du inget mejl, titta i skräpposten.",
     stang: "Stäng",
     delaLank: "Kopiera länk",
     laggTill: "Lägg till i kalendern:",
@@ -115,7 +117,7 @@ const EN: EvenemangTexter = {
   kalender: {
     overrad: "Calendar",
     rubrik: "Upcoming events",
-    ingress: "Choose an event to read more and sign up.",
+    ingress: "Choose an event to read more and send a booking request.",
     exempelNotis:
       "Draft: the events below are examples and will be replaced with real dates before launch.",
     forra: "Previous month",
@@ -125,7 +127,7 @@ const EN: EvenemangTexter = {
     horAvDig: "Get in touch and I'll let you know when the next evening is announced.",
     alla: "All",
     filterEtikett: "Show type of event",
-    lasMer: "Read more and sign up",
+    lasMer: "Read more and book",
     platserKvar: (n) => (n === 1 ? "1 seat left" : `${n} seats left`),
     fullbokat: "Sold out",
     exempel: "Example",
@@ -138,8 +140,9 @@ const EN: EvenemangTexter = {
     pris: "Price",
     sprak: "Language",
     platser: "Seats",
-    anmalRubrik: "Sign up",
-    anmalIngress: "I'll email you a confirmation with the address and payment details.",
+    anmalRubrik: "Send a booking request",
+    anmalIngress:
+      "Your seat is not booked until I have confirmed it. You'll get my confirmation by email within 24 hours, with the address, how to pay and what applies if you need to cancel.",
     fullbokatText:
       "This event is sold out. Join the waiting list and I'll get in touch if a seat becomes available.",
     antal: "Number of seats",
@@ -148,11 +151,12 @@ const EN: EvenemangTexter = {
     telefon: "Phone",
     valfritt: "(optional)",
     meddelande: "Message",
-    skicka: "Send sign-up",
+    skicka: "Send booking request",
     skickar: "Sending…",
     fel: "Your sign-up could not be sent right now. Please try again in a moment.",
-    tackRubrik: "Thank you, your sign-up has been sent.",
-    tackText: "I'll confirm your seat by email as soon as I can.",
+    tackRubrik: "Thank you, your booking request has been sent.",
+    tackText:
+      "Your seat is not booked yet. Within 24 hours you'll get my confirmation by email with the address and payment details. If you can't find it, check your spam folder.",
     stang: "Close",
     delaLank: "Copy link",
     laggTill: "Add to calendar:",
@@ -174,7 +178,7 @@ const ES: EvenemangTexter = {
   kalender: {
     overrad: "Calendario",
     rubrik: "Próximos eventos",
-    ingress: "Elige un evento para leer más e inscribirte.",
+    ingress: "Elige un evento para leer más y enviar una solicitud de reserva.",
     exempelNotis:
       "Borrador: los eventos de abajo son ejemplos y se sustituirán por fechas reales antes del lanzamiento.",
     forra: "Mes anterior",
@@ -184,7 +188,7 @@ const ES: EvenemangTexter = {
     horAvDig: "Escríbeme y te avisaré cuando se anuncie la próxima velada.",
     alla: "Todos",
     filterEtikett: "Mostrar tipo de evento",
-    lasMer: "Leer más e inscribirse",
+    lasMer: "Leer más y reservar",
     platserKvar: (n) => (n === 1 ? "Queda 1 plaza" : `Quedan ${n} plazas`),
     fullbokat: "Completo",
     exempel: "Ejemplo",
@@ -197,8 +201,9 @@ const ES: EvenemangTexter = {
     pris: "Precio",
     sprak: "Idioma",
     platser: "Plazas",
-    anmalRubrik: "Inscríbete",
-    anmalIngress: "Te enviaré por correo una confirmación con la dirección y el pago.",
+    anmalRubrik: "Envía una solicitud de reserva",
+    anmalIngress:
+      "Tu plaza no está reservada hasta que yo la confirme. Recibirás mi confirmación por correo en un plazo de 24 horas, con la dirección, cómo pagar y qué ocurre si necesitas cancelar.",
     fullbokatText:
       "Este evento está completo. Apúntate a la lista de espera y te avisaré si queda una plaza libre.",
     antal: "Número de plazas",
@@ -207,11 +212,12 @@ const ES: EvenemangTexter = {
     telefon: "Teléfono",
     valfritt: "(opcional)",
     meddelande: "Mensaje",
-    skicka: "Enviar inscripción",
+    skicka: "Enviar solicitud de reserva",
     skickar: "Enviando…",
     fel: "No se ha podido enviar la inscripción. Inténtalo de nuevo en un momento.",
-    tackRubrik: "Gracias, tu inscripción se ha enviado.",
-    tackText: "Confirmaré tu plaza por correo lo antes posible.",
+    tackRubrik: "Gracias, tu solicitud de reserva se ha enviado.",
+    tackText:
+      "Tu plaza aún no está reservada. En un plazo de 24 horas recibirás mi confirmación por correo con la dirección y los datos de pago. Si no la encuentras, revisa la carpeta de spam.",
     stang: "Cerrar",
     delaLank: "Copiar enlace",
     laggTill: "Añadir al calendario:",

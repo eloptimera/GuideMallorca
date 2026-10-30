@@ -91,6 +91,10 @@ type Texter = {
     dokumentarText: string;
     visaMer: string;
     visaMindre: string;
+    uppdragRubrik: string;
+    uppdragText: string;
+    tillbaka: string;
+    lank: string;
   };
   fragor: {
     overrad: string;
@@ -139,9 +143,9 @@ type Texter = {
 
 const SV: Texter = {
   meta: {
-    titel: "Stand Up History, film och föreläsningar med Caroline Palmstierna",
+    titel: "Stand Up History, film och föreläsningar i Palma med Caroline Palmstierna",
     beskrivning:
-      "Shoot for the Moon: Caroline Palmstierna, journalist, TV-konsult och Spanienexpert, delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
+      "Shoot for the Moon: Caroline Palmstierna, journalist, TV-konsult och Spanienexpert, delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar i Palma.",
     bildAlt: "Shoot for the Moon, Caroline Palmstierna på Mallorca",
   },
   hero: {
@@ -155,7 +159,7 @@ const SV: Texter = {
     ],
     rubrik: ["Historia som", "man minns"],
     ingress:
-      "Jag heter Caroline Palmstierna, journalist och Spanienexpert. Jag berättar om Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
+      "Jag heter Caroline Palmstierna, journalist och Spanienexpert. Jag berättar om Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar i Palma.",
     knappAktiviteter: "Se vad som är på gång",
     knappKontakt: "Hör av dig",
     oppnaMeny: "Öppna menyn",
@@ -173,7 +177,7 @@ const SV: Texter = {
     overrad: "Det här gör jag",
     rubrik: "Tre sätt att uppleva historien",
     temanRubrik: "Teman",
-    knapp: "Se datum och anmäl dig",
+    knapp: "Se datum och boka",
     lista: [
       {
         id: "stand-up-history",
@@ -258,6 +262,11 @@ const SV: Texter = {
     dokumentarEtikett: "Dokumentär",
     visaMer: "Läs mer om min tv-karriär",
     visaMindre: "Visa mindre",
+    uppdragRubrik: "Ett uppdrag inom tv eller dokumentär?",
+    uppdragText:
+      "Jag tar uppdrag som konsult inom utveckling, finansiering och internationell försäljning av drama och dokumentär. Skriv till mig så berättar jag mer.",
+    tillbaka: "Till startsidan",
+    lank: "Mina tv- och dokumentärprojekt",
     dokumentarText:
       "Om hur skandinavisk tv-dramatik erövrade världen, med bland andra Sofia Helin, Sidse Babett Knudsen, Krister Henriksson och Sofie Gråböl. Jag står för produktion, utveckling, finansiering och världsförsäljning genom Shoot for the Moon.",
   },
@@ -313,7 +322,7 @@ const SV: Texter = {
       ["#rundvandring", "Rundvandring"],
       ["#kommande", "Kommande evenemang"],
       ["#om-caroline", "Om mig"],
-      ["#tv", "TV och dokumentär"],
+      ["/tv", "TV och dokumentär"],
       ["#kontakt", "Kontakt"],
     ],
     kontakt: "Kontakt",
@@ -326,9 +335,9 @@ const SV: Texter = {
 
 const EN: Texter = {
   meta: {
-    titel: "Stand Up History, film and talks with Caroline Palmstierna",
+    titel: "Stand Up History, film and talks in Palma with Caroline Palmstierna",
     beskrivning:
-      "Shoot for the Moon: Caroline Palmstierna, journalist, TV consultant and Spain expert, shares her passion for the history of Mallorca and Spain through Stand Up History, film nights and talks.",
+      "Shoot for the Moon: Caroline Palmstierna, journalist, TV consultant and Spain expert, shares her passion for the history of Mallorca and Spain through Stand Up History, film nights and talks in Palma.",
     bildAlt: "Shoot for the Moon, Caroline Palmstierna in Mallorca",
   },
   hero: {
@@ -342,7 +351,7 @@ const EN: Texter = {
     ],
     rubrik: ["History you", "remember"],
     ingress:
-      "I'm Caroline Palmstierna, a journalist and Spain expert. I bring the history of Mallorca and Spain to life through Stand Up History, film nights and talks.",
+      "I'm Caroline Palmstierna, a journalist and Spain expert. I bring the history of Mallorca and Spain to life through Stand Up History, film nights and talks in Palma.",
     knappAktiviteter: "See what's coming up",
     knappKontakt: "Get in touch",
     oppnaMeny: "Open menu",
@@ -360,7 +369,7 @@ const EN: Texter = {
     overrad: "What I do",
     rubrik: "Three ways to experience history",
     temanRubrik: "Themes",
-    knapp: "See dates and sign up",
+    knapp: "See dates and book",
     lista: [
       {
         id: "stand-up-history",
@@ -446,6 +455,11 @@ const EN: Texter = {
     dokumentarEtikett: "Documentary",
     visaMer: "Read more about my TV career",
     visaMindre: "Show less",
+    uppdragRubrik: "A TV or documentary project?",
+    uppdragText:
+      "I take on consulting work in development, financing and international sales of drama and documentaries. Write to me and I'll tell you more.",
+    tillbaka: "Back to the homepage",
+    lank: "My TV and documentary work",
     dokumentarText:
       "How Scandinavian TV drama conquered the world, featuring Sofia Helin, Sidse Babett Knudsen, Krister Henriksson and Sofie Gråböl, among others. Through Shoot for the Moon I handle production, development, financing and worldwide sales.",
   },
@@ -501,7 +515,7 @@ const EN: Texter = {
       ["#rundvandring", "Walk"],
       ["#kommande", "Upcoming events"],
       ["#om-caroline", "About me"],
-      ["#tv", "TV and documentary"],
+      ["/en/tv", "TV and documentary"],
       ["#kontakt", "Contact"],
     ],
     kontakt: "Contact",
@@ -514,9 +528,9 @@ const EN: Texter = {
 
 const ES: Texter = {
   meta: {
-    titel: "Stand Up History, cine y charlas con Caroline Palmstierna",
+    titel: "Stand Up History, cine y charlas en Palma con Caroline Palmstierna",
     beskrivning:
-      "Shoot for the Moon: Caroline Palmstierna, periodista, consultora de televisión y experta en España, comparte su pasión por la historia de Mallorca y España con Stand Up History, noches de cine y charlas.",
+      "Shoot for the Moon: Caroline Palmstierna, periodista, consultora de televisión y experta en España, comparte su pasión por la historia de Mallorca y España con Stand Up History, noches de cine y charlas en Palma.",
     bildAlt: "Shoot for the Moon: Caroline Palmstierna en Mallorca",
   },
   hero: {
@@ -530,7 +544,7 @@ const ES: Texter = {
     ],
     rubrik: ["Historia que", "se recuerda"],
     ingress:
-      "Soy Caroline Palmstierna, periodista y experta en España. Cuento la historia de Mallorca y de España con Stand Up History, noches de cine y charlas.",
+      "Soy Caroline Palmstierna, periodista y experta en España. Cuento la historia de Mallorca y de España con Stand Up History, noches de cine y charlas en Palma.",
     knappAktiviteter: "Ver lo que viene",
     knappKontakt: "Escríbeme",
     oppnaMeny: "Abrir menú",
@@ -548,7 +562,7 @@ const ES: Texter = {
     overrad: "Lo que hago",
     rubrik: "Tres maneras de vivir la historia",
     temanRubrik: "Temas",
-    knapp: "Ver fechas e inscribirse",
+    knapp: "Ver fechas y reservar",
     lista: [
       {
         id: "stand-up-history",
@@ -635,6 +649,11 @@ const ES: Texter = {
     dokumentarEtikett: "Documental",
     visaMer: "Más sobre mi carrera en televisión",
     visaMindre: "Mostrar menos",
+    uppdragRubrik: "¿Un proyecto de televisión o documental?",
+    uppdragText:
+      "Acepto encargos como consultora en desarrollo, financiación y ventas internacionales de ficción y documental. Escríbeme y te cuento más.",
+    tillbaka: "Volver a la página de inicio",
+    lank: "Mis proyectos de televisión y documental",
     dokumentarText:
       "Cómo el drama televisivo escandinavo conquistó el mundo, con Sofia Helin, Sidse Babett Knudsen, Krister Henriksson y Sofie Gråböl, entre otros. Con Shoot for the Moon me encargo de la producción, el desarrollo, la financiación y las ventas internacionales.",
   },
@@ -690,7 +709,7 @@ const ES: Texter = {
       ["#rundvandring", "Paseo"],
       ["#kommande", "Próximos eventos"],
       ["#om-caroline", "Sobre mí"],
-      ["#tv", "Televisión y documental"],
+      ["/es/tv", "Televisión y documental"],
       ["#kontakt", "Contacto"],
     ],
     kontakt: "Contacto",

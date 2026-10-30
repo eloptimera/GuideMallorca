@@ -28,6 +28,10 @@ av sig själva.
       medvetet ingenting (de visar en utkast-bekräftelse), så testa med ett riktigt evenemang.
 - [ ] **Platser kvar** räknas inte ner automatiskt. Antingen uppdaterar Caroline `platserKvar`
       själv, eller så bygger vi ett CMS/en databas (se punkt 4).
+- [ ] **Löftet "bekräftelse inom ett dygn"** står i bokningsrutan och tackrutan på alla tre språk
+      (`src/lib/evenemangtexter.ts`). Caroline måste kunna hålla det, annars ändra tiden.
+- [ ] **Avbokningsvillkor**: texten säger att villkoren står i bekräftelsen. Caroline behöver bestämma
+      dem (t.ex. full återbetalning fram till 48 timmar före) och gärna svara i Vanliga frågor.
 - [ ] **Betalning**: i dag skickar Caroline betalningsinformation i bekräftelsen. Beslut: fortsätta
       så, eller koppla Stripe/Swish-betalning direkt vid anmälan.
 
@@ -64,6 +68,9 @@ av sig själva.
 - [ ] Lista evenemangen i lokala kalendrar (The Calendar Mallorca, Majorca Daily Bulletin).
 
 ## Bilder
+
+Porträttet i första vyn och under Om mig är `public/caroline.webp`. Byt gärna första vyns bild mot
+en bild där Caroline berättar inför publik när en sådan finns i bra upplösning.
 
 Riktiga bilder från tidigare kvällar ligger i `public/evenemang/` (från Caroline, okt 2026).
 Fler bilder per evenemangstyp – särskilt film och museum – behövs.

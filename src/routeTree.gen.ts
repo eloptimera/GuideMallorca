@@ -17,6 +17,9 @@ import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TvRouteImport } from './routes/tv'
+import { Route as EnTvRouteImport } from './routes/en_.tv'
+import { Route as EsTvRouteImport } from './routes/es_.tv'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +61,21 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TvRoute = TvRouteImport.update({
+  id: '/tv',
+  path: '/tv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnTvRoute = EnTvRouteImport.update({
+  id: '/en_/tv',
+  path: '/en/tv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsTvRoute = EsTvRouteImport.update({
+  id: '/es_/tv',
+  path: '/es/tv',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +86,9 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tv': typeof TvRoute
+  '/en/tv': typeof EnTvRoute
+  '/es/tv': typeof EsTvRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +99,9 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tv': typeof TvRoute
+  '/en/tv': typeof EnTvRoute
+  '/es/tv': typeof EsTvRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +113,9 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tv': typeof TvRoute
+  '/en_/tv': typeof EnTvRoute
+  '/es_/tv': typeof EsTvRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +128,9 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tv'
+    | '/en/tv'
+    | '/es/tv'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +141,9 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tv'
+    | '/en/tv'
+    | '/es/tv'
   id:
     | '__root__'
     | '/'
@@ -121,6 +154,9 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tv'
+    | '/en_/tv'
+    | '/es_/tv'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +168,9 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TvRoute: typeof TvRoute
+  EnTvRoute: typeof EnTvRoute
+  EsTvRoute: typeof EsTvRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +231,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv': {
+      id: '/tv'
+      path: '/tv'
+      fullPath: '/tv'
+      preLoaderRoute: typeof TvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en_/tv': {
+      id: '/en_/tv'
+      path: '/en/tv'
+      fullPath: '/en/tv'
+      preLoaderRoute: typeof EnTvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es_/tv': {
+      id: '/es_/tv'
+      path: '/es/tv'
+      fullPath: '/es/tv'
+      preLoaderRoute: typeof EsTvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +264,9 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TvRoute: TvRoute,
+  EnTvRoute: EnTvRoute,
+  EsTvRoute: EsTvRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

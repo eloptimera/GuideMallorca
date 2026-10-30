@@ -3568,3 +3568,164 @@ html {
     white-space: nowrap;
   }
 }
+
+/* ---------- Carolines porträtt i första vyn ---------- */
+
+.glas__portratt {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(56vw, 820px);
+  pointer-events: none;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 38%),
+    linear-gradient(to top, transparent 0, #000 30%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 38%),
+    linear-gradient(to top, transparent 0, #000 30%);
+  mask-composite: intersect;
+}
+
+.glas__portratt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  filter: saturate(0.95) contrast(1.02);
+}
+
+/* Färgerna lägger sig mjukt över bilden så att den hör ihop med toningen. */
+.glas__portratt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(5, 147, 198, 0.28), rgba(216, 57, 149, 0.22));
+  mix-blend-mode: soft-light;
+}
+
+/* På dator: kortet "På gång" flyttas ner så att ansiktet syns. */
+@media (min-width: 961px) {
+  .glas__kort {
+    align-self: end;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .glas__portratt {
+    width: 100%;
+    height: 62%;
+    bottom: auto;
+    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+  }
+  .glas__portratt img {
+    object-position: 50% 12%;
+  }
+  /* Mörkare toning bakom texten nertill så att den går att läsa. */
+  .glas__raffel {
+    z-index: 0;
+    background:
+      linear-gradient(to top, rgba(18, 28, 43, 0.55), rgba(18, 28, 43, 0) 55%),
+      linear-gradient(to bottom, rgba(18, 28, 43, 0.35), rgba(18, 28, 43, 0) 22%);
+  }
+}
+
+/* ---------- TV-sidan ---------- */
+
+.tvsida__hero {
+  padding-top: calc(64px + clamp(44px, 6vw, 88px));
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 80px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 80px), transparent 100%);
+}
+
+.tvsida__hero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+}
+
+.tvsida__hero .tv__dokumentar h2 {
+  margin: 0.5rem 0 0.6rem;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+}
+
+/* På tv-sidan syns allt även på mobil (ingen utfällning). */
+@media (max-width: 760px) {
+  .tvsida .tv__mer {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+}
+
+.tvsida__kontakt h2 {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+}
+
+.tvsida__knappar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.tvsida__knappar a {
+  text-decoration: none;
+}
+
+.tvsida__knappar svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.om__tvlank {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+  margin-left: 1.5rem;
+  font-weight: 700;
+  color: var(--bla-text);
+  text-decoration: none;
+}
+
+.om__tvlank:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.om__tvlank svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (max-width: 560px) {
+  .om__tvlank {
+    display: flex;
+    margin-left: 0;
+    margin-top: 0.8rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .glas__raffel {
+    background:
+      linear-gradient(to top, rgba(18, 28, 43, 0.55), rgba(18, 28, 43, 0) 55%),
+      linear-gradient(to bottom, rgba(18, 28, 43, 0.6), rgba(18, 28, 43, 0.25) 26%, rgba(18, 28, 43, 0) 42%);
+  }
+  .glas__namn .logga {
+    text-shadow: 0 1px 14px rgba(18, 28, 43, 0.55);
+  }
+}
+
+@media (min-width: 961px) {
+  .glas__kort {
+    background: rgba(18, 28, 43, 0.3);
+  }
+  .glas__aktivitet {
+    background: rgba(18, 28, 43, 0.32);
+  }
+}
