@@ -35,7 +35,15 @@ export type Erbjudande = {
 
 type Texter = {
   meta: { titel: string; beskrivning: string; bildAlt: string };
-  hero: { ledtrad: string };
+  hero: {
+    meny: readonly [string, string][];
+    rubrik: [string, string];
+    ingress: string;
+    knappAktiviteter: string;
+    knappKontakt: string;
+    kortRubrik: string;
+    egenskaper: readonly string[];
+  };
   erbjudanden: {
     overrad: string;
     rubrik: string;
@@ -128,7 +136,27 @@ const SV: Texter = {
       "Shoot for the Moon – Caroline Palmstierna, journalist, TV-konsult och Spanienexpert, delar sin passion för Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
     bildAlt: "Shoot for the Moon – Caroline Palmstierna på Mallorca",
   },
-  hero: { ledtrad: "Scrolla" },
+  hero: {
+    meny: [
+      ["#stand-up-history", "Stand Up History"],
+      ["#film", "Film"],
+      ["#museum", "Museum"],
+      ["#om-caroline", "Om Caroline"],
+    ],
+    rubrik: ["Historia som", "man minns"],
+    ingress:
+      "Stand Up History, filmkvällar och föreläsningar om Mallorca och Spanien – med journalisten och Spanienexperten Caroline Palmstierna.",
+    knappAktiviteter: "Se vad som är på gång",
+    knappKontakt: "Hör av dig",
+    kortRubrik: "På gång",
+    egenskaper: [
+      "Stand Up History med olika teman",
+      "Filmvisningar med föreläsning",
+      "Museivandringar med föreläsning",
+      "Journalist och TV-konsult",
+      "Bosatt på Mallorca",
+    ],
+  },
   erbjudanden: {
     overrad: "Det här gör jag",
     rubrik: "Historia som man minns",
@@ -290,7 +318,27 @@ const EN: Texter = {
       "Shoot for the Moon – Caroline Palmstierna, journalist, TV consultant and Spain expert, shares her passion for the history of Mallorca and Spain through Stand Up History, film nights and talks.",
     bildAlt: "Shoot for the Moon – Caroline Palmstierna in Mallorca",
   },
-  hero: { ledtrad: "Scroll" },
+  hero: {
+    meny: [
+      ["#stand-up-history", "Stand Up History"],
+      ["#film", "Film"],
+      ["#museum", "Museum"],
+      ["#om-caroline", "About Caroline"],
+    ],
+    rubrik: ["History you", "remember"],
+    ingress:
+      "Stand Up History, film nights and talks about Mallorca and Spain – with journalist and Spain expert Caroline Palmstierna.",
+    knappAktiviteter: "See what's coming up",
+    knappKontakt: "Get in touch",
+    kortRubrik: "Coming up",
+    egenskaper: [
+      "Stand Up History on different themes",
+      "Film screenings with a talk",
+      "Museum walks with a talk",
+      "Journalist and TV consultant",
+      "Based in Mallorca",
+    ],
+  },
   erbjudanden: {
     overrad: "What I do",
     rubrik: "History you remember",
@@ -453,7 +501,27 @@ const ES: Texter = {
       "Shoot for the Moon: Caroline Palmstierna, periodista, consultora de televisión y experta en España, comparte su pasión por la historia de Mallorca y España con Stand Up History, noches de cine y charlas.",
     bildAlt: "Shoot for the Moon: Caroline Palmstierna en Mallorca",
   },
-  hero: { ledtrad: "Desliza" },
+  hero: {
+    meny: [
+      ["#stand-up-history", "Stand Up History"],
+      ["#film", "Cine"],
+      ["#museum", "Museo"],
+      ["#om-caroline", "Sobre Caroline"],
+    ],
+    rubrik: ["Historia que", "se recuerda"],
+    ingress:
+      "Stand Up History, noches de cine y charlas sobre Mallorca y España, con la periodista y experta en España Caroline Palmstierna.",
+    knappAktiviteter: "Ver lo que viene",
+    knappKontakt: "Escríbenos",
+    kortRubrik: "Próximamente",
+    egenskaper: [
+      "Stand Up History con distintos temas",
+      "Proyecciones con charla",
+      "Recorridos por museos con charla",
+      "Periodista y consultora de TV",
+      "Afincada en Mallorca",
+    ],
+  },
   erbjudanden: {
     overrad: "Lo que hago",
     rubrik: "Historia que se recuerda",

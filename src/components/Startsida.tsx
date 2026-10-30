@@ -27,13 +27,66 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
     <>
       <Sprakvaljare sprak={sprak} />
 
-      <header className="manen">
-        <div className="manen__mane" aria-hidden="true" />
-        <Logga som="h1" />
-        <a className="manen__ledtrad" href="#stand-up-history">
-          <span>{t.hero.ledtrad}</span>
-          <i aria-hidden="true" />
-        </a>
+      <header className="glas">
+        {/* Bakgrunden: Carolines porträtt suddat till färg, med ett räfflat glas framför. */}
+        <div className="glas__bakgrund" aria-hidden="true">
+          <img src="/caroline.webp" alt="" width={800} height={1000} decoding="async" />
+        </div>
+        <div className="glas__raffel" aria-hidden="true" />
+
+        <nav className="glas__topp" aria-label={t.sidfot.sidor}>
+          <a className="glas__namn" href="#">
+            <span aria-hidden="true">☾</span> Shoot for the Moon
+          </a>
+          <div className="glas__meny">
+            {t.hero.meny.map(([href, namn], i) => (
+              <a key={href} href={href} className={i === 0 ? "glas__aktiv" : undefined}>
+                {namn}
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        <aside className="glas__kort" aria-label={t.hero.kortRubrik}>
+          <span className="glas__handtag" aria-hidden="true" />
+          <p className="glas__kortrubrik">{t.hero.kortRubrik}</p>
+          {AKTIVITETER.slice(0, 2).map((a, i) => (
+            <a key={i} className="glas__aktivitet" href="#kommande">
+              <span className="glas__typ">
+                <span>{t.aktiviteter.typer[a.typ]}</span>
+                <span>{a.plats[sprak]}</span>
+              </span>
+              <span className="glas__titel">{a.titel[sprak]}</span>
+              <span className="glas__datum">
+                {a.datum
+                  ? datumText(a.datum, { day: "numeric", month: "long" })
+                  : t.aktiviteter.datumMeddelas}
+              </span>
+            </a>
+          ))}
+        </aside>
+
+        <div className="glas__text">
+          <h1>
+            <span className="glas__logga">Shoot for the Moon</span>
+            {t.hero.rubrik[0]} <span className="glas__radbryt">{t.hero.rubrik[1]}</span>
+          </h1>
+          <p>{t.hero.ingress}</p>
+          <div className="glas__knappar">
+            <a className="glas__knapp glas__knapp--ljus" href="#kommande">
+              {t.hero.knappAktiviteter} <span aria-hidden="true">↗</span>
+            </a>
+            <a className="glas__knapp" href="#kontakt">
+              {t.hero.knappKontakt} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <ul className="glas__egenskaper">
+          {t.hero.egenskaper.map((e) => (
+            <li key={e}>{e}</li>
+          ))}
+        </ul>
       </header>
 
       <div className="erbjudanden">
