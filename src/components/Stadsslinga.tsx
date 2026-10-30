@@ -7,7 +7,14 @@ import { TEXTER, type Sprak } from "@/lib/sprak";
  * Rundvandringens scrollsektion: kartan, pluppen som går rutten och kortet vid varje stopp.
  * Motorn ligger i src/lib/slinga/, stoppen i src/lib/slinga/stopp.ts.
  */
-export function Stadsslinga({ sprak }: { sprak: Sprak }) {
+export function Stadsslinga({
+  sprak,
+  onForfragan,
+}: {
+  sprak: Sprak;
+  /** Öppnar förfrågan om rundvandring (popup med datum och antal personer). */
+  onForfragan: () => void;
+}) {
   const t = TEXTER[sprak].slinga;
   const ref = useRef<HTMLElement>(null);
 
@@ -66,9 +73,13 @@ export function Stadsslinga({ sprak }: { sprak: Sprak }) {
                 <h3>{s.namn[sprak]}</h3>
                 <p>{s.text[sprak]}</p>
                 {s.slut && (
-                  <a className="btn-base btn-bla slinga__knapp" href="#kontakt">
+                  <button
+                    type="button"
+                    className="btn-base btn-bla slinga__knapp"
+                    onClick={onForfragan}
+                  >
                     {t.boka}
-                  </a>
+                  </button>
                 )}
               </div>
             </li>

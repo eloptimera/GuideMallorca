@@ -1,7 +1,18 @@
 import { useState, type FormEvent } from "react";
 import { Datumvaljare } from "@/components/Datumvaljare";
 import { skickaBokning, type Bokning } from "@/lib/bokning";
+import { INTEGRITET, INTEGRITET_SOKVAG } from "@/lib/integritet";
 import { TEXTER, type Sprak } from "@/lib/sprak";
+
+/** Raden om integritetspolicyn som står vid varje formulär. */
+export function Samtycke({ sprak }: { sprak: Sprak }) {
+  const t = INTEGRITET[sprak];
+  return (
+    <p className="bokning__samtycke">
+      {t.samtycke} <a href={INTEGRITET_SOKVAG[sprak]}>{t.lank.toLowerCase()}</a>.
+    </p>
+  );
+}
 
 const TOMT: Omit<Bokning, "sprak"> = {
   namn: "",
@@ -13,8 +24,19 @@ const TOMT: Omit<Bokning, "sprak"> = {
   falla: "",
 };
 
-/** Bokningsförfrågan för en stadsvandring. Skickas som mejl till Caroline (se lib/bokning.ts). */
-export function Bokningsformular({ sprak }: { sprak: Sprak }) {
+/**
+ * Formuläret som skickas som mejl till Caroline (se lib/bokning.ts).
+ * `variant="kontakt"`: allmän fråga, bara namn, e-post och meddelande.
+ * `variant="rundvandring"`: förfrågan om rundvandring, med telefon, datum och antal personer.
+ */
+export function Bokningsformular({
+  sprak,
+  variant = "kontakt",
+}: {
+  sprak: Sprak;
+  variant?: "kontakt" | "rundvandring";
+}) {
+  const rundvandring = variant === "rundvandring";
   const t = TEXTER[sprak].formular;
   const [svar, setSvar] = useState(TOMT);
   const [lage, setLage] = useState<"redo" | "skickar" | "klart" | "fel">("redo");
@@ -26,7 +48,9 @@ export function Bokningsformular({ sprak }: { sprak: Sprak }) {
     e.preventDefault();
     setLage("skickar");
     try {
-      await skickaBokning({ data: { ...svar, sprak } });
+      await skickaBokning({
+        data: { ...svar, sprak, evenemang: rundvandring ? "Rundvandring i Palma (förfrågan)" : "" },
+      });
       setLage("klart");
       setSvar(TOMT);
     } catch {
@@ -61,33 +85,36 @@ export function Bokningsformular({ sprak }: { sprak: Sprak }) {
           />
         </label>
       </div>
-      <div className="bokning__rad bokning__rad--tre">
-        <label>
-          <span>
-            {t.telefon} <em>{t.valfritt}</em>
-          </span>
-          <input type="tel" autoComplete="tel" value={svar.telefon} onChange={satt("telefon")} />
-        </label>
-        <div className="bokning__falt">
-          <label htmlFor="bokning-datum">{t.datum}</label>
-          <Datumvaljare
-            id="bokning-datum"
-            sprak={sprak}
-            onChange={(datum) => setSvar((s) => ({ ...s, datum }))}
-          />
+      {rundvandring && (
+        <div className="bokning__rad bokning__rad--tre">
+          <label>
+            <span>
+              {t.telefon} <em>{t.valfritt}</em>
+            </span>
+            <input type="tel" autoComplete="tel" value={svar.telefon} onChange={satt("telefon")} />
+          </label>
+          <div className="bokning__falt">
+            <label htmlFor="bokning-datum">{t.datum}</label>
+            <Datumvaljare
+              id="bokning-datum"
+              sprak={sprak}
+              onChange={(datum) => setSvar((s) => ({ ...s, datum }))}
+            />
+          </div>
+          <label>
+            <span>{t.antal}</span>
+            <input inputMode="numeric" value={svar.antal} onChange={satt("antal")} />
+          </label>
         </div>
-        <label>
-          <span>{t.antal}</span>
-          <input inputMode="numeric" value={svar.antal} onChange={satt("antal")} />
-        </label>
-      </div>
+      )}
       <label>
         <span>
-          {t.meddelande} <em>{t.valfritt}</em>
+          {t.meddelande} {rundvandring && <em>{t.valfritt}</em>}
         </span>
         <textarea
           rows={4}
-          placeholder={t.meddelandeHint}
+          required={!rundvandring}
+          placeholder={rundvandring ? t.meddelandeHintRundvandring : t.meddelandeHint}
           value={svar.meddelande}
           onChange={satt("meddelande")}
         />
@@ -101,6 +128,7 @@ export function Bokningsformular({ sprak }: { sprak: Sprak }) {
         value={svar.falla}
         onChange={satt("falla")}
       />
+      <Samtycke sprak={sprak} />
       <div className="bokning__fot">
         <button type="submit" className="btn-base btn-bla" disabled={lage === "skickar"}>
           {lage === "skickar" ? t.skickar : t.skicka}

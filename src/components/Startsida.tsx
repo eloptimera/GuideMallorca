@@ -4,7 +4,16 @@ import { Sprakvaljare } from "@/components/Sprakvaljare";
 import { Stadsslinga } from "@/components/Stadsslinga";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
-import { Evenemangsruta, Kalender, useValtEvenemang } from "@/components/Evenemang";
+import { INSTAGRAM, INTEGRITET, INTEGRITET_SOKVAG, ORGNR } from "@/lib/integritet";
+import {
+  Evenemangsruta,
+  Kalender,
+  Rundvandringsruta,
+  minnsOppnare,
+  useValtEvenemang,
+  type Typfilter,
+} from "@/components/Evenemang";
+import { useState } from "react";
 import { EVENEMANG_TEXTER } from "@/lib/evenemangtexter";
 import { CITAT, kommande } from "@/lib/innehall";
 import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
@@ -43,6 +52,8 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
   const t = TEXTER[sprak];
   const te = EVENEMANG_TEXTER[sprak];
   const { id: valtEvenemang, oppna, stang } = useValtEvenemang();
+  const [typfilter, setTypfilter] = useState<Typfilter>(null);
+  const [rundvandringOppen, setRundvandringOppen] = useState(false);
   const fragor: Fraga[] = t.fragor.lista.map((fraga) => ({ fraga, svar: t.fragor.platshallare }));
   const locale = SPRAKKOD[sprak].html;
   const datumText = (iso: string, alt: Intl.DateTimeFormatOptions) =>
@@ -140,7 +151,11 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
                     <li key={j}>{tema}</li>
                   ))}
                 </ul>
-                <a className="btn-base btn-outline erbjudande__knapp" href="#kontakt">
+                <a
+                  className="btn-base btn-outline erbjudande__knapp"
+                  href="#kommande"
+                  onClick={() => setTypfilter(e.id)}
+                >
                   {t.erbjudanden.knapp}
                 </a>
               </div>
@@ -208,9 +223,15 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         </div>
       </section>
 
-      <Kalender sprak={sprak} oppna={oppna} />
+      <Kalender sprak={sprak} oppna={oppna} filter={typfilter} setFilter={setTypfilter} />
 
-      <Stadsslinga sprak={sprak} />
+      <Stadsslinga
+        sprak={sprak}
+        onForfragan={() => {
+          minnsOppnare();
+          setRundvandringOppen(true);
+        }}
+      />
 
       <section className="innehall om" id="om-caroline" aria-labelledby="om-rubrik">
         <div className="innehall__inre om__inre">
@@ -238,6 +259,14 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
                 <p key={stycke}>{stycke}</p>
               ))}
             </div>
+            <a className="om__instagram" href={INSTAGRAM} target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4.2" />
+                <circle cx="17.4" cy="6.6" r="1" />
+              </svg>
+              {t.om.instagram}
+            </a>
           </div>
         </div>
       </section>
@@ -320,12 +349,16 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
               <p className="sidfot__ort">Caroline Palmstierna</p>
               <a href={`mailto:${FORETAG.epost}`}>{FORETAG.epost}</a>
               <a href={`tel:${FORETAG.telefonLank}`}>{FORETAG.telefon}</a>
+              <a href={INSTAGRAM} target="_blank" rel="noopener">
+                Instagram
+              </a>
               <p className="sidfot__ort">{FORETAG.ort}</p>
             </div>
           </div>
           <div className="sidfot__botten">
             <p>
-              © {new Date().getFullYear()} {FORETAG.namn} · {t.sidfot.kartdata}
+              © {new Date().getFullYear()} {FORETAG.namn} · {t.sidfot.orgnr} {ORGNR} ·{" "}
+              <a href={INTEGRITET_SOKVAG[sprak]}>{INTEGRITET[sprak].lank}</a> · {t.sidfot.kartdata}
             </p>
             <a
               className="sidfot__tab"
@@ -342,6 +375,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
       </footer>
 
       <Evenemangsruta sprak={sprak} id={valtEvenemang} stang={stang} />
+      <Rundvandringsruta sprak={sprak} oppen={rundvandringOppen} setOppen={setRundvandringOppen} />
     </>
   );
 }

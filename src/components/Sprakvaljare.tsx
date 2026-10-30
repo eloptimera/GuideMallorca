@@ -32,13 +32,20 @@ function Flagga({ sprak }: { sprak: Sprak }) {
 }
 
 /** Språkval uppe till höger: tre flaggor, där den aktiva är markerad. */
-export function Sprakvaljare({ sprak }: { sprak: Sprak }) {
+export function Sprakvaljare({
+  sprak,
+  sokvagFor = sprakSokvag,
+}: {
+  sprak: Sprak;
+  /** Vart varje flagga leder. Standard: startsidan på det språket. */
+  sokvagFor?: (s: Sprak) => string;
+}) {
   return (
     <nav className="sprakval" aria-label={TEXTER[sprak].sprakval}>
       {SPRAK.map((s) => (
         <a
           key={s}
-          href={sprakSokvag(s)}
+          href={sokvagFor(s)}
           hrefLang={SPRAKKOD[s].html}
           lang={SPRAKKOD[s].html}
           className="sprakval__flagga"

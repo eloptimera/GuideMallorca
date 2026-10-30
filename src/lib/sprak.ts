@@ -60,6 +60,9 @@ type Texter = {
     slutEtikett: string;
     boka: string;
     ledtrad: string;
+    forfraganOverrad: string;
+    forfraganRubrik: string;
+    forfraganIngress: string;
   };
   aktiviteter: {
     overrad: string;
@@ -76,6 +79,7 @@ type Texter = {
     roller: readonly string[];
     text: readonly string[];
     bildAlt: string;
+    instagram: string;
   };
   tv: {
     overrad: string;
@@ -110,6 +114,7 @@ type Texter = {
     antal: string;
     meddelande: string;
     meddelandeHint: string;
+    meddelandeHintRundvandring: string;
     skicka: string;
     skickar: string;
     fel: string;
@@ -124,6 +129,7 @@ type Texter = {
     kontakt: string;
     kartdata: string;
     byggd: string;
+    orgnr: string;
   };
   sprakval: string;
 };
@@ -160,7 +166,7 @@ const SV: Texter = {
     overrad: "Det här gör jag",
     rubrik: "Tre sätt att uppleva historien",
     temanRubrik: "Teman",
-    knapp: "Anmäl intresse",
+    knapp: "Se datum och anmäl dig",
     lista: [
       {
         id: "stand-up-history",
@@ -194,6 +200,9 @@ const SV: Texter = {
     slutEtikett: "Ca 2 timmar",
     boka: "Anmäl intresse",
     ledtrad: "Scrolla för att följa vägen",
+    forfraganOverrad: "Rundvandring i Palma",
+    forfraganRubrik: "Förfrågan om rundvandring",
+    forfraganIngress: "Berätta när ni vill gå och hur många ni är, så återkommer jag med förslag.",
   },
   aktiviteter: {
     overrad: "På gång",
@@ -219,6 +228,7 @@ const SV: Texter = {
       "Genom Shoot for the Moon delar jag min passion för Spaniens historia, politik och kultur med alla som är nyfikna. Jag tycker om att förklara varför saker är som de är.",
     ],
     bildAlt: "Caroline Palmstierna, leende med en blombukett",
+    instagram: "Följ mig på Instagram",
   },
   tv: {
     overrad: "Shoot for the Moon",
@@ -259,7 +269,7 @@ const SV: Texter = {
     overrad: "Kontakt",
     rubrik: "Hör av dig",
     ingress:
-      "Berätta vad du är intresserad av, när och hur många ni är, så återkommer jag med förslag.",
+      "Har du en fråga, eller vill du boka en kväll för din förening eller ditt företag? Skriv till mig så återkommer jag.",
     direkt: "Eller hör av dig direkt",
     epost: "E-post",
     telefon: "Telefon",
@@ -275,7 +285,9 @@ const SV: Texter = {
     antal: "Antal personer",
     meddelande: "Meddelande",
     meddelandeHint:
-      "Vad är du intresserad av: Stand Up History, film, museum eller rundvandring? Är ni ett sällskap, en förening eller ett företag?",
+      "Skriv din fråga. Vill du boka en kväll för din förening eller ditt företag? Berätta gärna lite om sällskapet.",
+    meddelandeHintRundvandring:
+      "Är ni ett sällskap, en förening eller ett företag? Något särskilt ni vill höra om?",
     skicka: "Skicka förfrågan",
     skickar: "Skickar…",
     fel: "Förfrågan kunde inte skickas just nu. Försök igen om en stund.",
@@ -299,6 +311,7 @@ const SV: Texter = {
     kontakt: "Kontakt",
     kartdata: "Kartdata © OpenStreetMap-bidragsgivare",
     byggd: "Hemsidan är byggd och administrerad av",
+    orgnr: "Org.nr",
   },
   sprakval: "Välj språk",
 };
@@ -335,7 +348,7 @@ const EN: Texter = {
     overrad: "What I do",
     rubrik: "Three ways to experience history",
     temanRubrik: "Themes",
-    knapp: "Register interest",
+    knapp: "See dates and sign up",
     lista: [
       {
         id: "stand-up-history",
@@ -369,6 +382,10 @@ const EN: Texter = {
     slutEtikett: "About 2 hours",
     boka: "Register interest",
     ledtrad: "Scroll to follow the route",
+    forfraganOverrad: "A walk through Palma",
+    forfraganRubrik: "Enquire about a walk",
+    forfraganIngress:
+      "Tell me when you would like to go and how many you are, and I'll get back to you with suggestions.",
   },
   aktiviteter: {
     overrad: "Coming up",
@@ -394,6 +411,7 @@ const EN: Texter = {
       "Through Shoot for the Moon I share my passion for Spanish history, politics and culture with anyone who is curious. I love explaining why things are the way they are.",
     ],
     bildAlt: "Caroline Palmstierna, smiling with a bouquet of flowers",
+    instagram: "Follow me on Instagram",
   },
   tv: {
     overrad: "Shoot for the Moon",
@@ -434,7 +452,7 @@ const EN: Texter = {
     overrad: "Contact",
     rubrik: "Get in touch",
     ingress:
-      "Tell me what you're interested in, when and how many you are, and I'll get back to you.",
+      "Do you have a question, or would you like to book an evening for your association or company? Write to me and I'll get back to you.",
     direkt: "Or get in touch directly",
     epost: "Email",
     telefon: "Phone",
@@ -450,7 +468,9 @@ const EN: Texter = {
     antal: "Number of people",
     meddelande: "Message",
     meddelandeHint:
-      "What are you interested in: Stand Up History, film, museum or a walk? Are you a group, an association or a company?",
+      "Write your question. Would you like to book an evening for your association or company? Tell me a little about your group.",
+    meddelandeHintRundvandring:
+      "Are you a group, an association or a company? Anything in particular you would like to hear about?",
     skicka: "Send request",
     skickar: "Sending…",
     fel: "Your request could not be sent right now. Please try again in a moment.",
@@ -474,6 +494,7 @@ const EN: Texter = {
     kontakt: "Contact",
     kartdata: "Map data © OpenStreetMap contributors",
     byggd: "Website built and managed by",
+    orgnr: "Reg. no.",
   },
   sprakval: "Choose language",
 };
@@ -510,7 +531,7 @@ const ES: Texter = {
     overrad: "Lo que hago",
     rubrik: "Tres maneras de vivir la historia",
     temanRubrik: "Temas",
-    knapp: "Me interesa",
+    knapp: "Ver fechas e inscribirse",
     lista: [
       {
         id: "stand-up-history",
@@ -544,6 +565,10 @@ const ES: Texter = {
     slutEtikett: "Unas 2 horas",
     boka: "Me interesa",
     ledtrad: "Desplázate para seguir el recorrido",
+    forfraganOverrad: "Un paseo por Palma",
+    forfraganRubrik: "Consulta sobre un paseo",
+    forfraganIngress:
+      "Cuéntame cuándo queréis ir y cuántos sois, y te responderé con una propuesta.",
   },
   aktiviteter: {
     overrad: "Próximamente",
@@ -570,6 +595,7 @@ const ES: Texter = {
       "Con Shoot for the Moon comparto mi pasión por la historia, la política y la cultura de España con cualquiera que sienta curiosidad. Me encanta explicar por qué las cosas son como son.",
     ],
     bildAlt: "Caroline Palmstierna, sonriente con un ramo de flores",
+    instagram: "Sígueme en Instagram",
   },
   tv: {
     overrad: "Shoot for the Moon",
@@ -609,7 +635,8 @@ const ES: Texter = {
   kontakt: {
     overrad: "Contacto",
     rubrik: "Escríbeme",
-    ingress: "Cuéntame qué te interesa, cuándo y cuántos sois, y te responderé con una propuesta.",
+    ingress:
+      "¿Tienes una pregunta o quieres reservar una velada para tu asociación o empresa? Escríbeme y te responderé.",
     direkt: "O contacta directamente",
     epost: "Correo",
     telefon: "Teléfono",
@@ -625,7 +652,9 @@ const ES: Texter = {
     antal: "Número de personas",
     meddelande: "Mensaje",
     meddelandeHint:
-      "¿Qué te interesa: Stand Up History, cine, museo o un paseo? ¿Sois un grupo, una asociación o una empresa?",
+      "Escribe tu pregunta. ¿Quieres reservar una velada para tu asociación o empresa? Cuéntame un poco sobre el grupo.",
+    meddelandeHintRundvandring:
+      "¿Sois un grupo, una asociación o una empresa? ¿Algo en particular que os gustaría conocer?",
     skicka: "Enviar solicitud",
     skickar: "Enviando…",
     fel: "No se ha podido enviar la solicitud. Inténtalo de nuevo en un momento.",
@@ -649,6 +678,7 @@ const ES: Texter = {
     kontakt: "Contacto",
     kartdata: "Datos del mapa © colaboradores de OpenStreetMap",
     byggd: "Web creada y gestionada por",
+    orgnr: "N.º de registro",
   },
   sprakval: "Elige idioma",
 };

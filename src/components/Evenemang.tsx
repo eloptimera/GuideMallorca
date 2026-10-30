@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useRouter } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Bokningsformular, Samtycke } from "@/components/Bokningsformular";
 import { skickaBokning } from "@/lib/bokning";
 import { EVENEMANG_TEXTER } from "@/lib/evenemangtexter";
 import { kommande, type Aktivitet } from "@/lib/innehall";
@@ -66,18 +67,43 @@ function Exempel({ text }: { text: string }) {
 
 /* ---------- Kalendern ---------- */
 
-export function Kalender({ sprak, oppna }: { sprak: Sprak; oppna: (id: string) => void }) {
+export type Typfilter = Aktivitet["typ"] | null;
+
+const FILTERTYPER = ["stand-up-history", "film", "museum"] as const;
+
+const manadFor = (iso: string) => {
+  const [a, m] = iso.split("-").map(Number);
+  return { ar: a!, man: m! - 1 };
+};
+
+export function Kalender({
+  sprak,
+  oppna,
+  filter,
+  setFilter,
+}: {
+  sprak: Sprak;
+  oppna: (id: string) => void;
+  /** Visa bara en typ av evenemang (sätts av knapparna vid erbjudandena). */
+  filter: Typfilter;
+  setFilter: (f: Typfilter) => void;
+}) {
   const t = EVENEMANG_TEXTER[sprak].kalender;
   const typer = TEXTER[sprak].aktiviteter.typer;
-  const lista = useMemo(() => kommande(), []);
+  const alla = useMemo(() => kommande(), []);
+  const lista = filter ? alla.filter((a) => a.typ === filter) : alla;
   const locale = SPRAKKOD[sprak].html;
 
   // Börja på månaden för nästa evenemang (eller den här månaden om inget finns).
-  const start = lista[0]?.datum ?? new Date().toISOString().slice(0, 10);
-  const [manad, setManad] = useState(() => {
-    const [a, m] = start.split("-").map(Number);
-    return { ar: a!, man: m! - 1 };
-  });
+  const [manad, setManad] = useState(() =>
+    manadFor(alla[0]?.datum ?? new Date().toISOString().slice(0, 10)),
+  );
+
+  // När filtret byts: hoppa till månaden för nästa evenemang av den typen.
+  useEffect(() => {
+    const forsta = (filter ? alla.filter((a) => a.typ === filter) : alla)[0];
+    if (forsta) setManad(manadFor(forsta.datum));
+  }, [filter, alla]);
 
   const manadsNamn = new Date(manad.ar, manad.man, 1).toLocaleDateString(locale, {
     month: "long",
@@ -115,7 +141,20 @@ export function Kalender({ sprak, oppna }: { sprak: Sprak; oppna: (id: string) =
         <p className="overrad">{t.overrad}</p>
         <h2 id="kalender-rubrik">{t.rubrik}</h2>
         <p className="ingress">{t.ingress}</p>
-        {lista.some((a) => a.exempel) && <p className="kalender__notis">{t.exempelNotis}</p>}
+        {alla.some((a) => a.exempel) && <p className="kalender__notis">{t.exempelNotis}</p>}
+
+        <div className="kalender__filter" role="group" aria-label={t.filterEtikett}>
+          {[null, ...FILTERTYPER].map((f) => (
+            <button
+              key={f ?? "alla"}
+              type="button"
+              aria-pressed={filter === f}
+              onClick={() => setFilter(f)}
+            >
+              {f ? typer[f] : t.alla}
+            </button>
+          ))}
+        </div>
 
         <div className="kalender__inre">
           <div className="kalender__man">
@@ -168,7 +207,13 @@ export function Kalender({ sprak, oppna }: { sprak: Sprak; oppna: (id: string) =
           </div>
 
           <ul className="kalender__lista">
-            {iManaden.length === 0 && <li className="kalender__tom">{t.ingaIManaden}</li>}
+            {lista.length === 0 ? (
+              <li className="kalender__tom">
+                {t.ingaAvTypen} <a href="#kontakt">{t.horAvDig}</a>
+              </li>
+            ) : (
+              iManaden.length === 0 && <li className="kalender__tom">{t.ingaIManaden}</li>
+            )}
             {iManaden.map((a) => (
               <li key={a.id}>
                 <button type="button" className="evenemang" onClick={() => oppna(a.id)}>
@@ -428,6 +473,7 @@ function RutaInnehall({ sprak, a }: { sprak: Sprak; a: Aktivitet }) {
                 value={svar.falla}
                 onChange={satt("falla")}
               />
+              <Samtycke sprak={sprak} />
               <div className="bokning__fot">
                 <button type="submit" className="btn-base btn-bla" disabled={lage === "skickar"}>
                   {lage === "skickar" ? t.ruta.skickar : slut ? t.ruta.vantelista : t.ruta.skicka}
@@ -444,4 +490,56 @@ function RutaInnehall({ sprak, a }: { sprak: Sprak; a: Aktivitet }) {
       </div>
     </Dialog.Content>
   );
+}
+
+/* ---------- Förfrågan om rundvandring ---------- */
+
+/** Popup med formuläret för rundvandringar (datum, antal personer och meddelande). */
+export function Rundvandringsruta({
+  sprak,
+  oppen,
+  setOppen,
+}: {
+  sprak: Sprak;
+  oppen: boolean;
+  setOppen: (o: boolean) => void;
+}) {
+  const t = TEXTER[sprak].slinga;
+  return (
+    <Dialog.Root open={oppen} onOpenChange={setOppen}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="ruta__bakgrund" />
+        <Dialog.Content
+          className="ruta ruta--smal"
+          aria-describedby="rundvandring-ingress"
+          onCloseAutoFocus={(e) => {
+            e.preventDefault();
+            oppnadFran?.focus({ preventScroll: true });
+          }}
+        >
+          <Dialog.Close
+            className="ruta__stang ruta__stang--ljus"
+            aria-label={EVENEMANG_TEXTER[sprak].ruta.stang}
+          >
+            <X aria-hidden="true" />
+          </Dialog.Close>
+          <div className="ruta__inre">
+            <p className="evenemang__typ">{t.forfraganOverrad}</p>
+            <Dialog.Title className="ruta__titel">{t.forfraganRubrik}</Dialog.Title>
+            <p className="ruta__ingress" id="rundvandring-ingress">
+              {t.forfraganIngress}
+            </p>
+            <div className="ruta__anmalan">
+              <Bokningsformular sprak={sprak} variant="rundvandring" />
+            </div>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
+
+/** Kom ihåg vad som öppnade rundvandringsrutan, så att fokus kan lämnas tillbaka. */
+export function minnsOppnare() {
+  if (document.activeElement instanceof HTMLElement) oppnadFran = document.activeElement;
 }

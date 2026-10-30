@@ -2908,3 +2908,172 @@ button.glas__aktivitet {
     overflow-wrap: normal;
   }
 }
+
+/* ---------- Integritetspolicyn ---------- */
+
+.policy__topp {
+  display: flex;
+  justify-content: center;
+  padding: clamp(24px, 4vw, 44px) 16px 0;
+}
+
+.policy__topp .logga {
+  --logga: 2.2rem;
+  color: var(--ink);
+  text-shadow: none;
+}
+
+.policy__topp .logga__mitt,
+.policy__topp .logga__linje {
+  color: var(--rosa-text);
+  background-color: currentColor;
+}
+
+.policy__topp .logga__mitt {
+  background: none;
+}
+
+.policy__inre {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 30px 60px -40px rgba(18, 28, 43, 0.4);
+}
+
+.policy h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+}
+
+.policy h2 {
+  margin: 2rem 0 0.5rem;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+}
+
+.policy p {
+  margin: 0 0 0.9rem;
+  line-height: 1.65;
+}
+
+.policy .ingress {
+  max-width: none;
+}
+
+.policy__tillbaka {
+  margin-top: 1.5rem;
+  text-decoration: none;
+}
+
+/* ---------- Instagram, sidfoten och samtycket vid formulären ---------- */
+
+.om__instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--rosa-text);
+  text-decoration: none;
+}
+
+.om__instagram:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.om__instagram svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.om__instagram svg circle:last-child {
+  fill: currentColor;
+  stroke: none;
+}
+
+.sidfot__botten p a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.bokning__samtycke {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.bokning__samtycke a {
+  color: var(--bla-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Filtret i kalendern ---------- */
+
+.kalender__filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.kalender__filter button {
+  padding: 0.5rem 1.05rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(18, 28, 43, 0.14);
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.kalender__filter button:hover {
+  background: #ffffff;
+}
+
+.kalender__filter button[aria-pressed="true"] {
+  background: var(--fade-mork);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.kalender__tom a {
+  color: var(--rosa-text);
+  font-weight: 700;
+}
+
+/* ---------- Rundvandringens popup ---------- */
+
+.ruta--smal {
+  width: min(680px, calc(100vw - 24px));
+}
+
+.ruta--smal .ruta__inre {
+  padding-top: clamp(2.25rem, 5vw, 2.75rem);
+}
+
+.ruta__stang--ljus {
+  z-index: 1;
+  background: rgba(18, 28, 43, 0.06);
+  box-shadow: none;
+}
+
+.ruta .bokning__klart h3 {
+  margin: 0 0 0.3rem;
+}

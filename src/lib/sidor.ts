@@ -5,6 +5,9 @@ export const SIDOR: readonly { sokvag: string; namn: string; andrad?: string }[]
   { sokvag: "/", namn: "Startsida" },
   { sokvag: "/en", namn: "Startsida (engelska)" },
   { sokvag: "/es", namn: "Startsida (spanska)" },
+  { sokvag: "/integritet", namn: "Integritetspolicy" },
+  { sokvag: "/privacy", namn: "Integritetspolicy (engelska)" },
+  { sokvag: "/privacidad", namn: "Integritetspolicy (spanska)" },
 ];
 
 export function textSvar(text: string, typ: string): Response {

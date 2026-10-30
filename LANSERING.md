@@ -33,8 +33,14 @@ av sig själva.
 
 ## 3. Juridik och domän
 
-- [ ] **Integritetspolicy (GDPR)** för formulären: hur namn, e-post och telefon hanteras.
-      Länka den vid formulären. Kräver Carolines bolagsuppgifter.
+- [ ] **Bolagsnamn och adress i integritetspolicyn** (`src/lib/integritet.ts`). Org.nr 556931-6606 är
+      inlagt, men det exakta registrerade namnet (t.ex. "Shoot for the Moon AB"?) och postadressen
+      saknas. Bekräfta med Caroline och lägg till i policyn och sidfoten.
+- [ ] **Lagringstiden 24 månader** i integritetspolicyn är ett förslag. Caroline ska godkänna den.
+- [ ] **Händelsedata för Google (schema.org/Event)**: lägg till när evenemangen är riktiga, så att
+      de kan visas med datum direkt i Googles sökresultat. Får inte läggas till för exempel-evenemang.
+
+- [x] Integritetspolicy på /integritet, /privacy och /privacidad, länkad vid alla formulär och i sidfoten.
 - [ ] **Rundvandringen med kartan** visar rutten publikt. Caroline har sagt att hon inte kan visa
       rutten. Beslut krävs: ta bort kartan, eller få hennes uttryckliga ja.
 - [ ] Inga tankstreck (– eller —) i texterna; skriv om med kommatecken, kolon eller punkt.
@@ -52,7 +58,8 @@ av sig själva.
       Instagram-flöde på sajten.
 
 - [ ] CMS så att Caroline själv kan lägga in evenemang, inlägg och citat utan oss.
-- [ ] Nyhetsbrev eller Instagram-länk så att besökare får veta när nya evenemang släpps.
+- [x] Instagram-länk (sidfoten och Om mig).
+- [ ] Nyhetsbrev: beslut tas vecka 45 (påminnelse inlagd).
 - [ ] Lista evenemangen i lokala kalendrar (The Calendar Mallorca, Majorca Daily Bulletin).
 
 ## Bilder

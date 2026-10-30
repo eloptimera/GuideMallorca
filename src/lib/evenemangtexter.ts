@@ -10,6 +10,10 @@ type EvenemangTexter = {
     forra: string;
     nasta: string;
     ingaIManaden: string;
+    ingaAvTypen: string;
+    horAvDig: string;
+    alla: string;
+    filterEtikett: string;
     lasMer: string;
     platserKvar: (n: number) => string;
     fullbokat: string;
@@ -57,6 +61,10 @@ const SV: EvenemangTexter = {
     forra: "Föregående månad",
     nasta: "Nästa månad",
     ingaIManaden: "Inga evenemang den här månaden.",
+    ingaAvTypen: "Inga datum är satta för den här typen just nu.",
+    horAvDig: "Hör av dig så meddelar jag dig när nästa kväll släpps.",
+    alla: "Alla",
+    filterEtikett: "Visa typ av evenemang",
     lasMer: "Läs mer och anmäl dig",
     platserKvar: (n) => (n === 1 ? "1 plats kvar" : `${n} platser kvar`),
     fullbokat: "Fullbokat",
@@ -109,6 +117,10 @@ const EN: EvenemangTexter = {
     forra: "Previous month",
     nasta: "Next month",
     ingaIManaden: "No events this month.",
+    ingaAvTypen: "No dates are set for this type right now.",
+    horAvDig: "Get in touch and I'll let you know when the next evening is announced.",
+    alla: "All",
+    filterEtikett: "Show type of event",
     lasMer: "Read more and sign up",
     platserKvar: (n) => (n === 1 ? "1 seat left" : `${n} seats left`),
     fullbokat: "Sold out",
@@ -162,6 +174,10 @@ const ES: EvenemangTexter = {
     forra: "Mes anterior",
     nasta: "Mes siguiente",
     ingaIManaden: "No hay eventos este mes.",
+    ingaAvTypen: "Ahora mismo no hay fechas para este tipo de evento.",
+    horAvDig: "Escríbeme y te avisaré cuando se anuncie la próxima velada.",
+    alla: "Todos",
+    filterEtikett: "Mostrar tipo de evento",
     lasMer: "Leer más e inscribirse",
     platserKvar: (n) => (n === 1 ? "Queda 1 plaza" : `Quedan ${n} plazas`),
     fullbokat: "Completo",

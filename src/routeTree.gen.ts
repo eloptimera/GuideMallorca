@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EnRouteImport } from './routes/en'
 import { Route as EsRouteImport } from './routes/es'
+import { Route as IntegritetRouteImport } from './routes/integritet'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 
@@ -30,6 +33,21 @@ const EsRoute = EsRouteImport.update({
   path: '/es',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntegritetRoute = IntegritetRouteImport.update({
+  id: '/integritet',
+  path: '/integritet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -45,6 +63,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
+  '/integritet': typeof IntegritetRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
@@ -52,6 +73,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
+  '/integritet': typeof IntegritetRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
@@ -60,21 +84,52 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
+  '/integritet': typeof IntegritetRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/en' | '/es' | '/robots.txt' | '/sitemap.xml'
+  fullPaths:
+    | '/'
+    | '/en'
+    | '/es'
+    | '/integritet'
+    | '/privacidad'
+    | '/privacy'
+    | '/robots.txt'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/en' | '/es' | '/robots.txt' | '/sitemap.xml'
-  id: '__root__' | '/' | '/en' | '/es' | '/robots.txt' | '/sitemap.xml'
+  to:
+    | '/'
+    | '/en'
+    | '/es'
+    | '/integritet'
+    | '/privacidad'
+    | '/privacy'
+    | '/robots.txt'
+    | '/sitemap.xml'
+  id:
+    | '__root__'
+    | '/'
+    | '/en'
+    | '/es'
+    | '/integritet'
+    | '/privacidad'
+    | '/privacy'
+    | '/robots.txt'
+    | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EnRoute: typeof EnRoute
   EsRoute: typeof EsRoute
+  IntegritetRoute: typeof IntegritetRoute
+  PrivacidadRoute: typeof PrivacidadRoute
+  PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
@@ -102,6 +157,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/integritet': {
+      id: '/integritet'
+      path: '/integritet'
+      fullPath: '/integritet'
+      preLoaderRoute: typeof IntegritetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -123,6 +199,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EnRoute: EnRoute,
   EsRoute: EsRoute,
+  IntegritetRoute: IntegritetRoute,
+  PrivacidadRoute: PrivacidadRoute,
+  PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
