@@ -664,6 +664,31 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     return null;
   }
 
+  // ---------- Navigering via länkar ----------
+  //
+  // När man klickar på en länk till en annan del av sidan (menyn, knappar) scrollar sidan
+  // förbi rutten. Då ska varken magneten eller mobilens stopp fånga scrollen. Spärren släpper
+  // när scrollen har stått still en stund.
+  let navigerar = false;
+  let navTimer = 0;
+  function borjaNavigera() {
+    navigerar = true;
+    avbrytGlid();
+    clearTimeout(viloTimer);
+    clearTimeout(hallTimer);
+    rot.style.overflow = "";
+    haller = false;
+    clearTimeout(navTimer);
+    navTimer = window.setTimeout(() => (navigerar = false), 1200);
+  }
+  const onKlick = (e: MouseEvent) => {
+    const lank = (e.target as Element | null)?.closest?.("a[href]");
+    const href = lank?.getAttribute("href") ?? "";
+    if (href.startsWith("#")) borjaNavigera();
+  };
+  document.addEventListener("click", onKlick, true);
+  window.addEventListener("hashchange", borjaNavigera);
+
   const avbryt = () => avbrytGlid();
   const onTouchStart = () => {
     fingret = true;
@@ -681,6 +706,13 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     lasScroll();
     kor();
     const y = window.scrollY;
+    if (navigerar) {
+      // Följ med utan att fånga; släpp spärren när scrollen har stannat.
+      forraY = y;
+      clearTimeout(navTimer);
+      navTimer = window.setTimeout(() => (navigerar = false), 250);
+      return;
+    }
     if (haller) return;
     if (pekskarm.matches && !egenScroll && kum.length) {
       const sy = passeratStopp(forraY, y);
@@ -749,6 +781,9 @@ export function startaSlinga(sektion: HTMLElement): () => void {
     window.removeEventListener("touchstart", onTouchStart);
     window.removeEventListener("touchend", onTouchEnd);
     window.removeEventListener("keydown", avbryt);
+    document.removeEventListener("click", onKlick, true);
+    window.removeEventListener("hashchange", borjaNavigera);
+    clearTimeout(navTimer);
     karta?.remove();
   };
 }
