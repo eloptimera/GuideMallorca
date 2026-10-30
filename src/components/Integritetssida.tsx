@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import { Logga } from "@/components/Logga";
 import { Sprakvaljare } from "@/components/Sprakvaljare";
 import { absolut } from "@/lib/foretag";
@@ -47,7 +48,7 @@ export function Integritetssida({ sprak }: { sprak: Sprak }) {
             </section>
           ))}
           <a className="btn-base btn-bla policy__tillbaka" href={sprakSokvag(sprak)}>
-            ← {t.tillbaka}
+            <ArrowLeft aria-hidden="true" /> {t.tillbaka}
           </a>
         </div>
       </article>

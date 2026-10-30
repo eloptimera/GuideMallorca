@@ -39,6 +39,7 @@ av sig själva.
 - [ ] **Lagringstiden 24 månader** i integritetspolicyn är ett förslag. Caroline ska godkänna den.
 - [ ] **Händelsedata för Google (schema.org/Event)**: lägg till när evenemangen är riktiga, så att
       de kan visas med datum direkt i Googles sökresultat. Får inte läggas till för exempel-evenemang.
+      (Påminnelse inlagd 6 nov.)
 
 - [x] Integritetspolicy på /integritet, /privacy och /privacidad, länkad vid alla formulär och i sidfoten.
 - [ ] **Rundvandringen med kartan** visar rutten publikt. Caroline har sagt att hon inte kan visa

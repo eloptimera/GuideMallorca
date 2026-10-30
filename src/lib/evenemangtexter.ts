@@ -43,6 +43,8 @@ type EvenemangTexter = {
     tackText: string;
     stang: string;
     delaLank: string;
+    laggTill: string;
+    appleOutlook: string;
     kopierad: string;
     vantelista: string;
     utkastSkickat: string;
@@ -95,6 +97,8 @@ const SV: EvenemangTexter = {
     tackText: "Jag bekräftar din plats via e-post så snart jag kan.",
     stang: "Stäng",
     delaLank: "Kopiera länk",
+    laggTill: "Lägg till i kalendern:",
+    appleOutlook: "Apple/Outlook",
     kopierad: "Länken är kopierad",
     vantelista: "Skriv upp mig på väntelistan",
     utkastSkickat: "Utkast: det här är ett exempel-evenemang, så ingen anmälan skickades.",
@@ -151,6 +155,8 @@ const EN: EvenemangTexter = {
     tackText: "I'll confirm your seat by email as soon as I can.",
     stang: "Close",
     delaLank: "Copy link",
+    laggTill: "Add to calendar:",
+    appleOutlook: "Apple/Outlook",
     kopierad: "Link copied",
     vantelista: "Put me on the waiting list",
     utkastSkickat: "Draft: this is an example event, so no sign-up was sent.",
@@ -208,6 +214,8 @@ const ES: EvenemangTexter = {
     tackText: "Confirmaré tu plaza por correo lo antes posible.",
     stang: "Cerrar",
     delaLank: "Copiar enlace",
+    laggTill: "Añadir al calendario:",
+    appleOutlook: "Apple/Outlook",
     kopierad: "Enlace copiado",
     vantelista: "Apuntarme a la lista de espera",
     utkastSkickat:

@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useRouter } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ArrowRight, CalendarPlus, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Bokningsformular, Samtycke } from "@/components/Bokningsformular";
 import { skickaBokning } from "@/lib/bokning";
+import { googleKalenderLank, laddaNerIcs } from "@/lib/kalenderfil";
 import { EVENEMANG_TEXTER } from "@/lib/evenemangtexter";
 import { kommande, type Aktivitet } from "@/lib/innehall";
 import { SPRAKKOD, TEXTER, type Sprak } from "@/lib/sprak";
@@ -243,7 +244,7 @@ export function Kalender({
                         {a.platserKvar === 0 ? t.fullbokat : t.platserKvar(a.platserKvar)}
                       </span>
                       <span className="evenemang__las">
-                        {t.lasMer} <span aria-hidden="true">→</span>
+                        {t.lasMer} <ArrowRight aria-hidden="true" />
                       </span>
                     </span>
                   </span>
@@ -403,9 +404,28 @@ function RutaInnehall({ sprak, a }: { sprak: Sprak; a: Aktivitet }) {
 
         <p className="ruta__text">{a.text[sprak]}</p>
 
-        <button type="button" className="ruta__dela" onClick={kopiera}>
-          {kopierad ? t.ruta.kopierad : t.ruta.delaLank}
-        </button>
+        <div className="ruta__lankar">
+          <span className="ruta__kalender">
+            <CalendarPlus aria-hidden="true" />
+            {t.ruta.laggTill}
+            <a
+              href={googleKalenderLank(a, a.titel[sprak], a.ingress[sprak], a.plats[sprak])}
+              target="_blank"
+              rel="noopener"
+            >
+              Google
+            </a>
+            <button
+              type="button"
+              onClick={() => laddaNerIcs(a, a.titel[sprak], a.ingress[sprak], a.plats[sprak])}
+            >
+              {t.ruta.appleOutlook}
+            </button>
+          </span>
+          <button type="button" className="ruta__dela" onClick={kopiera}>
+            {kopierad ? t.ruta.kopierad : t.ruta.delaLank}
+          </button>
+        </div>
 
         <div className="ruta__anmalan">
           {lage === "klart" || lage === "utkast" ? (

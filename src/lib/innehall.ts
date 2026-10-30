@@ -15,7 +15,9 @@ export type Aktivitet = {
   datum: string;
   /** Starttid, t.ex. "19:00". */
   tid: string;
-  /** Ungefärlig längd, t.ex. "ca 2 timmar". */
+  /** Längden i minuter, används för "Lägg till i kalendern". */
+  minuter: number;
+  /** Ungefärlig längd i text, t.ex. "ca 2 timmar". */
   langd: PerSprak;
   /** Vilket erbjudande aktiviteten hör till (id i texterna för erbjudandena). */
   typ: "stand-up-history" | "film" | "museum" | "rundvandring";
@@ -74,6 +76,7 @@ export const AKTIVITETER: readonly Aktivitet[] = [
     id: "kvinnorna-som-formade-mallorca",
     datum: "2026-11-19",
     tid: "19:00",
+    minuter: 120,
     langd: { sv: "ca 2 timmar", en: "about 2 hours", es: "unas 2 horas" },
     typ: "stand-up-history",
     titel: {
@@ -107,6 +110,7 @@ export const AKTIVITETER: readonly Aktivitet[] = [
     id: "film-goya-och-krigen",
     datum: "2026-11-27",
     tid: "18:30",
+    minuter: 180,
     langd: { sv: "ca 3 timmar", en: "about 3 hours", es: "unas 3 horas" },
     typ: "film",
     titel: {
@@ -136,6 +140,7 @@ export const AKTIVITETER: readonly Aktivitet[] = [
     id: "museivandring-es-baluard",
     datum: "2026-12-05",
     tid: "11:00",
+    minuter: 90,
     langd: { sv: "ca 90 minuter", en: "about 90 minutes", es: "unos 90 minutos" },
     typ: "museum",
     titel: {
@@ -165,6 +170,7 @@ export const AKTIVITETER: readonly Aktivitet[] = [
     id: "stand-up-history-inkvisitionen",
     datum: "2026-12-10",
     tid: "19:00",
+    minuter: 120,
     langd: { sv: "ca 2 timmar", en: "about 2 hours", es: "unas 2 horas" },
     typ: "stand-up-history",
     titel: {
@@ -198,6 +204,7 @@ export const AKTIVITETER: readonly Aktivitet[] = [
     id: "jul-pa-mallorca",
     datum: "2027-01-14",
     tid: "19:00",
+    minuter: 120,
     langd: { sv: "ca 2 timmar", en: "about 2 hours", es: "unas 2 horas" },
     typ: "stand-up-history",
     titel: {

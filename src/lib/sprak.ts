@@ -41,6 +41,8 @@ type Texter = {
     ingress: string;
     knappAktiviteter: string;
     knappKontakt: string;
+    oppnaMeny: string;
+    stangMeny: string;
     kortRubrik: string;
     egenskaper: readonly string[];
   };
@@ -76,7 +78,6 @@ type Texter = {
   om: {
     overrad: string;
     ingress: string;
-    roller: readonly string[];
     text: readonly string[];
     bildAlt: string;
     instagram: string;
@@ -88,6 +89,8 @@ type Texter = {
     fakta: readonly { etikett: string; text: string }[];
     dokumentarEtikett: string;
     dokumentarText: string;
+    visaMer: string;
+    visaMindre: string;
   };
   fragor: {
     overrad: string;
@@ -147,12 +150,16 @@ const SV: Texter = {
       ["#film", "Film"],
       ["#museum", "Museum"],
       ["#om-caroline", "Om mig"],
+      ["#kommande", "Kalender"],
+      ["#kontakt", "Kontakt"],
     ],
     rubrik: ["Historia som", "man minns"],
     ingress:
       "Jag heter Caroline Palmstierna, journalist och Spanienexpert. Jag berättar om Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
     knappAktiviteter: "Se vad som är på gång",
     knappKontakt: "Hör av dig",
+    oppnaMeny: "Öppna menyn",
+    stangMeny: "Stäng menyn",
     kortRubrik: "På gång",
     egenskaper: [
       "Stand Up History med olika teman",
@@ -221,7 +228,6 @@ const SV: Texter = {
   om: {
     overrad: "Om mig",
     ingress: "Journalist, TV-konsult, historieälskare och Spanienexpert. Bosatt på Mallorca.",
-    roller: ["Journalist", "TV-konsult", "Historieälskare", "Spanienexpert"],
     text: [
       "Jag har arbetat med tv och journalistik i hela mitt yrkesliv: på MTV, STRIX och CNN, som redaktör för Stina Dabrowskis intervjuprogram, hos dokumentärfilmaren Folke Rydén och som programledare och journalist i Spanien.",
       "I dag bor jag på Mallorca, där jag leder boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
@@ -250,6 +256,8 @@ const SV: Texter = {
       },
     ],
     dokumentarEtikett: "Dokumentär",
+    visaMer: "Läs mer om min tv-karriär",
+    visaMindre: "Visa mindre",
     dokumentarText:
       "Om hur skandinavisk tv-dramatik erövrade världen, med bland andra Sofia Helin, Sidse Babett Knudsen, Krister Henriksson och Sofie Gråböl. Jag står för produktion, utveckling, finansiering och världsförsäljning genom Shoot for the Moon.",
   },
@@ -329,12 +337,16 @@ const EN: Texter = {
       ["#film", "Film"],
       ["#museum", "Museum"],
       ["#om-caroline", "About me"],
+      ["#kommande", "Calendar"],
+      ["#kontakt", "Contact"],
     ],
     rubrik: ["History you", "remember"],
     ingress:
       "I'm Caroline Palmstierna, a journalist and Spain expert. I bring the history of Mallorca and Spain to life through Stand Up History, film nights and talks.",
     knappAktiviteter: "See what's coming up",
     knappKontakt: "Get in touch",
+    oppnaMeny: "Open menu",
+    stangMeny: "Close menu",
     kortRubrik: "Coming up",
     egenskaper: [
       "Stand Up History on different themes",
@@ -404,7 +416,6 @@ const EN: Texter = {
   om: {
     overrad: "About me",
     ingress: "Journalist, TV consultant, history lover and Spain expert. Based in Mallorca.",
-    roller: ["Journalist", "TV consultant", "History lover", "Spain expert"],
     text: [
       "I have worked in television and journalism throughout my career: at MTV, STRIX and CNN, as editor of Stina Dabrowski's interview programmes, with documentary maker Folke Rydén, and as a TV host and journalist in Spain.",
       "Today I live in Mallorca, where I host book talks, gives lectures and works with networks such as SWEA Mallorca.",
@@ -433,6 +444,8 @@ const EN: Texter = {
       },
     ],
     dokumentarEtikett: "Documentary",
+    visaMer: "Read more about my TV career",
+    visaMindre: "Show less",
     dokumentarText:
       "How Scandinavian TV drama conquered the world, featuring Sofia Helin, Sidse Babett Knudsen, Krister Henriksson and Sofie Gråböl, among others. Through Shoot for the Moon I handle production, development, financing and worldwide sales.",
   },
@@ -512,12 +525,16 @@ const ES: Texter = {
       ["#film", "Cine"],
       ["#museum", "Museo"],
       ["#om-caroline", "Sobre mí"],
+      ["#kommande", "Calendario"],
+      ["#kontakt", "Contacto"],
     ],
     rubrik: ["Historia que", "se recuerda"],
     ingress:
       "Soy Caroline Palmstierna, periodista y experta en España. Cuento la historia de Mallorca y de España con Stand Up History, noches de cine y charlas.",
     knappAktiviteter: "Ver lo que viene",
     knappKontakt: "Escríbeme",
+    oppnaMeny: "Abrir menú",
+    stangMeny: "Cerrar menú",
     kortRubrik: "Próximamente",
     egenskaper: [
       "Stand Up History con distintos temas",
@@ -588,7 +605,6 @@ const ES: Texter = {
     overrad: "Sobre mí",
     ingress:
       "Periodista, consultora de televisión, apasionada de la historia y experta en España, afincada en Mallorca.",
-    roller: ["Periodista", "Consultora de TV", "Apasionada de la historia", "Experta en España"],
     text: [
       "He trabajado en televisión y periodismo durante toda mi carrera: en MTV, STRIX y CNN, como editora de los programas de entrevistas de Stina Dabrowski, con el documentalista Folke Rydén y como presentadora y periodista en España.",
       "Hoy vivo en Mallorca, donde modero presentaciones de libros, doy conferencias y colaboro con redes como SWEA Mallorca.",
@@ -617,6 +633,8 @@ const ES: Texter = {
       },
     ],
     dokumentarEtikett: "Documental",
+    visaMer: "Más sobre mi carrera en televisión",
+    visaMindre: "Mostrar menos",
     dokumentarText:
       "Cómo el drama televisivo escandinavo conquistó el mundo, con Sofia Helin, Sidse Babett Knudsen, Krister Henriksson y Sofie Gråböl, entre otros. Con Shoot for the Moon me encargo de la producción, el desarrollo, la financiación y las ventas internacionales.",
   },

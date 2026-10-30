@@ -35,13 +35,19 @@ function Flagga({ sprak }: { sprak: Sprak }) {
 export function Sprakvaljare({
   sprak,
   sokvagFor = sprakSokvag,
+  inbyggd = false,
 }: {
   sprak: Sprak;
+  /** Inuti toppmenyn i stället för fast uppe till höger. */
+  inbyggd?: boolean;
   /** Vart varje flagga leder. Standard: startsidan på det språket. */
   sokvagFor?: (s: Sprak) => string;
 }) {
   return (
-    <nav className="sprakval" aria-label={TEXTER[sprak].sprakval}>
+    <nav
+      className={inbyggd ? "sprakval sprakval--inbyggd" : "sprakval"}
+      aria-label={TEXTER[sprak].sprakval}
+    >
       {SPRAK.map((s) => (
         <a
           key={s}

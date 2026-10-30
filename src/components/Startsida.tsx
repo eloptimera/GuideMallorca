@@ -1,6 +1,7 @@
 import { Bokningsformular } from "@/components/Bokningsformular";
 import { Logga } from "@/components/Logga";
-import { Sprakvaljare } from "@/components/Sprakvaljare";
+import { Toppmeny } from "@/components/Toppmeny";
+import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
 import { Stadsslinga } from "@/components/Stadsslinga";
 import { VanligaFragor, type Fraga } from "@/components/VanligaFragor";
 import { FORETAG } from "@/lib/foretag";
@@ -54,6 +55,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
   const { id: valtEvenemang, oppna, stang } = useValtEvenemang();
   const [typfilter, setTypfilter] = useState<Typfilter>(null);
   const [rundvandringOppen, setRundvandringOppen] = useState(false);
+  const [tvOppen, setTvOppen] = useState(false);
   const fragor: Fraga[] = t.fragor.lista.map((fraga) => ({ fraga, svar: t.fragor.platshallare }));
   const locale = SPRAKKOD[sprak].html;
   const datumText = (iso: string, alt: Intl.DateTimeFormatOptions) =>
@@ -61,7 +63,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
 
   return (
     <>
-      <Sprakvaljare sprak={sprak} />
+      <Toppmeny sprak={sprak} />
 
       <header className="glas">
         {/* Bakgrunden: Carolines porträtt suddat till färg, med ett räfflat glas framför. */}
@@ -70,18 +72,11 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
         </div>
         <div className="glas__raffel" aria-hidden="true" />
 
-        <nav className="glas__topp" aria-label={t.sidfot.sidor}>
+        <div className="glas__topp">
           <a className="glas__namn" href="#">
             <Logga />
           </a>
-          <div className="glas__meny">
-            {t.hero.meny.map(([href, namn]) => (
-              <a key={href} href={href}>
-                {namn}
-              </a>
-            ))}
-          </div>
-        </nav>
+        </div>
 
         <aside className="glas__kort" aria-label={t.hero.kortRubrik}>
           <span className="glas__handtag" aria-hidden="true" />
@@ -115,10 +110,10 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
           <p>{t.hero.ingress}</p>
           <div className="glas__knappar">
             <a className="glas__knapp glas__knapp--ljus" href="#kommande">
-              {t.hero.knappAktiviteter} <span aria-hidden="true">↗</span>
+              {t.hero.knappAktiviteter} <ArrowUpRight aria-hidden="true" />
             </a>
             <a className="glas__knapp" href="#kontakt">
-              {t.hero.knappKontakt} <span aria-hidden="true">↗</span>
+              {t.hero.knappKontakt} <ArrowUpRight aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -249,11 +244,6 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
             <p className="overrad">{t.om.overrad}</p>
             <h2 id="om-rubrik">Caroline Palmstierna</h2>
             <p className="ingress">{t.om.ingress}</p>
-            <ul className="om__roller">
-              {t.om.roller.map((r) => (
-                <li key={r}>{r}</li>
-              ))}
-            </ul>
             <div className="om__text">
               {t.om.text.map((stycke) => (
                 <p key={stycke}>{stycke}</p>
@@ -272,25 +262,38 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
       </section>
 
       <section className="innehall praktiskt tv" id="tv" aria-labelledby="tv-rubrik">
-        <div className="innehall__inre praktiskt__inre">
-          <div>
+        <div className="innehall__inre tv__inre">
+          <div className="tv__text">
             <p className="overrad">{t.tv.overrad}</p>
             <h2 id="tv-rubrik">{t.tv.rubrik}</h2>
             <p className="ingress tv__ingress">{t.tv.ingress}</p>
+          </div>
+          {/* På mobil fälls resten ut med knappen; på dator syns allt. */}
+          <button
+            type="button"
+            className="tv__knapp"
+            aria-expanded={tvOppen}
+            aria-controls="tv-mer"
+            onClick={() => setTvOppen((o) => !o)}
+          >
+            {tvOppen ? t.tv.visaMindre : t.tv.visaMer}
+            <ChevronDown aria-hidden="true" />
+          </button>
+          <div className="tv__mer" id="tv-mer" data-oppen={tvOppen ? "" : undefined}>
             <div className="tv__dokumentar">
               <p className="tv__etikett">{t.tv.dokumentarEtikett}</p>
               <h3>Nordic Noir: The Rise of Scandi Drama</h3>
               <p>{t.tv.dokumentarText}</p>
             </div>
+            <dl className="fakta">
+              {t.tv.fakta.map((f) => (
+                <div key={f.etikett}>
+                  <dt>{f.etikett}</dt>
+                  <dd>{f.text}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <dl className="fakta">
-            {t.tv.fakta.map((f) => (
-              <div key={f.etikett}>
-                <dt>{f.etikett}</dt>
-                <dd>{f.text}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
@@ -333,7 +336,7 @@ export function Startsida({ sprak }: { sprak: Sprak }) {
               <Logga storlek="mellan" />
               <p className="sidfot__text">{t.sidfot.text}</p>
               <a className="sidfot__knapp" href="#kontakt">
-                {t.sidfot.kontakta} <span aria-hidden="true">→</span>
+                {t.sidfot.kontakta} <ArrowRight aria-hidden="true" />
               </a>
             </div>
             <nav className="sidfot__kolumn" aria-label={t.sidfot.sidor}>

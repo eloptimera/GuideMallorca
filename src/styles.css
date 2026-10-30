@@ -3077,3 +3077,494 @@ button.glas__aktivitet {
 .ruta .bokning__klart h3 {
   margin: 0 0 0.3rem;
 }
+
+/* ---------- Toppmenyn (src/components/Toppmeny.tsx) ---------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Ankarlänkar hamnar under menyn, inte bakom den. */
+[id] {
+  scroll-margin-top: 76px;
+}
+
+.toppmeny {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: env(safe-area-inset-top);
+  color: #ffffff;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
+}
+
+.toppmeny[data-scrollad] {
+  background: rgba(252, 255, 255, 0.78);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow:
+    0 1px 0 rgba(18, 28, 43, 0.08),
+    0 12px 30px -24px rgba(18, 28, 43, 0.45);
+  color: var(--ink);
+}
+
+.toppmeny__rad {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1440px;
+  height: 64px;
+  margin: 0 auto;
+  padding: 0 clamp(14px, 3vw, 40px);
+}
+
+.toppmeny__namn {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.toppmeny[data-scrollad] .toppmeny__namn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toppmeny__lankar {
+  display: flex;
+  gap: 0.15rem;
+  margin: 0 auto;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: rgba(18, 28, 43, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.toppmeny[data-scrollad] .toppmeny__lankar {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.toppmeny__lankar a {
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.toppmeny__lankar a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.toppmeny[data-scrollad] .toppmeny__lankar a:hover {
+  background: rgba(18, 28, 43, 0.06);
+}
+
+.toppmeny__hoger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.toppmeny__lankar + .toppmeny__hoger {
+  margin-left: 0;
+}
+
+.sprakval--inbyggd {
+  position: static;
+  padding: 3px;
+  gap: 2px;
+}
+
+.sprakval--inbyggd .sprakval__flagga {
+  width: 28px;
+  height: 28px;
+}
+
+.toppmeny__knapp {
+  display: none;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(18, 28, 43, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  color: inherit;
+  cursor: pointer;
+}
+
+.toppmeny[data-scrollad] .toppmeny__knapp {
+  background: rgba(18, 28, 43, 0.06);
+  box-shadow: none;
+}
+
+.toppmeny__knapp svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.toppmeny__mobil {
+  display: grid;
+  padding: 0.25rem clamp(14px, 3vw, 40px) 1rem;
+}
+
+.toppmeny__mobil[hidden] {
+  display: none;
+}
+
+.toppmeny__mobil a {
+  padding: 0.85rem 0.25rem;
+  border-top: 1px solid rgba(18, 28, 43, 0.08);
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+@media (max-width: 1100px) {
+  .toppmeny__lankar {
+    display: none;
+  }
+  .toppmeny__knapp {
+    display: grid;
+  }
+}
+
+/* Första vyn: plats för menyn överst. */
+.glas__topp {
+  padding-right: 0;
+}
+
+.glas {
+  padding-top: calc(64px + env(safe-area-inset-top));
+}
+
+/* ---------- Knapparna i första vyn: genomskinligt glas ---------- */
+
+.glas__knapp,
+.glas__knapp--ljus {
+  gap: 0.55rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glas__knapp--ljus {
+  background: rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.glas__knapp:hover,
+.glas__knapp--ljus:hover {
+  background: rgba(255, 255, 255, 0.34);
+  color: #ffffff;
+}
+
+.glas__knapp svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  stroke-width: 2;
+  transition: transform 0.2s ease;
+}
+
+.glas__knapp:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.sidfot__knapp svg,
+.evenemang__las svg,
+.policy__tillbaka svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.12em;
+}
+
+/* ---------- Mobil: första vyn ---------- */
+
+@media (max-width: 960px) {
+  .glas__namn .logga {
+    --logga: 1.75rem;
+  }
+  .glas__namn .logga__under {
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+  }
+  .glas__egenskaper {
+    display: none;
+  }
+  .glas__text h1 {
+    font-size: clamp(2.8rem, 13vw, 4rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .glas__knappar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .glas__knapp {
+    justify-content: center;
+    min-height: 2.9rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.92rem;
+    white-space: nowrap;
+  }
+}
+
+/* ---------- TV och dokumentär ---------- */
+
+.tv__inre {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "text fakta"
+    "dok fakta";
+  gap: 0 clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.tv__text {
+  grid-area: text;
+}
+
+.tv__mer {
+  display: contents;
+}
+
+.tv__dokumentar {
+  grid-area: dok;
+}
+
+.tv .fakta {
+  grid-area: fakta;
+}
+
+.tv__knapp {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .tv__inre {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+  .tv__text,
+  .tv__dokumentar,
+  .tv .fakta {
+    grid-area: auto;
+  }
+  .tv__knapp {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.7rem 1.2rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    font: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .tv__knapp svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform 0.25s ease;
+  }
+  .tv__knapp[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+  .tv__mer {
+    display: none;
+  }
+  .tv__mer[data-oppen] {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .tv__mer .tv__dokumentar {
+    margin-top: 0;
+  }
+}
+
+/* ---------- Sidfoten på mobil ---------- */
+
+@media (max-width: 640px) {
+  .sidfot__topp {
+    gap: 1.75rem;
+    padding: 2.25rem 1.4rem 1.5rem;
+    text-align: center;
+  }
+  .sidfot__presentation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .sidfot__presentation .logga {
+    --logga: 2.3rem;
+    margin-bottom: 1rem;
+  }
+  .sidfot__text {
+    max-width: 30ch;
+  }
+  .sidfot__kolumn {
+    justify-items: center;
+  }
+  .sidfot__kolumn[aria-label] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.1rem 1rem;
+    text-align: left;
+  }
+  .sidfot__kolumn[aria-label] .sidfot__etikett {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+  .sidfot__kolumn a,
+  .sidfot__ort {
+    font-size: 1rem;
+  }
+  .sidfot__botten {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.1rem 1.4rem 1.4rem;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+}
+
+/* ---------- Lägg till i kalendern ---------- */
+
+.ruta__lankar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.ruta__kalender {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: var(--muted-foreground);
+}
+
+.ruta__kalender svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--rosa-text);
+}
+
+.ruta__kalender a,
+.ruta__kalender button {
+  padding: 0.35rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(18, 28, 43, 0.06);
+  font: inherit;
+  font-weight: 600;
+  color: var(--bla-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ruta__kalender a:hover,
+.ruta__kalender button:hover {
+  background: rgba(5, 147, 198, 0.14);
+}
+
+.toppmeny[data-scrollad] {
+  background: rgba(252, 255, 255, 0.9);
+}
+
+.toppmeny__namn {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toppmeny__hoger {
+  flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+  .toppmeny__rad {
+    height: 58px;
+    gap: 0.5rem;
+  }
+  .toppmeny__namn {
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+  }
+  .sprakval--inbyggd .sprakval__flagga {
+    width: 26px;
+    height: 26px;
+  }
+  .toppmeny__knapp {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
+
+/* Mobilmenyn: helt täckande bakgrund när den är öppen. */
+.toppmeny[data-oppen] {
+  background: #fcffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 30px 60px -30px rgba(18, 28, 43, 0.45);
+}
+
+@media (max-width: 640px) {
+  .sidfot__kolumn[aria-label] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.1rem;
+    text-align: center;
+  }
+  .sidfot__kolumn[aria-label] .sidfot__etikett {
+    flex-basis: 100%;
+  }
+  .sidfot__kolumn[aria-label] a {
+    white-space: nowrap;
+  }
+}
