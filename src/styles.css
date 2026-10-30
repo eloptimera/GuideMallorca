@@ -2899,3 +2899,12 @@ button.glas__aktivitet {
     text-align: right;
   }
 }
+
+/* E-postadressen i kontaktrutan bryts inte mitt i domänen på smala skärmar. */
+@media (max-width: 480px) {
+  .kontakt__rad {
+    flex-direction: column;
+    gap: 0.15rem;
+    overflow-wrap: normal;
+  }
+}

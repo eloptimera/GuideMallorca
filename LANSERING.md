@@ -11,7 +11,7 @@ bekräftas innan sajten går live på shootforthemoon.se. Sök i koden efter `ex
 | **Evenemangen i kalendern** (5 st, påhittade titlar, datum, tider, priser, platser och antal platser) | `src/lib/innehall.ts` → `AKTIVITETER` | Riktiga evenemang: titel, datum, tid, längd, lokal, pris, språk, antal platser, kort text, bild |
 | **Citaten** (Anna L., Peter S., Karin B. är påhittade) | `src/lib/innehall.ts` → `CITAT` | Riktiga omdömen **med personens tillåtelse** att publicera namn |
 | **Teman** för Stand Up History, film och museum ("Teman meddelas") | `src/lib/sprak.ts` → `erbjudanden.lista[].teman` | Lista med teman, filmer och museer |
-| **Vanliga frågor** (svaren är "Caroline får fylla i") | `src/lib/sprak.ts` → `fragor` | Svar på alla fem frågorna. Lägg därefter gärna till FAQ-schema i `seo.ts` |
+| **Vanliga frågor** (svaren är platshållare: "Svaret fylls i före lansering.") | `src/lib/sprak.ts` → `fragor` | Svar på alla fem frågorna. Lägg därefter gärna till FAQ-schema i `seo.ts` |
 | **Om Caroline** och **TV och dokumentär** | `src/lib/sprak.ts` → `om`, `tv` | Bekräfta att uppgifterna stämmer i dag (Filmlance, Nordic Noir m.m.) |
 | **Engelska och spanska översättningar** | `src/lib/sprak.ts`, `evenemangtexter.ts`, `innehall.ts` | Låt Caroline eller någon med språket läsa igenom |
 
