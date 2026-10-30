@@ -3734,3 +3734,20 @@ html {
     background: rgba(18, 28, 43, 0.32);
   }
 }
+
+/* Sidfotens nedersta rad: upphovsrätt till vänster, Tab Marketing till höger på samma rad. */
+@media (min-width: 641px) {
+  .sidfot__botten {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .sidfot__botten > p {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .sidfot__tab {
+    flex-shrink: 0;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+}
