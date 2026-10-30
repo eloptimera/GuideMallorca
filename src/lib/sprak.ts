@@ -140,11 +140,11 @@ const SV: Texter = {
       ["#stand-up-history", "Stand Up History"],
       ["#film", "Film"],
       ["#museum", "Museum"],
-      ["#om-caroline", "Om Caroline"],
+      ["#om-caroline", "Om mig"],
     ],
     rubrik: ["Historia som", "man minns"],
     ingress:
-      "Stand Up History, filmkvällar och föreläsningar om Mallorca och Spanien med journalisten och Spanienexperten Caroline Palmstierna.",
+      "Jag heter Caroline Palmstierna, journalist och Spanienexpert. Jag berättar om Mallorcas och Spaniens historia genom Stand Up History, filmkvällar och föreläsningar.",
     knappAktiviteter: "Se vad som är på gång",
     knappKontakt: "Hör av dig",
     kortRubrik: "På gång",
@@ -173,7 +173,7 @@ const SV: Texter = {
         id: "film",
         namn: "Film & föreläsning",
         rubrik: "Se filmen och förstå historien bakom",
-        text: "Filmvisningar där Caroline föreläser innan filmen börjar: vad som verkligen hände, vem som bestämde och varför det fortfarande spelar roll.",
+        text: "Filmvisningar där jag föreläser innan filmen börjar: vad som verkligen hände, vem som bestämde och varför det fortfarande spelar roll.",
         teman: ["Filmer meddelas"],
       },
       {
@@ -198,7 +198,7 @@ const SV: Texter = {
   aktiviteter: {
     overrad: "På gång",
     rubrik: "Kommande aktiviteter",
-    ingress: "Det här händer framöver. Anmäl intresse så hör Caroline av sig med detaljer.",
+    ingress: "Det här händer framöver. Anmäl intresse så hör jag av mig med detaljer.",
     datumMeddelas: "Datum meddelas",
     anmal: "Anmäl intresse",
     exempel: "Exempel",
@@ -210,13 +210,13 @@ const SV: Texter = {
     },
   },
   om: {
-    overrad: "Om Caroline",
+    overrad: "Om mig",
     ingress: "Journalist, TV-konsult, historieälskare och Spanienexpert. Bosatt på Mallorca.",
     roller: ["Journalist", "TV-konsult", "Historieälskare", "Spanienexpert"],
     text: [
-      "Caroline har arbetat med tv och journalistik i hela sitt yrkesliv: på MTV, STRIX och CNN, som redaktör för Stina Dabrowskis intervjuprogram, hos dokumentärfilmaren Folke Rydén och som programledare och journalist i Spanien.",
-      "I dag bor hon på Mallorca, där hon leder boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
-      "Genom Shoot for the Moon delar hon sin passion för Spaniens historia, politik och kultur med alla som är nyfikna, och är den som kan förklara varför saker är som de är.",
+      "Jag har arbetat med tv och journalistik i hela mitt yrkesliv: på MTV, STRIX och CNN, som redaktör för Stina Dabrowskis intervjuprogram, hos dokumentärfilmaren Folke Rydén och som programledare och journalist i Spanien.",
+      "I dag bor jag på Mallorca, där jag leder boksamtal, håller föreläsningar och samarbetar med nätverk som SWEA Mallorca.",
+      "Genom Shoot for the Moon delar jag min passion för Spaniens historia, politik och kultur med alla som är nyfikna. Jag tycker om att förklara varför saker är som de är.",
     ],
     bildAlt: "Caroline Palmstierna, leende med en blombukett",
   },
@@ -224,15 +224,15 @@ const SV: Texter = {
     overrad: "Shoot for the Moon",
     rubrik: "TV och dokumentär",
     ingress:
-      "Shoot for the Moon är också Carolines oberoende produktionsbolag. Bolaget utvecklar och producerar tv-serier och dokumentärer, och är konsult åt skandinaviska tv-producenter och internationella distributörer som söker samproduktioner inom drama och dokumentär.",
+      "Shoot for the Moon är också mitt oberoende produktionsbolag. Jag utvecklar och producerar tv-serier och dokumentärer, och är konsult åt skandinaviska tv-producenter och internationella distributörer som söker samproduktioner inom drama och dokumentär.",
     fakta: [
       {
         etikett: "Erfarenhet",
-        text: "Omkring tio år av att utveckla, finansiera, sälja och lansera svenska och danska tv-serier.",
+        text: "Jag har i omkring tio år utvecklat, finansierat, sålt och lanserat svenska och danska tv-serier.",
       },
       {
         etikett: "Filmlance International",
-        text: "Som försäljningschef ansvarade Caroline för den internationella lanseringen och finansieringen av Bron, Arne Dahl och Morden i Sandhamn.",
+        text: "Som försäljningschef ansvarade jag för den internationella lanseringen och finansieringen av Bron, Arne Dahl och Morden i Sandhamn.",
       },
       {
         etikett: "Uppdragsgivare",
@@ -241,7 +241,7 @@ const SV: Texter = {
     ],
     dokumentarEtikett: "Dokumentär",
     dokumentarText:
-      "Om hur skandinavisk tv-dramatik erövrade världen, med bland andra Sofia Helin, Sidse Babett Knudsen, Krister Henriksson och Sofie Gråböl. Shoot for the Moon står för produktion, utveckling, finansiering och världsförsäljning.",
+      "Om hur skandinavisk tv-dramatik erövrade världen, med bland andra Sofia Helin, Sidse Babett Knudsen, Krister Henriksson och Sofie Gråböl. Jag står för produktion, utveckling, finansiering och världsförsäljning genom Shoot for the Moon.",
   },
   fragor: {
     overrad: "Vanliga frågor",
@@ -259,7 +259,7 @@ const SV: Texter = {
     overrad: "Kontakt",
     rubrik: "Hör av dig",
     ingress:
-      "Berätta vad du är intresserad av, när och hur många ni är, så återkommer Caroline med förslag.",
+      "Berätta vad du är intresserad av, när och hur många ni är, så återkommer jag med förslag.",
     direkt: "Eller hör av dig direkt",
     epost: "E-post",
     telefon: "Telefon",
@@ -280,7 +280,7 @@ const SV: Texter = {
     skickar: "Skickar…",
     fel: "Förfrågan kunde inte skickas just nu. Försök igen om en stund.",
     tackRubrik: "Tack, förfrågan är skickad.",
-    tackText: "Caroline återkommer till dig via e-post så snart hon kan.",
+    tackText: "Jag återkommer till dig via e-post så snart jag kan.",
   },
   sidfot: {
     text: "Stand Up History, filmkvällar och föreläsningar om Mallorca och Spanien.",
@@ -292,7 +292,7 @@ const SV: Texter = {
       ["#museum", "Museivandringar"],
       ["#rundvandring", "Rundvandring"],
       ["#kommande", "Kommande aktiviteter"],
-      ["#om-caroline", "Om Caroline"],
+      ["#om-caroline", "Om mig"],
       ["#tv", "TV och dokumentär"],
       ["#kontakt", "Kontakt"],
     ],
@@ -315,11 +315,11 @@ const EN: Texter = {
       ["#stand-up-history", "Stand Up History"],
       ["#film", "Film"],
       ["#museum", "Museum"],
-      ["#om-caroline", "About Caroline"],
+      ["#om-caroline", "About me"],
     ],
     rubrik: ["History you", "remember"],
     ingress:
-      "Stand Up History, film nights and talks about Mallorca and Spain with journalist and Spain expert Caroline Palmstierna.",
+      "I'm Caroline Palmstierna, a journalist and Spain expert. I bring the history of Mallorca and Spain to life through Stand Up History, film nights and talks.",
     knappAktiviteter: "See what's coming up",
     knappKontakt: "Get in touch",
     kortRubrik: "Coming up",
@@ -348,7 +348,7 @@ const EN: Texter = {
         id: "film",
         namn: "Film & talk",
         rubrik: "See the film and understand the history behind it",
-        text: "Film screenings where Caroline gives a talk before the film starts: what really happened, who decided and why it still matters.",
+        text: "Film screenings where I give a talk before the film starts: what really happened, who decided and why it still matters.",
         teman: ["Films to be announced"],
       },
       {
@@ -373,8 +373,7 @@ const EN: Texter = {
   aktiviteter: {
     overrad: "Coming up",
     rubrik: "Upcoming events",
-    ingress:
-      "Here's what's coming. Register your interest and Caroline will get back to you with details.",
+    ingress: "Here's what's coming. Register your interest and I'll get back to you with details.",
     datumMeddelas: "Date to be announced",
     anmal: "Register interest",
     exempel: "Example",
@@ -386,13 +385,13 @@ const EN: Texter = {
     },
   },
   om: {
-    overrad: "About Caroline",
+    overrad: "About me",
     ingress: "Journalist, TV consultant, history lover and Spain expert. Based in Mallorca.",
     roller: ["Journalist", "TV consultant", "History lover", "Spain expert"],
     text: [
-      "Caroline has worked in television and journalism throughout her career: at MTV, STRIX and CNN, as editor of Stina Dabrowski's interview programmes, with documentary maker Folke Rydén, and as a TV host and journalist in Spain.",
-      "Today she lives in Mallorca, where she hosts book talks, gives lectures and works with networks such as SWEA Mallorca.",
-      "Through Shoot for the Moon she shares her passion for Spanish history, politics and culture with anyone who is curious, and she is the one who can explain why things are the way they are.",
+      "I have worked in television and journalism throughout my career: at MTV, STRIX and CNN, as editor of Stina Dabrowski's interview programmes, with documentary maker Folke Rydén, and as a TV host and journalist in Spain.",
+      "Today I live in Mallorca, where I host book talks, gives lectures and works with networks such as SWEA Mallorca.",
+      "Through Shoot for the Moon I share my passion for Spanish history, politics and culture with anyone who is curious. I love explaining why things are the way they are.",
     ],
     bildAlt: "Caroline Palmstierna, smiling with a bouquet of flowers",
   },
@@ -400,15 +399,15 @@ const EN: Texter = {
     overrad: "Shoot for the Moon",
     rubrik: "TV and documentary",
     ingress:
-      "Shoot for the Moon is also Caroline's independent production company. It develops and produces TV series and documentaries, and consults for Scandinavian TV producers and international distributors looking for drama and documentary co-productions.",
+      "Shoot for the Moon is also my independent production company. I develop and produce TV series and documentaries, and consult for Scandinavian TV producers and international distributors looking for drama and documentary co-productions.",
     fakta: [
       {
         etikett: "Experience",
-        text: "Around ten years of developing, financing, selling and launching Swedish and Danish TV series.",
+        text: "I spent around ten years developing, financing, selling and launching Swedish and Danish TV series.",
       },
       {
         etikett: "Filmlance International",
-        text: "As Director of Sales, Caroline handled the international launch and financing of The Bridge, Arne Dahl and Murder in Sandhamn.",
+        text: "As Director of Sales, I handled the international launch and financing of The Bridge, Arne Dahl and Murder in Sandhamn.",
       },
       {
         etikett: "Clients",
@@ -417,7 +416,7 @@ const EN: Texter = {
     ],
     dokumentarEtikett: "Documentary",
     dokumentarText:
-      "How Scandinavian TV drama conquered the world, featuring Sofia Helin, Sidse Babett Knudsen, Krister Henriksson and Sofie Gråböl, among others. Shoot for the Moon handles production, development, financing and worldwide sales.",
+      "How Scandinavian TV drama conquered the world, featuring Sofia Helin, Sidse Babett Knudsen, Krister Henriksson and Sofie Gråböl, among others. Through Shoot for the Moon I handle production, development, financing and worldwide sales.",
   },
   fragor: {
     overrad: "Frequently asked questions",
@@ -435,7 +434,7 @@ const EN: Texter = {
     overrad: "Contact",
     rubrik: "Get in touch",
     ingress:
-      "Tell us what you're interested in, when and how many you are, and Caroline will get back to you.",
+      "Tell me what you're interested in, when and how many you are, and I'll get back to you.",
     direkt: "Or get in touch directly",
     epost: "Email",
     telefon: "Phone",
@@ -456,7 +455,7 @@ const EN: Texter = {
     skickar: "Sending…",
     fel: "Your request could not be sent right now. Please try again in a moment.",
     tackRubrik: "Thank you, your request has been sent.",
-    tackText: "Caroline will reply by email as soon as she can.",
+    tackText: "I'll reply by email as soon as I can.",
   },
   sidfot: {
     text: "Stand Up History, film nights and talks about Mallorca and Spain.",
@@ -468,7 +467,7 @@ const EN: Texter = {
       ["#museum", "Museum walks"],
       ["#rundvandring", "Walk"],
       ["#kommande", "Upcoming events"],
-      ["#om-caroline", "About Caroline"],
+      ["#om-caroline", "About me"],
       ["#tv", "TV and documentary"],
       ["#kontakt", "Contact"],
     ],
@@ -491,13 +490,13 @@ const ES: Texter = {
       ["#stand-up-history", "Stand Up History"],
       ["#film", "Cine"],
       ["#museum", "Museo"],
-      ["#om-caroline", "Sobre Caroline"],
+      ["#om-caroline", "Sobre mí"],
     ],
     rubrik: ["Historia que", "se recuerda"],
     ingress:
-      "Stand Up History, noches de cine y charlas sobre Mallorca y España, con la periodista y experta en España Caroline Palmstierna.",
+      "Soy Caroline Palmstierna, periodista y experta en España. Cuento la historia de Mallorca y de España con Stand Up History, noches de cine y charlas.",
     knappAktiviteter: "Ver lo que viene",
-    knappKontakt: "Escríbenos",
+    knappKontakt: "Escríbeme",
     kortRubrik: "Próximamente",
     egenskaper: [
       "Stand Up History con distintos temas",
@@ -524,7 +523,7 @@ const ES: Texter = {
         id: "film",
         namn: "Cine y charla",
         rubrik: "Ver la película y entender la historia que hay detrás",
-        text: "Proyecciones en las que Caroline da una charla antes de la película: qué pasó de verdad, quién decidió y por qué sigue importando.",
+        text: "Proyecciones en las que doy una charla antes de la película: qué pasó de verdad, quién decidió y por qué sigue importando.",
         teman: ["Películas por anunciar"],
       },
       {
@@ -549,7 +548,7 @@ const ES: Texter = {
   aktiviteter: {
     overrad: "Próximamente",
     rubrik: "Próximas actividades",
-    ingress: "Esto es lo que viene. Dinos que te interesa y Caroline te enviará los detalles.",
+    ingress: "Esto es lo que viene. Dime que te interesa y te enviaré los detalles.",
     datumMeddelas: "Fecha por anunciar",
     anmal: "Me interesa",
     exempel: "Ejemplo",
@@ -561,14 +560,14 @@ const ES: Texter = {
     },
   },
   om: {
-    overrad: "Sobre Caroline",
+    overrad: "Sobre mí",
     ingress:
       "Periodista, consultora de televisión, apasionada de la historia y experta en España, afincada en Mallorca.",
     roller: ["Periodista", "Consultora de TV", "Apasionada de la historia", "Experta en España"],
     text: [
-      "Caroline ha trabajado en televisión y periodismo durante toda su carrera: en MTV, STRIX y CNN, como editora de los programas de entrevistas de Stina Dabrowski, con el documentalista Folke Rydén y como presentadora y periodista en España.",
-      "Hoy vive en Mallorca, donde modera presentaciones de libros, da conferencias y colabora con redes como SWEA Mallorca.",
-      "Con Shoot for the Moon comparte su pasión por la historia, la política y la cultura de España con cualquiera que sienta curiosidad, y sabe explicar por qué las cosas son como son.",
+      "He trabajado en televisión y periodismo durante toda mi carrera: en MTV, STRIX y CNN, como editora de los programas de entrevistas de Stina Dabrowski, con el documentalista Folke Rydén y como presentadora y periodista en España.",
+      "Hoy vivo en Mallorca, donde modero presentaciones de libros, doy conferencias y colaboro con redes como SWEA Mallorca.",
+      "Con Shoot for the Moon comparto mi pasión por la historia, la política y la cultura de España con cualquiera que sienta curiosidad. Me encanta explicar por qué las cosas son como son.",
     ],
     bildAlt: "Caroline Palmstierna, sonriente con un ramo de flores",
   },
@@ -576,15 +575,15 @@ const ES: Texter = {
     overrad: "Shoot for the Moon",
     rubrik: "Televisión y documental",
     ingress:
-      "Shoot for the Moon es también la productora independiente de Caroline. Desarrolla y produce series y documentales, y asesora a productoras de televisión escandinavas y a distribuidores internacionales que buscan coproducciones de drama y documental.",
+      "Shoot for the Moon es también mi productora independiente. Desarrollo y produzco series y documentales, y asesoro a productoras de televisión escandinavas y a distribuidores internacionales que buscan coproducciones de drama y documental.",
     fakta: [
       {
         etikett: "Experiencia",
-        text: "Unos diez años desarrollando, financiando, vendiendo y lanzando series de televisión suecas y danesas.",
+        text: "Pasé unos diez años desarrollando, financiando, vendiendo y lanzando series de televisión suecas y danesas.",
       },
       {
         etikett: "Filmlance International",
-        text: "Como directora de ventas, Caroline se encargó del lanzamiento internacional y la financiación de El Puente, Arne Dahl y Los crímenes de Sandhamn.",
+        text: "Como directora de ventas, me encargué del lanzamiento internacional y la financiación de El Puente, Arne Dahl y Los crímenes de Sandhamn.",
       },
       {
         etikett: "Clientes",
@@ -593,7 +592,7 @@ const ES: Texter = {
     ],
     dokumentarEtikett: "Documental",
     dokumentarText:
-      "Cómo el drama televisivo escandinavo conquistó el mundo, con Sofia Helin, Sidse Babett Knudsen, Krister Henriksson y Sofie Gråböl, entre otros. Shoot for the Moon se encarga de la producción, el desarrollo, la financiación y las ventas internacionales.",
+      "Cómo el drama televisivo escandinavo conquistó el mundo, con Sofia Helin, Sidse Babett Knudsen, Krister Henriksson y Sofie Gråböl, entre otros. Con Shoot for the Moon me encargo de la producción, el desarrollo, la financiación y las ventas internacionales.",
   },
   fragor: {
     overrad: "Preguntas frecuentes",
@@ -609,9 +608,8 @@ const ES: Texter = {
   },
   kontakt: {
     overrad: "Contacto",
-    rubrik: "Escríbenos",
-    ingress:
-      "Cuéntanos qué te interesa, cuándo y cuántos sois, y Caroline te responderá con una propuesta.",
+    rubrik: "Escríbeme",
+    ingress: "Cuéntame qué te interesa, cuándo y cuántos sois, y te responderé con una propuesta.",
     direkt: "O contacta directamente",
     epost: "Correo",
     telefon: "Teléfono",
@@ -632,11 +630,11 @@ const ES: Texter = {
     skickar: "Enviando…",
     fel: "No se ha podido enviar la solicitud. Inténtalo de nuevo en un momento.",
     tackRubrik: "Gracias, la solicitud se ha enviado.",
-    tackText: "Caroline te responderá por correo lo antes posible.",
+    tackText: "Te responderé por correo lo antes posible.",
   },
   sidfot: {
     text: "Stand Up History, noches de cine y charlas sobre Mallorca y España.",
-    kontakta: "Escríbenos",
+    kontakta: "Escríbeme",
     sidor: "Páginas",
     lankar: [
       ["#stand-up-history", "Stand Up History"],
@@ -644,7 +642,7 @@ const ES: Texter = {
       ["#museum", "Recorridos por museos"],
       ["#rundvandring", "Paseo"],
       ["#kommande", "Próximas actividades"],
-      ["#om-caroline", "Sobre Caroline"],
+      ["#om-caroline", "Sobre mí"],
       ["#tv", "Televisión y documental"],
       ["#kontakt", "Contacto"],
     ],

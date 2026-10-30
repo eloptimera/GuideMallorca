@@ -87,9 +87,9 @@ export const AKTIVITETER: readonly Aktivitet[] = [
       es: "Reinas, santas y rebeldes: las mujeres que olvidaron los libros de historia.",
     },
     text: {
-      sv: "En Stand Up History-kväll om kvinnorna bakom öns historia, från de kända till de helt bortglömda. Caroline berättar med humor och allvar, och kvällen avslutas med ett glas vin och lokalt tilltugg.",
-      en: "A Stand Up History evening about the women behind the island's history, from the famous to the completely forgotten. Caroline tells it with humour and gravity, and the evening ends with a glass of wine and local bites.",
-      es: "Una velada de Stand Up History sobre las mujeres detrás de la historia de la isla, de las famosas a las completamente olvidadas. Caroline la cuenta con humor y seriedad, y la noche termina con una copa de vino y picoteo local.",
+      sv: "En Stand Up History-kväll om kvinnorna bakom öns historia, från de kända till de helt bortglömda. Jag berättar med humor och allvar, och kvällen avslutas med ett glas vin och lokalt tilltugg.",
+      en: "A Stand Up History evening about the women behind the island's history, from the famous to the completely forgotten. I tell it with humour and gravity, and the evening ends with a glass of wine and local bites.",
+      es: "Una velada de Stand Up History sobre las mujeres detrás de la historia de la isla, de las famosas a las completamente olvidadas. La cuento con humor y seriedad, y la noche termina con una copa de vino y picoteo local.",
     },
     plats: PALMA_SALONG,
     pris: {
@@ -120,9 +120,9 @@ export const AKTIVITETER: readonly Aktivitet[] = [
       es: "Una breve charla sitúa la película en su contexto antes de que se apaguen las luces.",
     },
     text: {
-      sv: "Caroline föreläser i 30 minuter om perioden filmen skildrar: vad som hände, vem som bestämde och varför det fortfarande spelar roll. Därefter visas filmen, och efteråt finns tid för samtal.",
-      en: "Caroline gives a 30-minute talk on the period the film portrays: what happened, who decided and why it still matters. Then the film is shown, with time for conversation afterwards.",
-      es: "Caroline da una charla de 30 minutos sobre la época que retrata la película: qué pasó, quién decidió y por qué sigue importando. Después se proyecta la película y hay tiempo para conversar.",
+      sv: "Jag föreläser i 30 minuter om perioden filmen skildrar: vad som hände, vem som bestämde och varför det fortfarande spelar roll. Därefter visas filmen, och efteråt finns tid för samtal.",
+      en: "I give a 30-minute talk on the period the film portrays: what happened, who decided and why it still matters. Then the film is shown, with time for conversation afterwards.",
+      es: "Doy una charla de 30 minutos sobre la época que retrata la película: qué pasó, quién decidió y por qué sigue importando. Después se proyecta la película y hay tiempo para conversar.",
     },
     plats: { sv: "Biograf i Palma", en: "Cinema in Palma", es: "Cine en Palma" },
     pris: { sv: "20 €", en: "€20", es: "20 €" },
